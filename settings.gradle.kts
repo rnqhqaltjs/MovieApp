@@ -1,4 +1,8 @@
 pluginManagement {
+    includeBuild("build-logic")
+
+    gradle.startParameter.excludedTaskNames.addAll(listOf(":build-logic:convention:testClasses"))
+
     repositories {
         google {
             content {
@@ -21,3 +25,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MovieApp"
 include(":app")
+include(":feature:list")
