@@ -1,42 +1,20 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.app.common)
+    alias(libs.plugins.app.compose)
 }
 
 android {
-    namespace = "com.clone.movieapp"
-    compileSdk = 35
+    namespace = "com.clone.movie"
 
     defaultConfig {
-        applicationId = "com.clone.movieapp"
-        minSdk = 21
-        targetSdk = 34
+        applicationId = "com.clone.movie"
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
     kotlinOptions {
         jvmTarget = "21"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
@@ -50,8 +28,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.coil.kt)
-    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
