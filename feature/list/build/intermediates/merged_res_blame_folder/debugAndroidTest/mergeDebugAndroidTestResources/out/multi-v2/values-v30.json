@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.clone.movie.list.test.list-mergeDebugAndroidTestResources-60:/values-v30/values-v30.xml",
+            "outputFile": "com.clone.movie.list.test.list-mergeDebugAndroidTestResources-55:/values-v30/values-v30.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\33c7b403228e66beca704765ef08e905\\transformed\\material3-release\\res\\values-v30\\values-v30.xml",
+                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\c9856cd0d65abfeca25220e768aec471\\transformed\\material3-release\\res\\values-v30\\values-v30.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

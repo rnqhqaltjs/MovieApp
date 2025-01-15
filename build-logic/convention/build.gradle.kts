@@ -47,13 +47,9 @@ gradlePlugin {
             id = "lib.plugin.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
-//        register("AndroidHiltPlugin") {
-//            id = "clone.plugin.hilt"
-//            implementationClass = "AndroidHiltConventionPlugin"
-//        }
-//        register("AndroidFeaturePlugin") {
-//            id = "clone.plugin.feature"
-//            implementationClass = "AndroidFeatureConventionPlugin"
-//        }
+        register("AndroidHiltPlugin") {
+            id = "app.plugin.hilt"
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
     }
 }
