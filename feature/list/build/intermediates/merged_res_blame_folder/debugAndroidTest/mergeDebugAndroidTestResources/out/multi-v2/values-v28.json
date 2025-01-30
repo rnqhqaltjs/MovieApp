@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.clone.movie.list.test.list-mergeDebugAndroidTestResources-55:/values-v28/values-v28.xml",
+            "outputFile": "com.same.alarm.list.test.list-mergeDebugAndroidTestResources-58:/values-v28/values-v28.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\3ca3f923a947a2800ad1a8c26d4f0b6d\\transformed\\appcompat-1.7.0\\res\\values-v28\\values-v28.xml",
+                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\1cc169a2c7e9df1ed703d27ccda4eab4\\transformed\\appcompat-1.7.0\\res\\values-v28\\values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,8",
                         "startColumns": "4,4,4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\8905929337fc2a1e529dc83c8cd61133\\transformed\\material-1.12.0\\res\\values-v28\\values-v28.xml",
+                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\25a1ff90b063f3cb31f9d5b30a013255\\transformed\\material-1.12.0\\res\\values-v28\\values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -42,7 +42,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\7c9eaec57fd4039250361be455934101\\transformed\\core-1.6.1\\res\\values-v28\\values.xml",
+                    "source": "C:\\Users\\rnqhq\\.gradle\\caches\\8.12\\transforms\\0709b1c8fd59239638b896d20f549650\\transformed\\core-1.6.1\\res\\values-v28\\values.xml",
                     "from": {
                         "startLines": "4,13",
                         "startColumns": "0,0",

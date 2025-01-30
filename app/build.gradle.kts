@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "com.clone.movie"
+    namespace = "com.same.alarm"
 
     defaultConfig {
-        applicationId = "com.clone.movie"
+        applicationId = "com.same.alarm"
         versionCode = 1
         versionName = "1.0"
 
