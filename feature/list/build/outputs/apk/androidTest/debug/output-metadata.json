@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.clone.movie.list.test",
+  "applicationId": "com.same.alarm.list.test",
   "variantName": "debugAndroidTest",
   "elements": [
     {

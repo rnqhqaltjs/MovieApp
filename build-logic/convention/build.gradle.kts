@@ -4,7 +4,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.clone.movie.buildlogic"
+group = "com.same.alarm.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21

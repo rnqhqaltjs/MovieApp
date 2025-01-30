@@ -1,1 +1,1 @@
-com.clone.movie.list
+com.same.alarm.list
