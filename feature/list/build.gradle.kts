@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.lib.common)
     alias(libs.plugins.lib.compose)
+    id("kotlinx-serialization")
 }
 
 android {
@@ -11,5 +12,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.compose)
     debugImplementation(libs.androidx.ui.tooling)
+
+    implementation(libs.kotlinx.serialization.json)
 }
