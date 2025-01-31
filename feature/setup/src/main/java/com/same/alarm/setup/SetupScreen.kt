@@ -19,7 +19,7 @@ import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen () {
+fun SetupScreen () {
     var selectedTime: TimePickerState? by remember { mutableStateOf(null) }
 
     DialUseStateExample(

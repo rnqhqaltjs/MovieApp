@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.app.common)
     alias(libs.plugins.app.compose)
     alias(libs.plugins.app.hilt)
+    id("kotlinx-serialization")
 }
 
 android {
@@ -20,6 +21,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:setup"))
+    implementation(project(":feature:list"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -38,4 +42,6 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.kotlinx.serialization.json)
 }
