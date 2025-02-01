@@ -82,3 +82,4 @@ app-compose = { id = "app.plugin.compose", version = "unspecified" }
 lib-compose = { id = "lib.plugin.compose", version = "unspecified" }
 lib-common = { id = "lib.plugin.common", version = "unspecified" }
 app-hilt = { id = "app.plugin.hilt", version = "unspecified" }
+app-feature = { id = "app.plugin.feature", version = "unspecified" }
