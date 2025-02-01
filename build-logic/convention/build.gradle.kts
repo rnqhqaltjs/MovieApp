@@ -51,5 +51,9 @@ gradlePlugin {
             id = "app.plugin.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("AndroidFeaturePlugin") {
+            id = "app.plugin.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }

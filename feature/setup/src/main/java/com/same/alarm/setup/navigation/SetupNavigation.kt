@@ -5,17 +5,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
-
-@Serializable
-object Setup
+import com.same.alarm.navigation.MainTabRoute
 
 fun NavController.navigateToSetup(navOptions: NavOptions? = null) {
-    navigate(Setup, navOptions = navOptions)
+    navigate(MainTabRoute.Setup, navOptions = navOptions)
 }
 
 fun NavGraphBuilder.setupScreen() {
-    composable<Setup> { _ ->
+    composable<MainTabRoute.Setup> { _ ->
         SetupRoute()
     }
 }
