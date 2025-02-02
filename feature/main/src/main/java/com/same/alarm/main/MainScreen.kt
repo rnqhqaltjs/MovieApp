@@ -1,62 +1,52 @@
 package com.same.alarm.main
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import com.same.alarm.calendar.CalendarScreen
-import com.same.alarm.setup.SetupScreen
+import androidx.compose.ui.unit.dp
 
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { 2 } // 탭 수
+internal fun MainScreen(
+    navigator: MainNavigator = rememberMainNavigator(),
+) {
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    MainScreenContent(
+        navigator = navigator,
+        snackBarHostState = snackBarHostState
     )
-
-    // Tab titles
-    val tabs = listOf("Setup", "List")
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        // 탭 레이아웃
-        TabRow(selectedTabIndex = pagerState.currentPage) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = pagerState.currentPage == index,
-                    onClick = {
-                        // 탭 클릭 시 페이지 전환
-//                        coroutineScope.launch {
-//                            pagerState.scrollToPage(index)
-//                        }
-                    },
-                    text = { Text(text = title) }
-                )
-            }
-        }
-
-        // HorizontalPager 사용하여 탭 내용 표시
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.fillMaxSize(),
-            userScrollEnabled = true // 스와이프만 가능
-        ) { page ->
-            when (page) {
-                0 -> SetupScreen()  // 첫 번째 탭 화면
-                1 -> CalendarScreen()   // 두 번째 탭 화면
-            }
-        }
-    }
 }
-@Preview(showBackground = true)
+
 @Composable
-fun PreviewMainScreen() {
-    MainScreen()
+private fun MainScreenContent(
+    modifier: Modifier = Modifier,
+    navigator: MainNavigator,
+    snackBarHostState: SnackbarHostState,
+) {
+    Scaffold(
+        modifier = modifier,
+        content = { padding ->
+            MainNavHost(
+                navigator = navigator,
+                padding = padding
+            )
+        },
+        bottomBar = {
+            MainBottomBar(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(start = 8.dp, end = 8.dp, bottom = 28.dp),
+                visible = navigator.shouldShowBottomBar(),
+                tabs = MainTab.entries,
+                currentTab = navigator.currentTab,
+                onTabSelected = { navigator.navigate(it) }
+            )
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) }
+    )
 }
