@@ -21,6 +21,8 @@ android {
 
 dependencies {
     implementation(project(":feature:main"))
+    implementation(project(":feature:alarm"))
+    implementation(project(":feature:calendar"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
