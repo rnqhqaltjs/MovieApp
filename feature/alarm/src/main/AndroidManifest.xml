@@ -2,16 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".AlarmActivity"
             android:exported="true"
+            android:launchMode="singleTop"
+            android:showOnLockScreen="true"
             android:theme="@style/Theme.AlarmApp">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.same.alarm.alarm" />
             </intent-filter>
         </activity>
 
