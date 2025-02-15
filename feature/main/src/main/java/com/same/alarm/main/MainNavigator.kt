@@ -12,6 +12,7 @@ import androidx.navigation.navOptions
 import com.same.alarm.calendar.navigation.navigateToCalendar
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
+import com.same.alarm.setup.navigation.navigateToRepeatSetup
 import com.same.alarm.setup.navigation.navigateToSetup
 
 internal class MainNavigator(
@@ -41,6 +42,10 @@ internal class MainNavigator(
             MainTab.SETUP -> navController.navigateToSetup(navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions)
         }
+    }
+
+    fun navigateToRepeatSetup() {
+        navController.navigateToRepeatSetup()
     }
 
     private fun popBackStack() {

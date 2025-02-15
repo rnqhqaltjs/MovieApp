@@ -1,8 +1,6 @@
 package com.same.alarm.main
 
 import android.Manifest
-import android.app.AlarmManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,7 +23,7 @@ class MainActivity : ComponentActivity() {
     private val REQUEST_CODE_USE_EXACT_ALARM = 1002
     private val REQUEST_CODE_OVERLAY_PERMISSION = 1003
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

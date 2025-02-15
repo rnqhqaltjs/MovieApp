@@ -1,5 +1,7 @@
 package com.same.alarm.main
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -10,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
@@ -22,6 +25,7 @@ internal fun MainScreen(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun MainScreenContent(
     modifier: Modifier = Modifier,
