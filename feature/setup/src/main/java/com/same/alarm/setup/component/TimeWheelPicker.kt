@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -99,6 +100,10 @@ fun TimeWheelPicker(
         onTimeSelected(selectedTime)
     }
 
+    amPmListState.SnapToNearestItem()
+    hourListState.SnapToNearestItem()
+    minuteListState.SnapToNearestItem()
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
@@ -156,7 +161,7 @@ fun TimeWheelPicker(
             LazyColumn(
                 state = hourListState,
                 contentPadding = PaddingValues(16.dp, 80.dp),
-                flingBehavior = rememberSnapFlingBehavior(hourListState),
+                flingBehavior = maxScrollSpeedFlingBehavior(),
                 modifier = Modifier
                     .weight(1f)
                     .height(200.dp)
@@ -182,7 +187,7 @@ fun TimeWheelPicker(
             LazyColumn(
                 state = minuteListState,
                 contentPadding = PaddingValues(16.dp, 80.dp),
-                flingBehavior = rememberSnapFlingBehavior(minuteListState),
+                flingBehavior = maxScrollSpeedFlingBehavior(),
                 modifier = Modifier
                     .weight(1f)
                     .height(200.dp)
@@ -205,6 +210,15 @@ fun TimeWheelPicker(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun LazyListState.SnapToNearestItem() {
+    LaunchedEffect(isScrollInProgress) {
+        if (!isScrollInProgress) {
+            animateScrollToItem(firstVisibleItemIndex)
         }
     }
 }
