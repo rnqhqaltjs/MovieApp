@@ -24,7 +24,7 @@ fun NavGraphBuilder.setupScreen(
     onRepeatClick: () -> Unit
 ) {
     composable<MainTabRoute.Setup> {
-        SetupRoute(onAlarmRepeatClick = onRepeatClick)
+        SetupRoute(onRepeatClick = onRepeatClick)
     }
 
     composable<Route.RepeatSetup> { navBackStackEntry ->
