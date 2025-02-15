@@ -1,6 +1,7 @@
 package com.same.alarm.setup.component
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,6 @@ fun TimeWheelPicker(
     val minute by remember { derivedStateOf { (minuteListState.firstVisibleItemIndex % minuteSize + minuteSize) % minuteSize } }
     val amPm by remember { derivedStateOf { amPmListState.firstVisibleItemIndex % 2 } }
 
-    var prevMinute by remember { mutableIntStateOf(minute) }
     var prevHour by remember { mutableIntStateOf(hour) }
 
     val selectedTime by remember {
@@ -74,17 +74,6 @@ fun TimeWheelPicker(
         }
     }
 
-    LaunchedEffect(minute, prevMinute) {
-        if (prevMinute != minute) {
-            if (prevMinute == 59 && minute == 0) {
-                hourListState.scrollToItem(hourListState.firstVisibleItemIndex + 1)
-            } else if (prevMinute == 1 && minute == 0) {
-                hourListState.scrollToItem(hourListState.firstVisibleItemIndex - 1)
-            }
-            prevMinute = minute
-        }
-    }
-
     LaunchedEffect(hour, prevHour) {
         if (prevHour != hour) {
             if (prevHour == 10 && hour == 11) {
@@ -98,6 +87,8 @@ fun TimeWheelPicker(
 
     LaunchedEffect(selectedTime) {
         onTimeSelected(selectedTime)
+
+        Log.d("okay", selectedTime.toString())
     }
 
     amPmListState.SnapToNearestItem()
@@ -127,6 +118,7 @@ fun TimeWheelPicker(
                     )
                 }
         )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -158,6 +150,7 @@ fun TimeWheelPicker(
                     }
                 }
             }
+
             LazyColumn(
                 state = hourListState,
                 contentPadding = PaddingValues(16.dp, 80.dp),
@@ -184,6 +177,7 @@ fun TimeWheelPicker(
                     }
                 }
             }
+
             LazyColumn(
                 state = minuteListState,
                 contentPadding = PaddingValues(16.dp, 80.dp),
