@@ -6,8 +6,8 @@ internal class AndroidHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager){
-                apply("com.google.dagger.hilt.android")
                 apply("com.google.devtools.ksp")
+                apply("com.google.dagger.hilt.android")
             }
 
             dependencies {

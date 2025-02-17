@@ -20,10 +20,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+
     implementation(project(":feature:main"))
     implementation(project(":feature:alarm"))
     implementation(project(":feature:calendar"))
-
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
