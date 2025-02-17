@@ -1,13 +1,13 @@
 plugins {
-    id("java-library")
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.lib.common)
+    alias(libs.plugins.app.hilt)
 }
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+
+android {
+    namespace = "com.same.alarm.domain"
 }
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
-    }
+
+dependencies {
+
+    implementation(project(":core:model"))
 }
