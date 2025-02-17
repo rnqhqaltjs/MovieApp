@@ -4,10 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.domain"
+    namespace = "com.same.alarm.data"
+    kotlinOptions {
+        jvmTarget = "21"
+    }
 }
 
 dependencies {
-
+    implementation(project(":core:domain"))
     implementation(project(":core:model"))
 }

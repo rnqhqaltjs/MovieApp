@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:data"))
+
     implementation(libs.retrofit)
     implementation(libs.moshi)
     implementation(libs.okhttp)

@@ -33,6 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.same.alarm.model.Alarm
 import com.same.alarm.setup.component.TimeWheelPicker
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -41,10 +43,12 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupRoute(
+    setUpViewModel: SetUpViewModel = hiltViewModel(),
     onRepeatClick: () -> Unit
 ) {
     SetupScreen(
-        onRepeatClick
+        onRepeatClick = onRepeatClick,
+        onAddAlarm = { alarm -> setUpViewModel.addAlarm(alarm) }
     )
 }
 
@@ -52,7 +56,8 @@ fun SetupRoute(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupScreen(
-    onRepeatClick: () -> Unit
+    onRepeatClick: () -> Unit,
+    onAddAlarm: (Alarm) -> Unit
 ) {
     val today = LocalDate.now()
     val dayOfWeek = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
@@ -75,7 +80,6 @@ fun SetupScreen(
         )
 
         TimeWheelPicker { time ->
-
         }
 
         Row(
@@ -178,7 +182,7 @@ fun SetupScreen(
 
         Button(
             onClick = {
-
+                onAddAlarm(Alarm(0, "알람1", System.currentTimeMillis() + 1000))
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -191,5 +195,5 @@ fun SetupScreen(
 @Preview(showBackground = true)
 @Composable
 fun SetupScreenPreview() {
-    SetupScreen(onRepeatClick = {})
+    SetupScreen(onRepeatClick = {}, onAddAlarm = {})
 }
