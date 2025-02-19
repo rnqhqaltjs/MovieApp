@@ -37,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.same.alarm.model.Alarm
 import com.same.alarm.setup.component.TimeWheelPicker
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -64,6 +65,8 @@ fun SetupScreen(
     val month = today.monthValue
     val day = today.dayOfMonth
 
+    var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
+
     var isAlarmRepeated by remember { mutableStateOf(true) }
     var isDayOfWeekRepeated by remember { mutableStateOf(false) }
 
@@ -79,7 +82,8 @@ fun SetupScreen(
             modifier = Modifier.padding(16.dp)
         )
 
-        TimeWheelPicker { time ->
+        TimeWheelPicker { selectedTime ->
+            time = selectedTime
         }
 
         Row(
@@ -182,7 +186,7 @@ fun SetupScreen(
 
         Button(
             onClick = {
-                onAddAlarm(Alarm(0, "알람1", System.currentTimeMillis() + 1000))
+                onAddAlarm(Alarm("0", time, "테스트", emptySet()))
             },
             modifier = Modifier.fillMaxWidth()
         ) {
