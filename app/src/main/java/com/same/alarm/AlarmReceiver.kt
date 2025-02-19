@@ -1,4 +1,4 @@
-package com.same.alarm.calendar
+package com.same.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -42,6 +42,4 @@ class AlarmReceiver : BroadcastReceiver() {
         private const val WAKE_LOCK_TIME_OUT = 5_000L
         private const val WAKE_LOCK_TAG = "MyApp:WakeLockTag"
     }
-
-
 }
