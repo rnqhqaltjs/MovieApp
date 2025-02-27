@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.same.alarm.main.component.MainBottomBar
+import com.same.alarm.main.component.MainNavHost
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

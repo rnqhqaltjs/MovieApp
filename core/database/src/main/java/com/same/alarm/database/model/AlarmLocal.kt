@@ -5,11 +5,13 @@ import androidx.room.PrimaryKey
 import java.time.DayOfWeek
 import java.time.LocalTime
 
-@Entity(tableName = "alarm_table")
+@Entity(tableName = "alarms")
 data class AlarmLocal (
     @PrimaryKey(autoGenerate = false)
-    val id: String,
+    val id: Long,
     val time: LocalTime,
-    val title: String,
-    val daysOfWeek: Set<DayOfWeek>
+    val statusMessage: String,
+    val daysOfWeek: Set<DayOfWeek>,
+    val category: String,
+    val isRepeating: Boolean
 )

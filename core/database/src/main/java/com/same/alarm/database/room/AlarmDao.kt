@@ -3,10 +3,15 @@ package com.same.alarm.database.room
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.same.alarm.database.model.AlarmLocal
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlarmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlarm(alarmEntity: AlarmLocal)
+    suspend fun insertAlarm(alarmLocal: AlarmLocal)
+
+    @Query("SELECT * FROM alarms")
+    fun getAllAlarms(): Flow<List<AlarmLocal>>
 }

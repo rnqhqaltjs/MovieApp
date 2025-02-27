@@ -14,7 +14,7 @@ internal class AndroidApplicationCommonConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 compileSdk = 35
                 with(defaultConfig) {
-                    minSdk = 21
+                    minSdk = 26
                     targetSdk = 34
                     vectorDrawables {
                         useSupportLibrary = true

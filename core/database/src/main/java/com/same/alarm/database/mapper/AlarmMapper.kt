@@ -9,8 +9,10 @@ object AlarmMapper {
         return AlarmEntity(
             id = this.id,
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating
         )
     }
 
@@ -18,8 +20,10 @@ object AlarmMapper {
         return AlarmLocal(
             id = this.id,
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating
         )
     }
 }

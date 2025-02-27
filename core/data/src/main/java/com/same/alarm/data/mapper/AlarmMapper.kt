@@ -7,19 +7,23 @@ object AlarmMapper {
 
     fun AlarmEntity.toDomain(): Alarm {
         return Alarm(
-            id = this.id,
+            id = this.id.toInt(),
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating
         )
     }
 
     fun Alarm.toEntity(): AlarmEntity {
         return AlarmEntity(
-            id = this.id,
+            id = this.id.toLong(),
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating
         )
     }
 }

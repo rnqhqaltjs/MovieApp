@@ -1,7 +1,5 @@
 package com.same.alarm.setup.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -19,15 +17,15 @@ fun NavController.navigateToRepeatSetup(navOptions: NavOptions? = null) {
     navigate(Route.RepeatSetup, navOptions = navOptions)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.setupScreen(
+    onConfirmClick: (List<String>) -> Unit,
     onRepeatClick: () -> Unit
 ) {
-    composable<MainTabRoute.Setup> {
+    composable<MainTabRoute.Setup> { navBackStackEntry ->
         SetupRoute(onRepeatClick = onRepeatClick)
     }
 
     composable<Route.RepeatSetup> { navBackStackEntry ->
-        RepeatSetupRoute()
+        RepeatSetupRoute(onConfirmClick = onConfirmClick)
     }
 }

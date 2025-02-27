@@ -1,8 +1,5 @@
 package com.same.alarm.setup.component
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,11 +24,11 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TimeWheelPicker(
     onTimeSelected: (LocalTime) -> Unit
@@ -87,8 +84,6 @@ fun TimeWheelPicker(
 
     LaunchedEffect(selectedTime) {
         onTimeSelected(selectedTime)
-
-        Log.d("okay", selectedTime.toString())
     }
 
     amPmListState.SnapToNearestItem()
@@ -130,7 +125,7 @@ fun TimeWheelPicker(
                 flingBehavior = rememberSnapFlingBehavior(amPmListState),
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .height(204.dp)
             ) {
                 items(2) { index ->
                     val displayAmPm = if (index == 0) "오전" else "오후"
@@ -157,7 +152,7 @@ fun TimeWheelPicker(
                 flingBehavior = maxScrollSpeedFlingBehavior(),
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .height(204.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayHour = (index % hourSize) + 1
@@ -184,7 +179,7 @@ fun TimeWheelPicker(
                 flingBehavior = maxScrollSpeedFlingBehavior(),
                 modifier = Modifier
                     .weight(1f)
-                    .height(200.dp)
+                    .height(204.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayMinute = index % minuteSize
@@ -215,4 +210,10 @@ fun LazyListState.SnapToNearestItem() {
             animateScrollToItem(firstVisibleItemIndex)
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TimeWheelPickerPreview() {
+    TimeWheelPicker {  }
 }

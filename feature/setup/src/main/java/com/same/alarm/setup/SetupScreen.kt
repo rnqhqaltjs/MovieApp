@@ -1,7 +1,5 @@
 package com.same.alarm.setup
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +39,6 @@ import java.time.LocalTime
 import java.time.format.TextStyle
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupRoute(
     setUpViewModel: SetUpViewModel = hiltViewModel(),
@@ -49,12 +46,11 @@ fun SetupRoute(
 ) {
     SetupScreen(
         onRepeatClick = onRepeatClick,
-        onAddAlarm = { alarm -> setUpViewModel.addAlarm(alarm) }
+        onAddAlarm = setUpViewModel::addAlarm
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupScreen(
     onRepeatClick: () -> Unit,
@@ -123,6 +119,10 @@ fun SetupScreen(
             )
         }
 
+        val categories = listOf("일반", "중요", "기타")
+        var selectedCategory by remember { mutableStateOf(categories[0]) }
+        var isDropDownMenuExpanded by remember { mutableStateOf(false) }
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -134,10 +134,6 @@ fun SetupScreen(
                 fontSize = 18.sp,
                 modifier = Modifier.weight(1f)
             )
-
-            val categories = listOf("일반", "중요", "기타")
-            var selectedCategory by remember { mutableStateOf(categories[0]) }
-            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
 
             ExposedDropdownMenuBox(
                 expanded = isDropDownMenuExpanded,
@@ -186,7 +182,16 @@ fun SetupScreen(
 
         Button(
             onClick = {
-                onAddAlarm(Alarm("0", time, "테스트", emptySet()))
+                onAddAlarm(
+                    Alarm(
+                        0,
+                        time,
+                        statusMessage,
+                        emptySet(),
+                        selectedCategory,
+                        isAlarmRepeated
+                    )
+                )
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -195,7 +200,6 @@ fun SetupScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun SetupScreenPreview() {
