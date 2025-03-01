@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,25 +32,28 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun RepeatSetupRoute(
-    onConfirmClick: (List<String>) -> Unit,
-    repeatSetupViewModel: RepeatSetupViewModel = hiltViewModel()
+    repeatSetupViewModel: RepeatSetupViewModel = hiltViewModel(),
+    onConfirmClick: (List<Int>) -> Unit,
+    restoredSelectedDays: List<Int>
 ) {
+    LaunchedEffect(restoredSelectedDays) {
+        repeatSetupViewModel.setSelectedDays(restoredSelectedDays)
+    }
+
     val selectedDays by repeatSetupViewModel.selectedDays.collectAsStateWithLifecycle()
 
     RepeatSetupScreen(
         onConfirmClick = onConfirmClick,
         selectedDays = selectedDays,
-        onDaySelected = repeatSetupViewModel::toggleDay,
-        clearSelectedDays = repeatSetupViewModel::clearSelectedDays
+        onDaySelected = repeatSetupViewModel::toggleDay
     )
 }
 
 @Composable
 fun RepeatSetupScreen(
-    onConfirmClick: (List<String>) -> Unit,
-    selectedDays: List<String>,
-    onDaySelected: (String) -> Unit,
-    clearSelectedDays: () -> Unit
+    onConfirmClick: (List<Int>) -> Unit,
+    selectedDays: List<Int>,
+    onDaySelected: (Int) -> Unit
 ) {
     var isRepeatEnabled by remember { mutableStateOf(true) }
     val days = listOf("월", "화", "수", "목", "금", "토", "일")
@@ -71,7 +75,7 @@ fun RepeatSetupScreen(
                 onCheckedChange = { isChecked ->
                     isRepeatEnabled = isChecked
                     if (!isChecked) {
-                        clearSelectedDays()
+                        onConfirmClick(emptyList())
                     }
                 }
             )
@@ -83,8 +87,8 @@ fun RepeatSetupScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            days.forEach { day ->
-                val isSelected = day in selectedDays
+            days.forEachIndexed { index, day ->
+                val isSelected = index in selectedDays
 
                 Text(
                     text = day,
@@ -93,9 +97,7 @@ fun RepeatSetupScreen(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .background(if (isSelected) Color.Blue else Color.LightGray)
-                        .clickable {
-                            if (isRepeatEnabled) onDaySelected(day)
-                        }
+                        .clickable { onDaySelected(index) }
                         .padding(8.dp)
                 )
             }
@@ -117,8 +119,7 @@ fun RepeatSetupScreen(
 fun RepeatSetupScreenPreview() {
     RepeatSetupScreen(
         onConfirmClick = {},
-        selectedDays = listOf("월", "수", "금"),
-        onDaySelected = {},
-        clearSelectedDays = {}
+        selectedDays = listOf(0, 2, 4),
+        onDaySelected = {}
     )
 }

@@ -1,4 +1,4 @@
-package com.same.alarm
+package com.same.alarm.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -41,7 +41,7 @@ class AlarmHelperImpl @Inject constructor(
             alarm.daysOfWeek.forEach { dayOfWeek ->
                 val intent = Intent(context, AlarmReceiver::class.java)
 
-                val uniqueRequestId = alarm.id * 10 + dayOfWeek.ordinal
+                val uniqueRequestId = alarm.id * 10 + dayOfWeek
 
                 val pendingIntent = PendingIntent.getBroadcast(
                     context, uniqueRequestId, intent, PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
@@ -70,14 +70,14 @@ class AlarmHelperImpl @Inject constructor(
 
     private fun setDayOfWeekRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
-            val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek.ordinal)
+            val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek)
 
             val intent = Intent(context, AlarmReceiver::class.java).apply {
                 action = AlarmReceiver.ACTION_NAME
                 putExtra(AlarmReceiver.BUNDLE_KEY_ALARM_ID, alarm.id)
             }
 
-            val uniqueRequestId = alarm.id * 10 + dayOfWeek.ordinal
+            val uniqueRequestId = alarm.id * 10 + dayOfWeek
 
             val pendingIntent = PendingIntent.getBroadcast(
                 context, uniqueRequestId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

@@ -44,8 +44,8 @@ internal class MainNavigator(
         }
     }
 
-    fun navigateToRepeatSetup() {
-        navController.navigateToRepeatSetup()
+    fun navigateToRepeatSetup(days: List<Int>) {
+        navController.navigateToRepeatSetup(days)
     }
 
     private fun popBackStack() {
@@ -56,6 +56,10 @@ internal class MainNavigator(
         if (!isSameCurrentDestination<MainTabRoute.Setup>()) {
             popBackStack()
         }
+    }
+
+    fun setDaysResult(days: List<Int>) {
+        navController.previousBackStackEntry?.savedStateHandle?.set("days", days)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean {
@@ -74,3 +78,4 @@ internal fun rememberMainNavigator(
 ): MainNavigator = remember(navController) {
     MainNavigator(navController)
 }
+

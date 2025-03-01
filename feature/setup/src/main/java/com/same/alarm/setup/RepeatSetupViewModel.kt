@@ -11,21 +11,20 @@ import javax.inject.Inject
 @HiltViewModel
 class RepeatSetupViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _selectedDays = MutableStateFlow<List<String>>(emptyList())
-    val selectedDays: StateFlow<List<String>> = _selectedDays.asStateFlow()
+    private val _selectedDays = MutableStateFlow<List<Int>>(emptyList())
+    val selectedDays: StateFlow<List<Int>> = _selectedDays.asStateFlow()
 
-    fun toggleDay(day: String) {
+    fun setSelectedDays(initialSelectedDays: List<Int>) {
+        _selectedDays.value = initialSelectedDays
+    }
+
+    fun toggleDay(day: Int) {
         _selectedDays.update { currentDays ->
-            val days = listOf("월", "화", "수", "목", "금", "토", "일")
             if (day in currentDays) {
                 currentDays - day
             } else {
-                (currentDays + day).sortedBy { days.indexOf(it) }
+                (currentDays + day).sorted()
             }
         }
-    }
-
-    fun clearSelectedDays() {
-        _selectedDays.value = emptyList()
     }
 }

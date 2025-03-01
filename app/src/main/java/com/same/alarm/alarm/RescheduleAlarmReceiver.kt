@@ -1,4 +1,4 @@
-package com.same.alarm
+package com.same.alarm.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context

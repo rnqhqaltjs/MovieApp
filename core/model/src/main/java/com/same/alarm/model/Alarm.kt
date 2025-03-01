@@ -1,6 +1,5 @@
 package com.same.alarm.model
 
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -10,7 +9,7 @@ data class Alarm(
     val id: Int,
     val time: LocalTime,
     val statusMessage: String,
-    val daysOfWeek: Set<DayOfWeek>,
+    val daysOfWeek: List<Int>,
     val category: String,
     val isRepeating: Boolean
 ) {

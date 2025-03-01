@@ -1,4 +1,4 @@
-package com.same.alarm
+package com.same.alarm.alarm
 
 class AlarmConstants {
     companion object {

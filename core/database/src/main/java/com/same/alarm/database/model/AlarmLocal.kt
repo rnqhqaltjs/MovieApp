@@ -2,7 +2,6 @@ package com.same.alarm.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @Entity(tableName = "alarms")
@@ -11,7 +10,7 @@ data class AlarmLocal (
     val id: Long,
     val time: LocalTime,
     val statusMessage: String,
-    val daysOfWeek: Set<DayOfWeek>,
+    val daysOfWeek: List<Int>,
     val category: String,
     val isRepeating: Boolean
 )

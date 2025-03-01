@@ -13,17 +13,20 @@ internal fun MainNavHost(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
     padding: PaddingValues,
-)  {
+) {
     NavHost(
         modifier = modifier,
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
         setupScreen(
-            onConfirmClick = { navigator.popBackStackIfNotSetup() },
-            onRepeatClick = {
-                navigator.navigateToRepeatSetup()
-            }
+            onConfirmClick = { days ->
+                navigator.setDaysResult(days)
+                navigator.popBackStackIfNotSetup()
+            },
+            onRepeatClick = { days ->
+                navigator.navigateToRepeatSetup(days)
+            },
         )
         calendarScreen()
     }
