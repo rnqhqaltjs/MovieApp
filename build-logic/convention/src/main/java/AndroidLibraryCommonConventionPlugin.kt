@@ -15,7 +15,7 @@ internal class AndroidLibraryCommonConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 compileSdk = 35
                 with(defaultConfig) {
-                    minSdk = 21
+                    minSdk = 26
                     consumerProguardFiles("consumer-rules.pro")
                 }
                 with(compileOptions) {

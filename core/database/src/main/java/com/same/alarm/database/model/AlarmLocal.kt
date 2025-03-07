@@ -2,14 +2,16 @@ package com.same.alarm.database.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.DayOfWeek
 import java.time.LocalTime
 
-@Entity(tableName = "alarm_table")
+@Entity(tableName = "alarms")
 data class AlarmLocal (
-    @PrimaryKey(autoGenerate = false)
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
     val time: LocalTime,
-    val title: String,
-    val daysOfWeek: Set<DayOfWeek>
+    val statusMessage: String,
+    val daysOfWeek: List<Int>,
+    val category: String,
+    val isRepeating: Boolean,
+    val isActive: Boolean
 )

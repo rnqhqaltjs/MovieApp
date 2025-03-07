@@ -1,11 +1,13 @@
 package com.same.alarm.data.model
 
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 data class AlarmEntity (
-    val id: String,
+    val id: Long,
     val time: LocalTime,
-    val title: String,
-    val daysOfWeek: Set<DayOfWeek>
+    val statusMessage: String,
+    val daysOfWeek: List<Int>,
+    val category: String,
+    val isRepeating: Boolean,
+    val isActive: Boolean
 )

@@ -4,13 +4,15 @@ import com.same.alarm.data.model.AlarmEntity
 import com.same.alarm.database.model.AlarmLocal
 
 object AlarmMapper {
-
     fun AlarmLocal.toEntity(): AlarmEntity {
         return AlarmEntity(
             id = this.id,
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating,
+            isActive = this.isActive
         )
     }
 
@@ -18,8 +20,11 @@ object AlarmMapper {
         return AlarmLocal(
             id = this.id,
             time = this.time,
-            title = this.title,
-            daysOfWeek = this.daysOfWeek
+            statusMessage = this.statusMessage,
+            daysOfWeek = this.daysOfWeek,
+            category = this.category,
+            isRepeating = this.isRepeating,
+            isActive = this.isActive
         )
     }
 }

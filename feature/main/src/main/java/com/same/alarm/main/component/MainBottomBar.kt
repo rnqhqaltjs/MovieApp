@@ -1,4 +1,4 @@
-package com.same.alarm.main
+package com.same.alarm.main.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.same.alarm.designsystem.theme.AlarmAppTheme
+import com.same.alarm.main.MainTab
 
 @Composable
 internal fun MainBottomBar(

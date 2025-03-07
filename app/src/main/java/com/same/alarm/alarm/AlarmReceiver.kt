@@ -1,11 +1,10 @@
-package com.same.alarm
+package com.same.alarm.alarm
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.view.WindowManager
-import com.same.alarm.alarm.AlarmActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 

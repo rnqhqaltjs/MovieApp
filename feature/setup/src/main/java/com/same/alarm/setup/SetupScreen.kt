@@ -1,26 +1,15 @@
 package com.same.alarm.setup
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.Switch
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,99 +17,88 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.model.Alarm
+import com.same.alarm.setup.component.CategoryDropdown
+import com.same.alarm.setup.component.ConfirmButton
+import com.same.alarm.setup.component.RepeatSwitchLabel
+import com.same.alarm.setup.component.StatusMessageInput
 import com.same.alarm.setup.component.TimeWheelPicker
-import java.time.LocalDate
+import com.same.alarm.setup.component.TodayDateText
 import java.time.LocalTime
-import java.time.format.TextStyle
-import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupRoute(
-    setUpViewModel: SetUpViewModel = hiltViewModel(),
-    onRepeatClick: () -> Unit
+    setupViewModel: SetupViewModel = hiltViewModel()
 ) {
+    val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
+
     SetupScreen(
-        onRepeatClick = onRepeatClick,
-        onAddAlarm = { alarm -> setUpViewModel.addAlarm(alarm) }
+        onAddAlarm = setupViewModel::addAlarm,
+        selectedDays = selectedDays,
+        onDaySelected = setupViewModel::toggleDay
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupScreen(
-    onRepeatClick: () -> Unit,
-    onAddAlarm: (Alarm) -> Unit
+    onAddAlarm: (Alarm) -> Unit,
+    selectedDays: List<Int>,
+    onDaySelected: (Int) -> Unit
 ) {
-    val today = LocalDate.now()
-    val dayOfWeek = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
-    val month = today.monthValue
-    val day = today.dayOfMonth
-
     var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
 
     var isAlarmRepeated by remember { mutableStateOf(true) }
-    var isDayOfWeekRepeated by remember { mutableStateOf(false) }
+
+    val categories = listOf("일반", "중요", "기타")
+    var selectedCategory by remember { mutableStateOf(categories[0]) }
+    var statusMessage by remember { mutableStateOf("") }
+
+    val days = listOf("월", "화", "수", "목", "금", "토", "일")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.statusBarsPadding()
     ) {
-        Text(
-            text = "${month}월 ${day}일 $dayOfWeek",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
-        )
+        TodayDateText()
 
         TimeWheelPicker { selectedTime ->
             time = selectedTime
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "알람 반복",
-                fontSize = 18.sp,
-                modifier = Modifier.weight(1f)
-            )
-            Switch(
-                checked = isAlarmRepeated,
-                onCheckedChange = { isAlarmRepeated = it }
-            )
-        }
+        RepeatSwitchLabel(
+            label = "알람 반복",
+            isChecked = isAlarmRepeated,
+            onCheckedChange = { isAlarmRepeated = it }
+        )
 
         Row(
-            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = "요일 반복",
-                fontSize = 18.sp,
-                modifier = Modifier.weight(1f)
-            )
-            Switch(
-                checked = isDayOfWeekRepeated,
-                onCheckedChange = { isChecked ->
-                    isDayOfWeekRepeated = isChecked
-                    if (isChecked) onRepeatClick()
-                }
-            )
+            days.forEachIndexed { index, day ->
+                val isSelected = index in selectedDays
+
+                Text(
+                    text = day,
+                    fontSize = 16.sp,
+                    color = if (isSelected) Color.White else Color.Black,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(if (isSelected) Color.Blue else Color.LightGray)
+                        .clickable { onDaySelected(index) }
+                        .padding(8.dp)
+                )
+            }
         }
 
         Row(
@@ -135,69 +113,38 @@ fun SetupScreen(
                 modifier = Modifier.weight(1f)
             )
 
-            val categories = listOf("일반", "중요", "기타")
-            var selectedCategory by remember { mutableStateOf(categories[0]) }
-            var isDropDownMenuExpanded by remember { mutableStateOf(false) }
-
-            ExposedDropdownMenuBox(
-                expanded = isDropDownMenuExpanded,
-                onExpandedChange = { isDropDownMenuExpanded = it }
-            ) {
-                ExposedDropdownMenu(
-                    expanded = isDropDownMenuExpanded,
-                    onDismissRequest = { isDropDownMenuExpanded = false }
-                ) {
-                    categories.forEach { category ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = category)
-                            },
-                            onClick = {
-                                selectedCategory = category
-                                isDropDownMenuExpanded = false
-                            }
-                        )
-                    }
-                }
-
-                TextField(
-                    value = selectedCategory,
-                    onValueChange = {},
-                    readOnly = true,
-                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                    trailingIcon = {
-                        Icon(Icons.Filled.ArrowDropDown, contentDescription = "드롭다운 열기")
-                    }
-                )
-            }
+            CategoryDropdown(
+                categories = categories,
+                selectedCategory = selectedCategory,
+                onCategorySelected = { selectedCategory = it }
+            )
         }
 
-        var statusMessage by remember { mutableStateOf("") }
-
-        BasicTextField(
-            value = statusMessage,
-            onValueChange = { statusMessage = it },
-            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, Color.Gray)
-                .padding(8.dp)
+        StatusMessageInput(
+            statusMessage = statusMessage,
+            onStatusMessageChange = { statusMessage = it }
         )
 
-        Button(
-            onClick = {
-                onAddAlarm(Alarm("0", time, "테스트", emptySet()))
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "확인")
+        ConfirmButton {
+            onAddAlarm(
+                Alarm(
+                    time = time,
+                    statusMessage = statusMessage,
+                    daysOfWeek = selectedDays,
+                    category = selectedCategory,
+                    isRepeating = isAlarmRepeated,
+                )
+            )
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun SetupScreenPreview() {
-    SetupScreen(onRepeatClick = {}, onAddAlarm = {})
+    SetupScreen(
+        onAddAlarm = {},
+        selectedDays = emptyList(),
+        onDaySelected = {}
+    )
 }
