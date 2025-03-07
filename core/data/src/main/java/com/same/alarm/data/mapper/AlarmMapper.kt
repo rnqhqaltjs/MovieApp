@@ -4,7 +4,6 @@ import com.same.alarm.data.model.AlarmEntity
 import com.same.alarm.model.Alarm
 
 object AlarmMapper {
-
     fun AlarmEntity.toDomain(): Alarm {
         return Alarm(
             id = this.id.toInt(),
@@ -12,7 +11,8 @@ object AlarmMapper {
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,
             category = this.category,
-            isRepeating = this.isRepeating
+            isRepeating = this.isRepeating,
+            isActive = this.isActive
         )
     }
 
@@ -23,7 +23,8 @@ object AlarmMapper {
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,
             category = this.category,
-            isRepeating = this.isRepeating
+            isRepeating = this.isRepeating,
+            isActive = this.isActive
         )
     }
 }

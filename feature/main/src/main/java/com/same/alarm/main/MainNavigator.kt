@@ -12,7 +12,6 @@ import androidx.navigation.navOptions
 import com.same.alarm.calendar.navigation.navigateToCalendar
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
-import com.same.alarm.setup.navigation.navigateToRepeatSetup
 import com.same.alarm.setup.navigation.navigateToSetup
 
 internal class MainNavigator(
@@ -44,10 +43,6 @@ internal class MainNavigator(
         }
     }
 
-    fun navigateToRepeatSetup(days: List<Int>) {
-        navController.navigateToRepeatSetup(days)
-    }
-
     private fun popBackStack() {
         navController.popBackStack()
     }
@@ -56,10 +51,6 @@ internal class MainNavigator(
         if (!isSameCurrentDestination<MainTabRoute.Setup>()) {
             popBackStack()
         }
-    }
-
-    fun setDaysResult(days: List<Int>) {
-        navController.previousBackStackEntry?.savedStateHandle?.set("days", days)
     }
 
     private inline fun <reified T : Route> isSameCurrentDestination(): Boolean {

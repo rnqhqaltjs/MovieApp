@@ -19,15 +19,7 @@ internal fun MainNavHost(
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
-        setupScreen(
-            onConfirmClick = { days ->
-                navigator.setDaysResult(days)
-                navigator.popBackStackIfNotSetup()
-            },
-            onRepeatClick = { days ->
-                navigator.navigateToRepeatSetup(days)
-            },
-        )
+        setupScreen()
         calendarScreen()
     }
 }

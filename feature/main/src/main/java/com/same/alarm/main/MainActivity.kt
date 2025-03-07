@@ -10,7 +10,6 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.same.alarm.designsystem.theme.AlarmAppTheme
@@ -23,7 +22,6 @@ class MainActivity : ComponentActivity() {
     private val REQUEST_CODE_USE_EXACT_ALARM = 1002
     private val REQUEST_CODE_OVERLAY_PERMISSION = 1003
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

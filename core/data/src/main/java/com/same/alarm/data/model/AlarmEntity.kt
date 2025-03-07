@@ -8,5 +8,6 @@ data class AlarmEntity (
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,
-    val isRepeating: Boolean
+    val isRepeating: Boolean,
+    val isActive: Boolean
 )

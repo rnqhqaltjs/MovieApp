@@ -6,12 +6,13 @@ import java.time.LocalTime
 import java.time.ZoneId
 
 data class Alarm(
-    val id: Int,
+    val id: Int = 0,
     val time: LocalTime,
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,
-    val isRepeating: Boolean
+    val isRepeating: Boolean,
+    val isActive: Boolean = true
 ) {
     private fun getAlarmFirstTrigger(
         dayOfWeek: Int? = null,

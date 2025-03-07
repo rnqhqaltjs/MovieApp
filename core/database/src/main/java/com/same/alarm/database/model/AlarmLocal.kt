@@ -6,11 +6,12 @@ import java.time.LocalTime
 
 @Entity(tableName = "alarms")
 data class AlarmLocal (
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     val id: Long,
     val time: LocalTime,
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,
-    val isRepeating: Boolean
+    val isRepeating: Boolean,
+    val isActive: Boolean
 )

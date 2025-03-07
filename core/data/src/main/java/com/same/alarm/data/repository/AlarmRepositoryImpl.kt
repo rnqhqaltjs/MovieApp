@@ -16,8 +16,8 @@ class AlarmRepositoryImpl @Inject constructor(
 ) : AlarmRepository {
 
     override suspend fun addAlarm(alarm: Alarm) {
-        alarmHelper.scheduleAlarm(alarm)
-//        return alarmDataSource.addAlarm(alarm.toEntity())
+//        alarmHelper.scheduleAlarm(alarm)
+        return alarmDataSource.addAlarm(alarm.toEntity())
     }
 
     override fun getAllAlarms(): Flow<List<Alarm>> {
