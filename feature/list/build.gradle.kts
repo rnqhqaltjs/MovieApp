@@ -6,16 +6,14 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.main"
+    namespace = "com.same.alarm.list"
     kotlinOptions {
         jvmTarget = "21"
     }
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(project(":feature:setup"))
-    implementation(project(":feature:calendar"))
-    implementation(project(":feature:list"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:model"))
 }

@@ -35,14 +35,16 @@ import java.time.LocalTime
 
 @Composable
 fun SetupRoute(
-    setupViewModel: SetupViewModel = hiltViewModel()
+    setupViewModel: SetupViewModel = hiltViewModel(),
+    onShowSnackBar: (String) -> Unit,
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
 
     SetupScreen(
         onAddAlarm = setupViewModel::addAlarm,
         selectedDays = selectedDays,
-        onDaySelected = setupViewModel::toggleDay
+        onDaySelected = setupViewModel::toggleDay,
+        onShowSnackBar = onShowSnackBar
     )
 }
 
@@ -50,7 +52,8 @@ fun SetupRoute(
 fun SetupScreen(
     onAddAlarm: (Alarm) -> Unit,
     selectedDays: List<Int>,
-    onDaySelected: (Int) -> Unit
+    onDaySelected: (Int) -> Unit,
+    onShowSnackBar: (String) -> Unit,
 ) {
     var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
 
@@ -135,6 +138,7 @@ fun SetupScreen(
                     isRepeating = isAlarmRepeated,
                 )
             )
+            onShowSnackBar("추가 성공")
         }
     }
 }
@@ -145,6 +149,7 @@ fun SetupScreenPreview() {
     SetupScreen(
         onAddAlarm = {},
         selectedDays = emptyList(),
-        onDaySelected = {}
+        onDaySelected = {},
+        onShowSnackBar = {}
     )
 }

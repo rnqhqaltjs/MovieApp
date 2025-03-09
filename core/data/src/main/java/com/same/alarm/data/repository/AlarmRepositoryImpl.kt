@@ -26,4 +26,8 @@ class AlarmRepositoryImpl @Inject constructor(
                 it.map { alarmEntity -> alarmEntity.toDomain() }
             }
     }
+
+    override suspend fun removeAlarm(alarm: Alarm) {
+        return alarmDataSource.removeAlarm(alarm.toEntity())
+    }
 }

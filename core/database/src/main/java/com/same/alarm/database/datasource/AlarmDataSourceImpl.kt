@@ -23,4 +23,8 @@ class AlarmDataSourceImpl @Inject constructor(
                 it.map { alarmLocal -> alarmLocal.toEntity() }
             }
     }
+
+    override suspend fun removeAlarm(alarmEntity: AlarmEntity) {
+        return alarmDao.deleteAlarm(alarmEntity.toLocal())
+    }
 }

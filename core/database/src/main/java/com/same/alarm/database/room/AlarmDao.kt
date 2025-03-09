@@ -1,6 +1,7 @@
 package com.same.alarm.database.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,4 +15,7 @@ interface AlarmDao {
 
     @Query("SELECT * FROM alarms")
     fun getAllAlarms(): Flow<List<AlarmLocal>>
+
+    @Delete
+    suspend fun deleteAlarm(alarmLocal: AlarmLocal)
 }
