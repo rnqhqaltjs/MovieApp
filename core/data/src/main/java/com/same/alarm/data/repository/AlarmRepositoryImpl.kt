@@ -1,7 +1,6 @@
 package com.same.alarm.data.repository
 
 import com.same.alarm.data.datasource.AlarmDataSource
-import com.same.alarm.data.datasource.AlarmHelper
 import com.same.alarm.data.mapper.AlarmMapper.toDomain
 import com.same.alarm.data.mapper.AlarmMapper.toEntity
 import com.same.alarm.domain.repository.AlarmRepository
@@ -12,12 +11,10 @@ import javax.inject.Inject
 
 class AlarmRepositoryImpl @Inject constructor(
     private val alarmDataSource: AlarmDataSource,
-    private val alarmHelper: AlarmHelper
 ) : AlarmRepository {
 
-    override suspend fun addAlarm(alarm: Alarm) {
-//        alarmHelper.scheduleAlarm(alarm)
-        return alarmDataSource.addAlarm(alarm.toEntity())
+    override suspend fun addAlarm(alarm: Alarm): Int {
+        return alarmDataSource.addAlarm(alarm.toEntity()).toInt()
     }
 
     override fun getAllAlarms(): Flow<List<Alarm>> {
@@ -29,5 +26,9 @@ class AlarmRepositoryImpl @Inject constructor(
 
     override suspend fun removeAlarm(alarm: Alarm) {
         return alarmDataSource.removeAlarm(alarm.toEntity())
+    }
+
+    override suspend fun updateAlarm(alarm: Alarm) {
+        return alarmDataSource.updateAlarm(alarm.toEntity())
     }
 }

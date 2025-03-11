@@ -1,6 +1,5 @@
 package com.same.alarm.list
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
@@ -46,14 +44,16 @@ fun ListRoute(
 
     ListScreen(
         alarmList = alarmList,
-        onRemoveAlarm = listViewModel::removeAlarm
+        onRemoveAlarm = listViewModel::removeAlarm,
+        onUpdateAlarm = listViewModel::updateAlarm
     )
 }
 
 @Composable
 fun ListScreen(
     alarmList: List<Alarm>,
-    onRemoveAlarm: (Alarm) -> Unit
+    onRemoveAlarm: (Alarm) -> Unit,
+    onUpdateAlarm: (Alarm) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -102,7 +102,10 @@ fun ListScreen(
                         )
                     },
                 ) {
-                    AlarmItem(alarm)
+                    AlarmItem(
+                        alarm = alarm,
+                        onUpdateAlarm = onUpdateAlarm
+                    )
                 }
             }
         }
@@ -111,7 +114,8 @@ fun ListScreen(
 
 @Composable
 fun AlarmItem(
-    alarm: Alarm
+    alarm: Alarm,
+    onUpdateAlarm: (Alarm) -> Unit
 ) {
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
 
@@ -153,7 +157,9 @@ fun AlarmItem(
 
         Switch(
             checked = alarm.isActive,
-            onCheckedChange = { /* 스위치 상태 변경 시 처리할 로직 */ },
+            onCheckedChange = { isChecked ->
+                onUpdateAlarm(alarm.copy(isActive = isChecked))
+            },
             modifier = Modifier.padding(start = 8.dp)
         )
     }

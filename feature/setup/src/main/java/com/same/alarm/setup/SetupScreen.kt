@@ -67,7 +67,7 @@ fun SetupScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = Modifier.statusBarsPadding()
     ) {
         TodayDateText()
@@ -80,6 +80,12 @@ fun SetupScreen(
             label = "알람 반복",
             isChecked = isAlarmRepeated,
             onCheckedChange = { isAlarmRepeated = it }
+        )
+
+        Text(
+            text = "요일 반복",
+            fontSize = 18.sp,
+            modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
         )
 
         Row(

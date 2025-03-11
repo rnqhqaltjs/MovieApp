@@ -7,10 +7,20 @@ import javax.inject.Inject
 
 class AlarmDataSourceImpl @Inject constructor(
 ): AlarmDataSource {
-    override suspend fun addAlarm(alarmEntity: AlarmEntity) {
+    override suspend fun addAlarm(alarmEntity: AlarmEntity): Long {
+        return 0L
+    }
+
+    override suspend fun removeAlarm(alarmEntity: AlarmEntity) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateAlarm(alarmEntity: AlarmEntity) {
+        TODO("Not yet implemented")
     }
 
     override fun getAllAlarms(): Flow<List<AlarmEntity>> {
         TODO("Not yet implemented")
     }
+
 }

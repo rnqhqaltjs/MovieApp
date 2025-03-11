@@ -11,6 +11,10 @@ class DayOfWeekConverter {
 
     @TypeConverter
     fun toDayOfWeekList(data: String): List<Int> {
-        return data.split(",").map { it.toInt() }
+        return if (data.isEmpty()) {
+            emptyList()
+        } else {
+            data.split(",").map { it.toInt() }
+        }
     }
 }
