@@ -12,6 +12,7 @@ import com.same.alarm.setup.navigation.setupScreen
 internal fun MainNavHost(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
+    onShowSnackBar: (String) -> Unit,
     padding: PaddingValues,
 ) {
     NavHost(
@@ -19,7 +20,9 @@ internal fun MainNavHost(
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
-        setupScreen()
+        setupScreen(
+            onShowSnackBar = onShowSnackBar
+        )
         calendarScreen()
     }
 }

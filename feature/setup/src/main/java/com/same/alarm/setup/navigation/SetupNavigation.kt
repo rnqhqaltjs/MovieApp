@@ -12,8 +12,9 @@ fun NavController.navigateToSetup(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.setupScreen(
+    onShowSnackBar: (String) -> Unit
 ) {
     composable<MainTabRoute.Setup> {
-        SetupRoute()
+        SetupRoute(onShowSnackBar = onShowSnackBar)
     }
 }

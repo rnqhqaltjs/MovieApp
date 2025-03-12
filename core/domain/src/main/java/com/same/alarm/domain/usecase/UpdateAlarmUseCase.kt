@@ -5,14 +5,18 @@ import com.same.alarm.domain.repository.AlarmRepository
 import com.same.alarm.model.Alarm
 import javax.inject.Inject
 
-class AddAlarmUseCase @Inject constructor(
+class UpdateAlarmUseCase @Inject constructor(
     private val alarmRepository: AlarmRepository,
     private val alarmHelper: AlarmHelper
 ) {
     suspend operator fun invoke(alarm: Alarm): Result<Unit> {
         return try {
-            val alarmId = alarmRepository.addAlarm(alarm)
-            alarmHelper.scheduleAlarm(alarm.copy(id = alarmId))
+            alarmRepository.updateAlarm(alarm)
+            if (alarm.isActive) {
+                alarmHelper.scheduleAlarm(alarm)
+            } else {
+                alarmHelper.unScheduleAlarm(alarm)
+            }
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

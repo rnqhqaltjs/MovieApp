@@ -13,8 +13,16 @@ class AlarmDataSourceImpl @Inject constructor(
     private val alarmDao: AlarmDao
 ): AlarmDataSource {
 
-    override suspend fun addAlarm(alarmEntity: AlarmEntity) {
+    override suspend fun addAlarm(alarmEntity: AlarmEntity): Long {
         return alarmDao.insertAlarm(alarmEntity.toLocal())
+    }
+
+    override suspend fun removeAlarm(alarmEntity: AlarmEntity) {
+        return alarmDao.deleteAlarm(alarmEntity.toLocal())
+    }
+
+    override suspend fun updateAlarm(alarmEntity: AlarmEntity) {
+        return alarmDao.updateAlarm(alarmEntity.toLocal())
     }
 
     override fun getAllAlarms(): Flow<List<AlarmEntity>> {

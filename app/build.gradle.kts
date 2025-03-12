@@ -28,7 +28,9 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:alarm"))
     implementation(project(":feature:calendar"))
-    
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.common)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

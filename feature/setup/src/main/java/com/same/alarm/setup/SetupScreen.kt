@@ -31,18 +31,23 @@ import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.component.StatusMessageInput
 import com.same.alarm.setup.component.TimeWheelPicker
 import com.same.alarm.setup.component.TodayDateText
+import java.time.DayOfWeek
 import java.time.LocalTime
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun SetupRoute(
-    setupViewModel: SetupViewModel = hiltViewModel()
+    setupViewModel: SetupViewModel = hiltViewModel(),
+    onShowSnackBar: (String) -> Unit,
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
 
     SetupScreen(
         onAddAlarm = setupViewModel::addAlarm,
         selectedDays = selectedDays,
-        onDaySelected = setupViewModel::toggleDay
+        onDaySelected = setupViewModel::toggleDay,
+        onShowSnackBar = onShowSnackBar
     )
 }
 
@@ -50,7 +55,8 @@ fun SetupRoute(
 fun SetupScreen(
     onAddAlarm: (Alarm) -> Unit,
     selectedDays: List<Int>,
-    onDaySelected: (Int) -> Unit
+    onDaySelected: (Int) -> Unit,
+    onShowSnackBar: (String) -> Unit,
 ) {
     var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
 
@@ -60,11 +66,11 @@ fun SetupScreen(
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var statusMessage by remember { mutableStateOf("") }
 
-    val days = listOf("월", "화", "수", "목", "금", "토", "일")
+    val days = DayOfWeek.entries.toTypedArray()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = Modifier.statusBarsPadding()
     ) {
         TodayDateText()
@@ -79,6 +85,12 @@ fun SetupScreen(
             onCheckedChange = { isAlarmRepeated = it }
         )
 
+        Text(
+            text = "요일 반복",
+            fontSize = 18.sp,
+            modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
+        )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,7 +101,7 @@ fun SetupScreen(
                 val isSelected = index in selectedDays
 
                 Text(
-                    text = day,
+                    text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
                     fontSize = 16.sp,
                     color = if (isSelected) Color.White else Color.Black,
                     modifier = Modifier
@@ -135,6 +147,7 @@ fun SetupScreen(
                     isRepeating = isAlarmRepeated,
                 )
             )
+            onShowSnackBar("추가 성공")
         }
     }
 }
@@ -145,6 +158,7 @@ fun SetupScreenPreview() {
     SetupScreen(
         onAddAlarm = {},
         selectedDays = emptyList(),
-        onDaySelected = {}
+        onDaySelected = {},
+        onShowSnackBar = {}
     )
 }

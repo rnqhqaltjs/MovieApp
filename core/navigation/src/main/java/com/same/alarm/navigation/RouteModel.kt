@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     @Serializable
-    data class RepeatSetup(val selectedDays: List<Int>) : Route
+    data object List : Route
 
 //    @Serializable
 //    data class SessionDetail(val sessionId: String) : Route

@@ -2,7 +2,7 @@ package com.same.alarm.di
 
 import android.content.Context
 import com.same.alarm.alarm.AlarmHelperImpl
-import com.same.alarm.data.datasource.AlarmHelper
+import com.same.alarm.domain.repository.AlarmHelper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
