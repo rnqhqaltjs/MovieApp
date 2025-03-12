@@ -31,7 +31,10 @@ import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.component.StatusMessageInput
 import com.same.alarm.setup.component.TimeWheelPicker
 import com.same.alarm.setup.component.TodayDateText
+import java.time.DayOfWeek
 import java.time.LocalTime
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun SetupRoute(
@@ -63,7 +66,7 @@ fun SetupScreen(
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var statusMessage by remember { mutableStateOf("") }
 
-    val days = listOf("월", "화", "수", "목", "금", "토", "일")
+    val days = DayOfWeek.entries.toTypedArray()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -98,7 +101,7 @@ fun SetupScreen(
                 val isSelected = index in selectedDays
 
                 Text(
-                    text = day,
+                    text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
                     fontSize = 16.sp,
                     color = if (isSelected) Color.White else Color.Black,
                     modifier = Modifier

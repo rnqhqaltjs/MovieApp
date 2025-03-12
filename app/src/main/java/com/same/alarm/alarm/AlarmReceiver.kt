@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.view.WindowManager
+import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
+import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TAG
+import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TIME_OUT
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -33,12 +36,5 @@ class AlarmReceiver : BroadcastReceiver() {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
         context.startActivity(alarmIntent)
-    }
-
-    companion object {
-        const val BUNDLE_KEY_ALARM_ID = "BUNDLE_KEY_ALARM_ID"
-        const val ACTION_NAME = "ADD_ALARM"
-        private const val WAKE_LOCK_TIME_OUT = 5_000L
-        private const val WAKE_LOCK_TAG = "MyApp:WakeLockTag"
     }
 }

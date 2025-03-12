@@ -6,9 +6,10 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
 import com.same.alarm.alarm.AlarmConstants.Companion.ALARM_INTERVAL_MILLS
-import com.same.alarm.alarm.AlarmReceiver.Companion.ACTION_NAME
-import com.same.alarm.alarm.AlarmReceiver.Companion.BUNDLE_KEY_ALARM_ID
+import com.same.alarm.alarm.AlarmConstants.Companion.BUNDLE_KEY_ALARM_ID
+import com.same.alarm.alarm.AlarmConstants.Companion.REPEAT_COUNT
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.model.Alarm
 import javax.inject.Inject
@@ -20,41 +21,19 @@ class AlarmHelperImpl @Inject constructor(
 
     override fun scheduleAlarm(alarm: Alarm) {
         when {
-            alarm.isRepeating && alarm.daysOfWeek.isNotEmpty() -> {
-                setDayOfWeekAndIntervalRepeatingAlarm(alarm)
-            }
-
-            alarm.isRepeating -> {
-                setIntervalRepeatingAlarm(alarm)
-            }
-
-            alarm.daysOfWeek.isNotEmpty() -> {
-                setDayOfWeekRepeatingAlarm(alarm)
-            }
-
-            else -> {
-                setNonRepeatingAlarm(alarm)
-            }
+            alarm.isRepeating && alarm.daysOfWeek.isNotEmpty() -> setDayOfWeekAndIntervalRepeatingAlarm(alarm)
+            alarm.isRepeating -> setIntervalRepeatingAlarm(alarm)
+            alarm.daysOfWeek.isNotEmpty() -> setDayOfWeekRepeatingAlarm(alarm)
+            else -> setNonRepeatingAlarm(alarm)
         }
     }
 
     override fun unScheduleAlarm(alarm: Alarm) {
         when {
-            alarm.isRepeating && alarm.daysOfWeek.isNotEmpty() -> {
-                unSetDayOfWeekAndIntervalRepeatingAlarm(alarm)
-            }
-
-            alarm.isRepeating -> {
-                unSetIntervalRepeatingAlarm(alarm)
-            }
-
-            alarm.daysOfWeek.isNotEmpty() -> {
-                unSetDayOfWeekRepeatingAlarm(alarm)
-            }
-
-            else -> {
-                unSetNonRepeatingAlarm(alarm)
-            }
+            alarm.isRepeating && alarm.daysOfWeek.isNotEmpty() -> unSetDayOfWeekAndIntervalRepeatingAlarm(alarm)
+            alarm.isRepeating -> unSetIntervalRepeatingAlarm(alarm)
+            alarm.daysOfWeek.isNotEmpty() -> unSetDayOfWeekRepeatingAlarm(alarm)
+            else -> unSetNonRepeatingAlarm(alarm)
         }
     }
 
@@ -79,7 +58,7 @@ class AlarmHelperImpl @Inject constructor(
             val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek)
             val pendingIntent = getPendingIntent(alarm.id, alarm.id * 10 + dayOfWeek)
 
-            alarmManager.setInexactRepeating(
+            alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 firstAlarmTriggerMillis,
                 AlarmConstants.WEEK_INTERVAL_MILLIS,
@@ -98,7 +77,7 @@ class AlarmHelperImpl @Inject constructor(
     }
 
     private fun setIntervalRepeatingAlarm(alarm: Alarm) {
-        repeat(5) { repeatCount ->
+        repeat(REPEAT_COUNT) { repeatCount ->
             val firstAlarmTriggerMillis =
                 alarm.getAlarmFirstTriggerMillis() + (repeatCount * ALARM_INTERVAL_MILLS)
             val pendingIntent = getPendingIntent(alarm.id, alarm.id * 100 + repeatCount)
@@ -111,7 +90,7 @@ class AlarmHelperImpl @Inject constructor(
     }
 
     private fun unSetIntervalRepeatingAlarm(alarm: Alarm) {
-        repeat(5) { repeatCount ->
+        repeat(REPEAT_COUNT) { repeatCount ->
             val pendingIntent = getPendingIntent(alarm.id, alarm.id * 100 + repeatCount)
 
             pendingIntent.cancel()
@@ -121,11 +100,11 @@ class AlarmHelperImpl @Inject constructor(
 
     private fun setDayOfWeekAndIntervalRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
-            repeat(5) { repeatCount ->
+            repeat(REPEAT_COUNT) { repeatCount ->
                 val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek) + (repeatCount * ALARM_INTERVAL_MILLS)
                 val pendingIntent = getPendingIntent(alarm.id, alarm.id * 1000 + dayOfWeek * 10 + repeatCount)
 
-                alarmManager.setInexactRepeating(
+                alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     firstAlarmTriggerMillis,
                     AlarmConstants.WEEK_INTERVAL_MILLIS,
@@ -137,7 +116,7 @@ class AlarmHelperImpl @Inject constructor(
 
     private fun unSetDayOfWeekAndIntervalRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
-            repeat(5) { repeatCount ->
+            repeat(REPEAT_COUNT) { repeatCount ->
                 val pendingIntent = getPendingIntent(alarm.id, alarm.id * 1000 + dayOfWeek * 10 + repeatCount)
 
                 pendingIntent.cancel()
