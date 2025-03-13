@@ -18,7 +18,7 @@ class AlarmActivity : ComponentActivity() {
 
         setContent {
             AlarmAppTheme {
-                AlarmScreen()
+                AlarmRoute()
             }
         }
     }
