@@ -12,10 +12,11 @@ import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TIME_OUT
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action ?: ""
-        if (action == ACTION_NAME) {
-            wakeLock(context)
-            moveAlarmActivity(context)
+        intent.action?.let { action ->
+            if (action == ACTION_NAME) {
+                wakeLock(context)
+                moveAlarmActivity(context)
+            }
         }
     }
 
