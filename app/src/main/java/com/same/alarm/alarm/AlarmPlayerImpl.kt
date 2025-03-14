@@ -1,6 +1,5 @@
 package com.same.alarm.alarm
 
-import android.app.Activity
 import android.content.Context
 import android.media.AudioManager
 import android.media.Ringtone

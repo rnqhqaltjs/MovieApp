@@ -1,5 +1,6 @@
 package com.same.alarm.alarm
 
+import android.app.Service.STOP_FOREGROUND_DETACH
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -8,6 +9,10 @@ import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.domain.repository.AlarmRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @HiltWorker
 class RescheduleAlarmWorker @AssistedInject constructor(
@@ -18,11 +23,13 @@ class RescheduleAlarmWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        alarmRepository.getAllAlarms()
-            .collect { alarms ->
-                alarms.filter { it.isActive }
-                    .forEach { alarmHelper.scheduleAlarm(it) }
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            alarmRepository.getAllAlarms()
+                .collect { alarms ->
+                    alarms.filter { it.isActive }
+                        .forEach { alarmHelper.scheduleAlarm(it) }
+                }
+        }
         return Result.success()
     }
 }
