@@ -4,21 +4,21 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_BOOT_COMPLETED
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import android.content.Intent.ACTION_LOCKED_BOOT_COMPLETED
 
 class RescheduleAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action ?: ""
-        if (action == ACTION_BOOT_COMPLETED) {
-            rescheduleWorker(context)
+        intent.action?.let { action ->
+            if (action == ACTION_BOOT_COMPLETED || action == ACTION_LOCKED_BOOT_COMPLETED) {
+                rescheduleWorker(context)
+            }
         }
     }
 
     private fun rescheduleWorker(context: Context) {
-        val workManager = WorkManager.getInstance(context)
-        val workRequest = OneTimeWorkRequestBuilder<RescheduleAlarmWorker>().build()
-        workManager.enqueue(workRequest)
+        Intent(context, ForegroundAlarmService::class.java).apply {
+            context.startService(this)
+        }
     }
 }
