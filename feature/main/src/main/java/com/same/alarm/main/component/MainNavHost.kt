@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.same.alarm.calendar.navigation.calendarScreen
+import com.same.alarm.list.navigation.listScreen
 import com.same.alarm.main.MainNavigator
 import com.same.alarm.setup.navigation.setupScreen
 
@@ -24,5 +25,6 @@ internal fun MainNavHost(
             onShowSnackBar = onShowSnackBar
         )
         calendarScreen()
+        listScreen()
     }
 }
