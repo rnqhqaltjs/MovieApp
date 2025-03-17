@@ -31,4 +31,8 @@ class AlarmDataSourceImpl @Inject constructor(
                 it.map { alarmLocal -> alarmLocal.toEntity() }
             }
     }
+
+    override suspend fun getAlarmById(alarmId: Long): AlarmEntity? {
+        return alarmDao.getAlarmById(alarmId)?.toEntity()
+    }
 }

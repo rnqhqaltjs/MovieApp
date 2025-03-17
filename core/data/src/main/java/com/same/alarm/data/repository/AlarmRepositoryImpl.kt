@@ -24,6 +24,10 @@ class AlarmRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun getAlarmById(alarmId: Int): Alarm? {
+        return alarmDataSource.getAlarmById(alarmId.toLong())?.toDomain()
+    }
+
     override suspend fun removeAlarm(alarm: Alarm) {
         return alarmDataSource.removeAlarm(alarm.toEntity())
     }

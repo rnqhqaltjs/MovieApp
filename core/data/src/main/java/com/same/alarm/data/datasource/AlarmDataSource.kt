@@ -8,4 +8,5 @@ interface AlarmDataSource {
     suspend fun removeAlarm(alarmEntity: AlarmEntity)
     suspend fun updateAlarm(alarmEntity: AlarmEntity)
     fun getAllAlarms() : Flow<List<AlarmEntity>>
+    suspend fun getAlarmById(alarmId: Long): AlarmEntity?
 }

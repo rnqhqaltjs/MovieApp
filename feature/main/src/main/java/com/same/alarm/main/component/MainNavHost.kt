@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.same.alarm.calendar.navigation.calendarScreen
-import com.same.alarm.list.navigation.listScreen
+import com.same.alarm.calendar.navigation.calendarNavGraph
+import com.same.alarm.list.navigation.listNavGraph
 import com.same.alarm.main.MainNavigator
-import com.same.alarm.setup.navigation.setupScreen
+import com.same.alarm.setup.navigation.setupNavGraph
 
 @Composable
 internal fun MainNavHost(
@@ -21,10 +21,12 @@ internal fun MainNavHost(
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
-        setupScreen(
+        setupNavGraph(
             onShowSnackBar = onShowSnackBar
         )
-        calendarScreen()
-        listScreen()
+        calendarNavGraph()
+        listNavGraph(
+            onEditClicked = { navigator.navigateToEdit(it.id) }
+        )
     }
 }

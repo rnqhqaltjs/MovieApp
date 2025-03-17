@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,14 +41,16 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ListRoute(
-    listViewModel: ListViewModel = hiltViewModel()
+    listViewModel: ListViewModel = hiltViewModel(),
+    onEditClicked: (Alarm) -> Unit
 ) {
     val alarmList by listViewModel.alarmList.collectAsStateWithLifecycle()
 
     ListScreen(
         alarmList = alarmList,
         onRemoveAlarm = listViewModel::removeAlarm,
-        onUpdateAlarm = listViewModel::updateAlarm
+        onUpdateAlarm = listViewModel::updateAlarm,
+        onEditAlarm = onEditClicked
     )
 }
 
@@ -53,12 +58,14 @@ fun ListRoute(
 fun ListScreen(
     alarmList: List<Alarm>,
     onRemoveAlarm: (Alarm) -> Unit,
-    onUpdateAlarm: (Alarm) -> Unit
+    onUpdateAlarm: (Alarm) -> Unit,
+    onEditAlarm: (Alarm) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .statusBarsPadding()
     ) {
         Text(
             text = "알람 리스트",
@@ -98,6 +105,14 @@ fun ListScreen(
                             },
                             backgroundColor = Color.Red,
                             icon = Icons.Default.Delete,
+                            modifier = Modifier.fillMaxHeight()
+                        )
+                        ActionIcon(
+                            onClick = {
+                                onEditAlarm(alarm)
+                            },
+                            backgroundColor = Color.Green,
+                            icon = Icons.Default.Edit,
                             modifier = Modifier.fillMaxHeight()
                         )
                     },
@@ -163,4 +178,15 @@ fun AlarmItem(
             modifier = Modifier.padding(start = 8.dp)
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ListScreenPreview() {
+    ListScreen(
+        alarmList = listOf(),
+        onRemoveAlarm = {},
+        onUpdateAlarm = {},
+        onEditAlarm = {}
+    )
 }

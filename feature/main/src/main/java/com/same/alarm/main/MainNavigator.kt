@@ -10,6 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.same.alarm.calendar.navigation.navigateToCalendar
+import com.same.alarm.edit.navigation.navigateToEdit
 import com.same.alarm.list.navigation.navigateToList
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
@@ -46,6 +47,10 @@ internal class MainNavigator(
 
     fun navigateToList() {
         navController.navigateToList()
+    }
+
+    fun navigateToEdit(alarmId: Int) {
+        navController.navigateToEdit(alarmId)
     }
 
     private fun popBackStack() {

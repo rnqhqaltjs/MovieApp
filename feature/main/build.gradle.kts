@@ -17,5 +17,7 @@ dependencies {
     implementation(project(":feature:setup"))
     implementation(project(":feature:calendar"))
     implementation(project(":feature:list"))
+    implementation(project(":feature:edit"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:model"))
 }

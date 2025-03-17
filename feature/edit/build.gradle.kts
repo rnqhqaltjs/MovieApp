@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.list"
+    namespace = "com.same.alarm.edit"
     kotlinOptions {
         jvmTarget = "21"
     }
@@ -16,5 +16,4 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
-    implementation(project(":feature:edit"))
 }
