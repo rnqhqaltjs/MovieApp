@@ -7,9 +7,11 @@ import com.same.alarm.domain.usecase.RemoveAlarmUseCase
 import com.same.alarm.domain.usecase.UpdateAlarmUseCase
 import com.same.alarm.model.Alarm
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +24,9 @@ class ListViewModel @Inject constructor(
     val alarmList: StateFlow<List<Alarm>> = loadAlarmListUseCase()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    private val _revealedState = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
+    val revealedState: StateFlow<Map<Int, Boolean>> = _revealedState
+
     fun removeAlarm(alarm: Alarm) {
         viewModelScope.launch {
             removeAlarmUseCase(alarm)
@@ -32,5 +37,13 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             updateAlarmUseCase(alarm)
         }
+    }
+
+    fun toggleRevealed(alarmId: Int, isRevealed: Boolean) {
+        _revealedState.update { mapOf(alarmId to isRevealed) }
+    }
+
+    fun resetRevealedState() {
+        _revealedState.update { emptyMap() }
     }
 }

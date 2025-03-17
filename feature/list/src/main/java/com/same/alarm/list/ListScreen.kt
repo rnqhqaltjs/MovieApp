@@ -1,6 +1,7 @@
 package com.same.alarm.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,9 +24,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.component.ActionIcon
 import com.same.alarm.list.component.SwipeableItemWithActions
 import com.same.alarm.model.Alarm
@@ -45,27 +44,35 @@ fun ListRoute(
     onEditClicked: (Alarm) -> Unit
 ) {
     val alarmList by listViewModel.alarmList.collectAsStateWithLifecycle()
+    val revealedState by listViewModel.revealedState.collectAsStateWithLifecycle()
 
     ListScreen(
         alarmList = alarmList,
+        revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
         onUpdateAlarm = listViewModel::updateAlarm,
-        onEditAlarm = onEditClicked
+        onEditAlarm = onEditClicked,
+        onToggleRevealed = listViewModel::toggleRevealed,
+        resetRevealedState = listViewModel::resetRevealedState
     )
 }
 
 @Composable
 fun ListScreen(
     alarmList: List<Alarm>,
+    revealedState: Map<Int, Boolean>,
     onRemoveAlarm: (Alarm) -> Unit,
     onUpdateAlarm: (Alarm) -> Unit,
-    onEditAlarm: (Alarm) -> Unit
+    onEditAlarm: (Alarm) -> Unit,
+    onToggleRevealed: (Int, Boolean) -> Unit,
+    resetRevealedState: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
             .statusBarsPadding()
+            .noRippleClickable { resetRevealedState() }
     ) {
         Text(
             text = "알람 리스트",
@@ -81,13 +88,17 @@ fun ListScreen(
             items(
                 items = alarmList
             ) { alarm ->
-                var isRevealed by remember { mutableStateOf(false) }
-
                 SwipeableItemWithActions(
-                    isRevealed = isRevealed,
-                    onLeftExpanded = { isRevealed = true },
-                    onRightExpanded = { isRevealed = true },
-                    onCollapsed = { isRevealed = false },
+                    isRevealed = revealedState[alarm.id] ?: false,
+                    onLeftExpanded = {
+                        onToggleRevealed(alarm.id, true)
+                    },
+                    onRightExpanded = {
+                        onToggleRevealed(alarm.id, true)
+                    },
+                    onCollapsed = {
+                        onToggleRevealed(alarm.id, false)
+                    },
                     leftActions = {
                         ActionIcon(
                             onClick = {
@@ -101,18 +112,18 @@ fun ListScreen(
                     rightActions = {
                         ActionIcon(
                             onClick = {
-                                onRemoveAlarm(alarm)
-                            },
-                            backgroundColor = Color.Red,
-                            icon = Icons.Default.Delete,
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                        ActionIcon(
-                            onClick = {
                                 onEditAlarm(alarm)
                             },
                             backgroundColor = Color.Green,
                             icon = Icons.Default.Edit,
+                            modifier = Modifier.fillMaxHeight()
+                        )
+                        ActionIcon(
+                            onClick = {
+                                onRemoveAlarm(alarm)
+                            },
+                            backgroundColor = Color.Red,
+                            icon = Icons.Default.Delete,
                             modifier = Modifier.fillMaxHeight()
                         )
                     },
@@ -185,8 +196,11 @@ fun AlarmItem(
 fun ListScreenPreview() {
     ListScreen(
         alarmList = listOf(),
+        revealedState = mapOf(),
         onRemoveAlarm = {},
         onUpdateAlarm = {},
-        onEditAlarm = {}
+        onEditAlarm = {},
+        onToggleRevealed = { _, _ -> },
+        resetRevealedState = {}
     )
 }
