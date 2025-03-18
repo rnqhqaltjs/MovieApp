@@ -41,10 +41,7 @@ fun NavGraphBuilder.listNavGraph(
         )
     }
 
-    composable<Route.Edit> { navBackStackEntry ->
-        val alarmId = navBackStackEntry.toRoute<Route.Edit>().alarmId
-        EditRoute(
-            alarmId = alarmId
-        )
+    composable<Route.Edit> {
+        EditRoute()
     }
 }

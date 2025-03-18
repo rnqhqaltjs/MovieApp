@@ -21,8 +21,12 @@ class ListViewModel @Inject constructor(
     private val removeAlarmUseCase: RemoveAlarmUseCase,
     private val updateAlarmUseCase: UpdateAlarmUseCase
 ) : ViewModel() {
-    val alarmList: StateFlow<List<Alarm>> = loadAlarmListUseCase()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    val alarmListState: StateFlow<List<Alarm>> = loadAlarmListUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
     private val _revealedState = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
     val revealedState: StateFlow<Map<Int, Boolean>> = _revealedState

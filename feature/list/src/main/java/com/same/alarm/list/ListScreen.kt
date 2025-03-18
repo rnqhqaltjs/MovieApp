@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -43,11 +44,11 @@ fun ListRoute(
     listViewModel: ListViewModel = hiltViewModel(),
     onEditClicked: (Alarm) -> Unit
 ) {
-    val alarmList by listViewModel.alarmList.collectAsStateWithLifecycle()
+    val alarmListState by listViewModel.alarmListState.collectAsStateWithLifecycle()
     val revealedState by listViewModel.revealedState.collectAsStateWithLifecycle()
 
     ListScreen(
-        alarmList = alarmList,
+        alarmList = alarmListState,
         revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
         onUpdateAlarm = listViewModel::updateAlarm,
@@ -74,6 +75,17 @@ fun ListScreen(
             .statusBarsPadding()
             .noRippleClickable { resetRevealedState() }
     ) {
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(bottom = 12.dp)
+                .fillMaxWidth(0.23f)
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                },
+            thickness = 4.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
+
         Text(
             text = "알람 리스트",
             style = MaterialTheme.typography.headlineSmall,
@@ -86,7 +98,8 @@ fun ListScreen(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(
-                items = alarmList
+                items = alarmList,
+                key = { it.id }
             ) { alarm ->
                 SwipeableItemWithActions(
                     isRevealed = revealedState[alarm.id] ?: false,
@@ -113,6 +126,7 @@ fun ListScreen(
                         ActionIcon(
                             onClick = {
                                 onEditAlarm(alarm)
+                                resetRevealedState()
                             },
                             backgroundColor = Color.Green,
                             icon = Icons.Default.Edit,

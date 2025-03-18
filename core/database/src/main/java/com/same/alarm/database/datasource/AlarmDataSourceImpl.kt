@@ -32,7 +32,8 @@ class AlarmDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun getAlarmById(alarmId: Long): AlarmEntity? {
-        return alarmDao.getAlarmById(alarmId)?.toEntity()
+    override fun getAlarmById(alarmId: Long): Flow<AlarmEntity?> {
+        return alarmDao.getAlarmById(alarmId)
+            .map { it?.toEntity() }
     }
 }
