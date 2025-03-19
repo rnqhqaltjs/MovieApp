@@ -36,4 +36,8 @@ class AlarmRepositoryImpl @Inject constructor(
     override suspend fun updateAlarm(alarm: Alarm) {
         return alarmDataSource.updateAlarm(alarm.toEntity())
     }
+
+    override suspend fun toggleAlarm(alarm: Alarm) {
+        return alarmDataSource.updateAlarm(alarm.toEntity())
+    }
 }

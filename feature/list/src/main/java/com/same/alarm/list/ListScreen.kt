@@ -51,9 +51,9 @@ fun ListRoute(
         alarmList = alarmListState,
         revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
-        onUpdateAlarm = listViewModel::updateAlarm,
+        onToggleAlarm = listViewModel::toggleAlarm,
         onEditAlarm = onEditClicked,
-        onToggleRevealed = listViewModel::toggleRevealed,
+        onSwipeRevealed = listViewModel::swipeRevealed,
         resetRevealedState = listViewModel::resetRevealedState
     )
 }
@@ -63,9 +63,9 @@ fun ListScreen(
     alarmList: List<Alarm>,
     revealedState: Map<Int, Boolean>,
     onRemoveAlarm: (Alarm) -> Unit,
-    onUpdateAlarm: (Alarm) -> Unit,
+    onToggleAlarm: (Alarm) -> Unit,
     onEditAlarm: (Alarm) -> Unit,
-    onToggleRevealed: (Int, Boolean) -> Unit,
+    onSwipeRevealed: (Int, Boolean) -> Unit,
     resetRevealedState: () -> Unit
 ) {
     Column(
@@ -104,13 +104,13 @@ fun ListScreen(
                 SwipeableItemWithActions(
                     isRevealed = revealedState[alarm.id] ?: false,
                     onLeftExpanded = {
-                        onToggleRevealed(alarm.id, true)
+                        onSwipeRevealed(alarm.id, true)
                     },
                     onRightExpanded = {
-                        onToggleRevealed(alarm.id, true)
+                        onSwipeRevealed(alarm.id, true)
                     },
                     onCollapsed = {
-                        onToggleRevealed(alarm.id, false)
+                        onSwipeRevealed(alarm.id, false)
                     },
                     leftActions = {
                         ActionIcon(
@@ -144,7 +144,7 @@ fun ListScreen(
                 ) {
                     AlarmItem(
                         alarm = alarm,
-                        onUpdateAlarm = onUpdateAlarm
+                        onUpdateAlarm = onToggleAlarm
                     )
                 }
             }
@@ -212,9 +212,9 @@ fun ListScreenPreview() {
         alarmList = listOf(),
         revealedState = mapOf(),
         onRemoveAlarm = {},
-        onUpdateAlarm = {},
+        onToggleAlarm = {},
         onEditAlarm = {},
-        onToggleRevealed = { _, _ -> },
+        onSwipeRevealed = { _, _ -> },
         resetRevealedState = {}
     )
 }

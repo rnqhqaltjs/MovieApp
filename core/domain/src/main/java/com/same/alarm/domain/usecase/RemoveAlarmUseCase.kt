@@ -9,13 +9,8 @@ class RemoveAlarmUseCase @Inject constructor(
     private val alarmRepository: AlarmRepository,
     private val alarmHelper: AlarmHelper
 ) {
-    suspend operator fun invoke(alarm: Alarm): Result<Unit>  {
-        return try {
-            alarmRepository.removeAlarm(alarm)
-            alarmHelper.unScheduleAlarm(alarm)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend operator fun invoke(alarm: Alarm) {
+        alarmRepository.removeAlarm(alarm)
+        alarmHelper.unScheduleAlarm(alarm)
     }
 }

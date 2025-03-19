@@ -20,7 +20,8 @@ fun NavController.navigateToList(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.listNavGraph(
-    onEditClicked: (Alarm) -> Unit
+    onEditClicked: (Alarm) -> Unit,
+    onConfirmClick: () -> Unit
 ) {
     composable<MainTabRoute.List>(
         enterTransition = {
@@ -42,6 +43,8 @@ fun NavGraphBuilder.listNavGraph(
     }
 
     composable<Route.Edit> {
-        EditRoute()
+        EditRoute(
+            onConfirmClick = onConfirmClick
+        )
     }
 }

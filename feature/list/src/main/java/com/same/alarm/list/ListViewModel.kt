@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.LoadAlarmListUseCase
 import com.same.alarm.domain.usecase.RemoveAlarmUseCase
-import com.same.alarm.domain.usecase.UpdateAlarmUseCase
+import com.same.alarm.domain.usecase.ToggleAlarmUseCase
 import com.same.alarm.model.Alarm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     loadAlarmListUseCase: LoadAlarmListUseCase,
     private val removeAlarmUseCase: RemoveAlarmUseCase,
-    private val updateAlarmUseCase: UpdateAlarmUseCase
+    private val toggleAlarmUseCase: ToggleAlarmUseCase
 ) : ViewModel() {
     val alarmListState: StateFlow<List<Alarm>> = loadAlarmListUseCase()
         .stateIn(
@@ -37,13 +37,13 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    fun updateAlarm(alarm: Alarm) {
+    fun toggleAlarm(alarm: Alarm) {
         viewModelScope.launch {
-            updateAlarmUseCase(alarm)
+            toggleAlarmUseCase(alarm)
         }
     }
 
-    fun toggleRevealed(alarmId: Int, isRevealed: Boolean) {
+    fun swipeRevealed(alarmId: Int, isRevealed: Boolean) {
         _revealedState.update { mapOf(alarmId to isRevealed) }
     }
 
