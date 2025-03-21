@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,18 +39,23 @@ import java.util.Locale
 
 @Composable
 fun EditRoute(
-    onConfirmClick: () -> Unit,
+    onAlarmUpdated: () -> Unit,
     editViewModel: EditViewModel = hiltViewModel(),
 ) {
     val alarmState by editViewModel.alarmState.collectAsStateWithLifecycle()
     val selectedDays by editViewModel.selectedDays.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        editViewModel.updateEvent.collect {
+            onAlarmUpdated()
+        }
+    }
+
     EditScreen(
         alarm = alarmState,
         selectedDays = selectedDays,
         onDaySelected = editViewModel::toggleDay,
-        onUpdateAlarm = editViewModel::updateAlarm,
-        onConfirmClick = onConfirmClick
+        onUpdateAlarm = editViewModel::updateAlarm
     )
 }
 
@@ -59,21 +65,20 @@ fun EditScreen(
     selectedDays: List<Int>,
     onDaySelected: (Int) -> Unit,
     onUpdateAlarm: (Alarm) -> Unit,
-    onConfirmClick: () -> Unit
 ) {
-    if(alarm != null) {
+    alarm?.let {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             TodayDateText()
 
-            var time by remember { mutableStateOf(alarm.time) }
-            var isAlarmRepeated by remember { mutableStateOf(alarm.isRepeating) }
+            var time by remember { mutableStateOf(it.time) }
+            var isAlarmRepeated by remember { mutableStateOf(it.isRepeating) }
             val days = DayOfWeek.entries.toTypedArray()
             val categories = listOf("일반", "중요", "기타")
-            var selectedCategory by remember { mutableStateOf(alarm.category) }
-            var statusMessage by remember { mutableStateOf(alarm.statusMessage) }
+            var selectedCategory by remember { mutableStateOf(it.category) }
+            var statusMessage by remember { mutableStateOf(it.statusMessage) }
 
             TimeWheelPicker(
                 time = time
@@ -161,7 +166,7 @@ fun EditScreen(
                 onClick = {
                     onUpdateAlarm(
                         Alarm(
-                            id = alarm.id,
+                            id = it.id,
                             time = time,
                             statusMessage = statusMessage,
                             daysOfWeek = selectedDays,
@@ -169,7 +174,6 @@ fun EditScreen(
                             isRepeating = isAlarmRepeated,
                         )
                     )
-                    onConfirmClick()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -186,7 +190,6 @@ fun EditScreenPreview() {
         alarm = Alarm(0, LocalTime.of(9, 0), "", emptyList(), "", true),
         selectedDays = emptyList(),
         onDaySelected = {},
-        onUpdateAlarm = {},
-        onConfirmClick = {}
+        onUpdateAlarm = {}
     )
 }

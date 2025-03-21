@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.same.alarm.edit.EditRoute
 import com.same.alarm.list.ListRoute
 import com.same.alarm.model.Alarm
@@ -21,7 +20,7 @@ fun NavController.navigateToList(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.listNavGraph(
     onEditClicked: (Alarm) -> Unit,
-    onConfirmClick: () -> Unit
+    onAlarmUpdated: () -> Unit
 ) {
     composable<MainTabRoute.List>(
         enterTransition = {
@@ -44,7 +43,7 @@ fun NavGraphBuilder.listNavGraph(
 
     composable<Route.Edit> {
         EditRoute(
-            onConfirmClick = onConfirmClick
+            onAlarmUpdated = onAlarmUpdated
         )
     }
 }

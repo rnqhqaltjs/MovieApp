@@ -27,7 +27,7 @@ internal fun MainNavHost(
         calendarNavGraph()
         listNavGraph(
             onEditClicked = { navigator.navigateToEdit(it.id) },
-            onConfirmClick = navigator::popBackStackIfNotSetup
+            onAlarmUpdated = navigator::popBackStackIfNotSetup
         )
     }
 }
