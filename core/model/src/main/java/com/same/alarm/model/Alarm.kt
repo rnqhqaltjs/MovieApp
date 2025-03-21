@@ -12,7 +12,8 @@ data class Alarm(
     val daysOfWeek: List<Int>,
     val category: String,
     val isRepeating: Boolean,
-    val isActive: Boolean = true
+    val isActive: Boolean = true,
+    val isPinned: Boolean = false
 ) {
     private fun getAlarmFirstTrigger(
         dayOfWeek: Int? = null,

@@ -12,7 +12,8 @@ object AlarmMapper {
             daysOfWeek = this.daysOfWeek,
             category = this.category,
             isRepeating = this.isRepeating,
-            isActive = this.isActive
+            isActive = this.isActive,
+            isPinned = this.isPinned
         )
     }
 
@@ -24,7 +25,8 @@ object AlarmMapper {
             daysOfWeek = this.daysOfWeek,
             category = this.category,
             isRepeating = this.isRepeating,
-            isActive = this.isActive
+            isActive = this.isActive,
+            isPinned = this.isPinned
         )
     }
 }

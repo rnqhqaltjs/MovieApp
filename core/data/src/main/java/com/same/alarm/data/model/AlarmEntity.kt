@@ -9,5 +9,6 @@ data class AlarmEntity (
     val daysOfWeek: List<Int>,
     val category: String,
     val isRepeating: Boolean,
-    val isActive: Boolean
+    val isActive: Boolean,
+    val isPinned: Boolean
 )
