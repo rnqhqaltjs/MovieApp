@@ -9,13 +9,8 @@ class AddAlarmUseCase @Inject constructor(
     private val alarmRepository: AlarmRepository,
     private val alarmHelper: AlarmHelper
 ) {
-    suspend operator fun invoke(alarm: Alarm): Result<Unit> {
-        return try {
-            val alarmId = alarmRepository.addAlarm(alarm)
-            alarmHelper.scheduleAlarm(alarm.copy(id = alarmId))
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend operator fun invoke(alarm: Alarm) {
+        val alarmId = alarmRepository.addAlarm(alarm)
+        alarmHelper.scheduleAlarm(alarm.copy(id = alarmId))
     }
 }

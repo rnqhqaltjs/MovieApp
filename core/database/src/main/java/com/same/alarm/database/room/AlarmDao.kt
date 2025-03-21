@@ -22,4 +22,7 @@ interface AlarmDao {
 
     @Update
     suspend fun updateAlarm(alarmLocal: AlarmLocal)
+
+    @Query("SELECT * FROM alarms WHERE id = :alarmId LIMIT 1")
+    fun getAlarmById(alarmId: Long): Flow<AlarmLocal?>
 }

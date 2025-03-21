@@ -16,4 +16,6 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
+    implementation(project(":feature:edit"))
+    implementation(project(":core:designsystem"))
 }

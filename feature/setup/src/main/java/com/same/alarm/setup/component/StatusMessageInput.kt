@@ -7,6 +7,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,7 +20,7 @@ fun StatusMessageInput(
     BasicTextField(
         value = statusMessage,
         onValueChange = onStatusMessageChange,
-        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
+        textStyle = TextStyle(fontSize = 18.sp),
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Gray)

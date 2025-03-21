@@ -11,12 +11,9 @@ class UpdateAlarmUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(alarm: Alarm): Result<Unit> {
         return try {
+            alarmHelper.unScheduleAlarm(alarm)
             alarmRepository.updateAlarm(alarm)
-            if (alarm.isActive) {
-                alarmHelper.scheduleAlarm(alarm)
-            } else {
-                alarmHelper.unScheduleAlarm(alarm)
-            }
+            alarmHelper.scheduleAlarm(alarm)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)

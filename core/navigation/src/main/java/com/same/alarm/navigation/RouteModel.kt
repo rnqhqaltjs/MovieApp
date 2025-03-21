@@ -4,10 +4,7 @@ import kotlinx.serialization.Serializable
 
 sealed interface Route {
     @Serializable
-    data object List : Route
-
-//    @Serializable
-//    data class SessionDetail(val sessionId: String) : Route
+    data class Edit(val alarmId: Int) : Route
 }
 
 sealed interface MainTabRoute : Route {
@@ -16,4 +13,7 @@ sealed interface MainTabRoute : Route {
 
     @Serializable
     data object Calendar : MainTabRoute
+
+    @Serializable
+    data object List : MainTabRoute
 }

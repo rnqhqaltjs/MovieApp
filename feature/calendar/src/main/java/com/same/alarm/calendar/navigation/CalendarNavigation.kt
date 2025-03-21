@@ -11,7 +11,7 @@ fun NavController.navigateToCalendar(navOptions: NavOptions? = null) {
     navigate(MainTabRoute.Calendar, navOptions = navOptions)
 }
 
-fun NavGraphBuilder.calendarScreen() {
+fun NavGraphBuilder.calendarNavGraph() {
     composable<MainTabRoute.Calendar> { _ ->
         CalendarRoute()
     }

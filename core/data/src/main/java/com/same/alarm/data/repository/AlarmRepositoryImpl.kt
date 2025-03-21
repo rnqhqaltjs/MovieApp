@@ -24,11 +24,20 @@ class AlarmRepositoryImpl @Inject constructor(
             }
     }
 
+    override fun getAlarmById(alarmId: Int): Flow<Alarm?> {
+        return alarmDataSource.getAlarmById(alarmId.toLong())
+            .map { it?.toDomain() }
+    }
+
     override suspend fun removeAlarm(alarm: Alarm) {
         return alarmDataSource.removeAlarm(alarm.toEntity())
     }
 
     override suspend fun updateAlarm(alarm: Alarm) {
+        return alarmDataSource.updateAlarm(alarm.toEntity())
+    }
+
+    override suspend fun toggleAlarm(alarm: Alarm) {
         return alarmDataSource.updateAlarm(alarm.toEntity())
     }
 }

@@ -1,6 +1,7 @@
 package com.same.alarm.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,26 +12,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.component.ActionIcon
 import com.same.alarm.list.component.SwipeableItemWithActions
 import com.same.alarm.model.Alarm
@@ -38,28 +41,51 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ListRoute(
-    listViewModel: ListViewModel = hiltViewModel()
+    listViewModel: ListViewModel = hiltViewModel(),
+    onEditClicked: (Alarm) -> Unit
 ) {
-    val alarmList by listViewModel.alarmList.collectAsStateWithLifecycle()
+    val alarmListState by listViewModel.alarmListState.collectAsStateWithLifecycle()
+    val revealedState by listViewModel.revealedState.collectAsStateWithLifecycle()
 
     ListScreen(
-        alarmList = alarmList,
+        alarmList = alarmListState,
+        revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
-        onUpdateAlarm = listViewModel::updateAlarm
+        onToggleAlarm = listViewModel::toggleAlarm,
+        onEditAlarm = onEditClicked,
+        onSwipeRevealed = listViewModel::swipeRevealed,
+        resetRevealedState = listViewModel::resetRevealedState
     )
 }
 
 @Composable
 fun ListScreen(
     alarmList: List<Alarm>,
+    revealedState: Map<Int, Boolean>,
     onRemoveAlarm: (Alarm) -> Unit,
-    onUpdateAlarm: (Alarm) -> Unit
+    onToggleAlarm: (Alarm) -> Unit,
+    onEditAlarm: (Alarm) -> Unit,
+    onSwipeRevealed: (Int, Boolean) -> Unit,
+    resetRevealedState: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .statusBarsPadding()
+            .noRippleClickable { resetRevealedState() }
     ) {
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(bottom = 12.dp)
+                .fillMaxWidth(0.23f)
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                },
+            thickness = 4.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
+
         Text(
             text = "알람 리스트",
             style = MaterialTheme.typography.headlineSmall,
@@ -72,15 +98,20 @@ fun ListScreen(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(
-                items = alarmList
+                items = alarmList,
+                key = { it.id }
             ) { alarm ->
-                var isRevealed by remember { mutableStateOf(false) }
-
                 SwipeableItemWithActions(
-                    isRevealed = isRevealed,
-                    onLeftExpanded = { isRevealed = true },
-                    onRightExpanded = { isRevealed = true },
-                    onCollapsed = { isRevealed = false },
+                    isRevealed = revealedState[alarm.id] ?: false,
+                    onLeftExpanded = {
+                        onSwipeRevealed(alarm.id, true)
+                    },
+                    onRightExpanded = {
+                        onSwipeRevealed(alarm.id, true)
+                    },
+                    onCollapsed = {
+                        onSwipeRevealed(alarm.id, false)
+                    },
                     leftActions = {
                         ActionIcon(
                             onClick = {
@@ -94,6 +125,15 @@ fun ListScreen(
                     rightActions = {
                         ActionIcon(
                             onClick = {
+                                onEditAlarm(alarm)
+                                resetRevealedState()
+                            },
+                            backgroundColor = Color.Green,
+                            icon = Icons.Default.Edit,
+                            modifier = Modifier.fillMaxHeight()
+                        )
+                        ActionIcon(
+                            onClick = {
                                 onRemoveAlarm(alarm)
                             },
                             backgroundColor = Color.Red,
@@ -104,7 +144,7 @@ fun ListScreen(
                 ) {
                     AlarmItem(
                         alarm = alarm,
-                        onUpdateAlarm = onUpdateAlarm
+                        onUpdateAlarm = onToggleAlarm
                     )
                 }
             }
@@ -163,4 +203,18 @@ fun AlarmItem(
             modifier = Modifier.padding(start = 8.dp)
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ListScreenPreview() {
+    ListScreen(
+        alarmList = listOf(),
+        revealedState = mapOf(),
+        onRemoveAlarm = {},
+        onToggleAlarm = {},
+        onEditAlarm = {},
+        onSwipeRevealed = { _, _ -> },
+        resetRevealedState = {}
+    )
 }
