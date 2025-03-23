@@ -16,9 +16,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -54,7 +54,8 @@ fun ListRoute(
         onToggleAlarm = listViewModel::toggleAlarm,
         onEditAlarm = onEditClicked,
         onSwipeRevealed = listViewModel::swipeRevealed,
-        resetRevealedState = listViewModel::resetRevealedState
+        resetRevealedState = listViewModel::resetRevealedState,
+        onTogglePin = listViewModel::togglePin
     )
 }
 
@@ -66,7 +67,8 @@ fun ListScreen(
     onToggleAlarm: (Alarm) -> Unit,
     onEditAlarm: (Alarm) -> Unit,
     onSwipeRevealed: (Int, Boolean) -> Unit,
-    resetRevealedState: () -> Unit
+    resetRevealedState: () -> Unit,
+    onTogglePin: (Alarm) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -98,57 +100,97 @@ fun ListScreen(
             contentPadding = PaddingValues(vertical = 8.dp)
         ) {
             items(
-                items = alarmList,
+                items = alarmList.filter { it.isPinned },
                 key = { it.id }
             ) { alarm ->
-                SwipeableItemWithActions(
-                    isRevealed = revealedState[alarm.id] ?: false,
-                    onLeftExpanded = {
-                        onSwipeRevealed(alarm.id, true)
-                    },
-                    onRightExpanded = {
-                        onSwipeRevealed(alarm.id, true)
-                    },
-                    onCollapsed = {
-                        onSwipeRevealed(alarm.id, false)
-                    },
-                    leftActions = {
-                        ActionIcon(
-                            onClick = {
-                                onRemoveAlarm(alarm)
-                            },
-                            backgroundColor = Color.Blue,
-                            icon = Icons.Default.Check,
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                    },
-                    rightActions = {
-                        ActionIcon(
-                            onClick = {
-                                onEditAlarm(alarm)
-                                resetRevealedState()
-                            },
-                            backgroundColor = Color.Green,
-                            icon = Icons.Default.Edit,
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                        ActionIcon(
-                            onClick = {
-                                onRemoveAlarm(alarm)
-                            },
-                            backgroundColor = Color.Red,
-                            icon = Icons.Default.Delete,
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                    },
-                ) {
-                    AlarmItem(
-                        alarm = alarm,
-                        onUpdateAlarm = onToggleAlarm
-                    )
-                }
+                AlarmRow(
+                    alarm = alarm,
+                    revealedState = revealedState,
+                    onRemoveAlarm = onRemoveAlarm,
+                    onToggleAlarm = onToggleAlarm,
+                    onEditAlarm = onEditAlarm,
+                    onSwipeRevealed = onSwipeRevealed,
+                    resetRevealedState = resetRevealedState,
+                    onTogglePin = onTogglePin
+                )
+            }
+
+            items(
+                items = alarmList.filter { !it.isPinned },
+                key = { it.id }
+            ) { alarm ->
+                AlarmRow(
+                    alarm = alarm,
+                    revealedState = revealedState,
+                    onRemoveAlarm = onRemoveAlarm,
+                    onToggleAlarm = onToggleAlarm,
+                    onEditAlarm = onEditAlarm,
+                    onSwipeRevealed = onSwipeRevealed,
+                    resetRevealedState = resetRevealedState,
+                    onTogglePin = onTogglePin
+                )
             }
         }
+    }
+}
+
+@Composable
+fun AlarmRow(
+    alarm: Alarm,
+    revealedState: Map<Int, Boolean>,
+    onRemoveAlarm: (Alarm) -> Unit,
+    onToggleAlarm: (Alarm) -> Unit,
+    onEditAlarm: (Alarm) -> Unit,
+    onSwipeRevealed: (Int, Boolean) -> Unit,
+    resetRevealedState: () -> Unit,
+    onTogglePin: (Alarm) -> Unit
+) {
+    SwipeableItemWithActions(
+        isRevealed = revealedState[alarm.id] ?: false,
+        onLeftExpanded = {
+            onSwipeRevealed(alarm.id, true)
+        },
+        onRightExpanded = {
+            onSwipeRevealed(alarm.id, true)
+        },
+        onCollapsed = {
+            onSwipeRevealed(alarm.id, false)
+        },
+        leftActions = {
+            ActionIcon(
+                onClick = {
+                    onTogglePin(alarm)
+                    resetRevealedState()
+                },
+                backgroundColor = if (alarm.isPinned) Color.Yellow else Color.Gray,
+                icon = if (alarm.isPinned) Icons.Default.Star else Icons.Default.Star,
+                modifier = Modifier.fillMaxHeight()
+            )
+        },
+        rightActions = {
+            ActionIcon(
+                onClick = {
+                    onEditAlarm(alarm)
+                    resetRevealedState()
+                },
+                backgroundColor = Color.Green,
+                icon = Icons.Default.Edit,
+                modifier = Modifier.fillMaxHeight()
+            )
+            ActionIcon(
+                onClick = {
+                    onRemoveAlarm(alarm)
+                },
+                backgroundColor = Color.Red,
+                icon = Icons.Default.Delete,
+                modifier = Modifier.fillMaxHeight()
+            )
+        },
+    ) {
+        AlarmItem(
+            alarm = alarm,
+            onUpdateAlarm = onToggleAlarm
+        )
     }
 }
 
@@ -215,6 +257,7 @@ fun ListScreenPreview() {
         onToggleAlarm = {},
         onEditAlarm = {},
         onSwipeRevealed = { _, _ -> },
-        resetRevealedState = {}
+        resetRevealedState = {},
+        onTogglePin = {}
     )
 }
