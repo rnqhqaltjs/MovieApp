@@ -172,6 +172,7 @@ fun EditScreen(
                             daysOfWeek = selectedDays,
                             category = selectedCategory,
                             isRepeating = isAlarmRepeated,
+                            isPinned = it.isPinned
                         )
                     )
                 },
