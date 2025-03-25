@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,11 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.model.Alarm
 import com.same.alarm.setup.component.CategoryDropdown
-import com.same.alarm.setup.component.ConfirmButton
 import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.component.StatusMessageInput
-import com.same.alarm.setup.component.TimeWheelPicker
 import com.same.alarm.setup.component.TodayDateText
+import com.same.alarm.ui.TimeWheelPicker
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.TextStyle
@@ -43,11 +44,16 @@ fun SetupRoute(
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        setupViewModel.addEvent.collect {
+            onShowSnackBar("추가 성공")
+        }
+    }
+
     SetupScreen(
         onAddAlarm = setupViewModel::addAlarm,
         selectedDays = selectedDays,
-        onDaySelected = setupViewModel::toggleDay,
-        onShowSnackBar = onShowSnackBar
+        onDaySelected = setupViewModel::toggleDay
     )
 }
 
@@ -55,17 +61,13 @@ fun SetupRoute(
 fun SetupScreen(
     onAddAlarm: (Alarm) -> Unit,
     selectedDays: List<Int>,
-    onDaySelected: (Int) -> Unit,
-    onShowSnackBar: (String) -> Unit,
+    onDaySelected: (Int) -> Unit
 ) {
     var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
-
     var isAlarmRepeated by remember { mutableStateOf(true) }
-
     val categories = listOf("일반", "중요", "기타")
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var statusMessage by remember { mutableStateOf("") }
-
     val days = DayOfWeek.entries.toTypedArray()
 
     Column(
@@ -137,17 +139,21 @@ fun SetupScreen(
             onStatusMessageChange = { statusMessage = it }
         )
 
-        ConfirmButton {
-            onAddAlarm(
-                Alarm(
-                    time = time,
-                    statusMessage = statusMessage,
-                    daysOfWeek = selectedDays,
-                    category = selectedCategory,
-                    isRepeating = isAlarmRepeated,
+        Button(
+            onClick = {
+                onAddAlarm(
+                    Alarm(
+                        time = time,
+                        statusMessage = statusMessage,
+                        daysOfWeek = selectedDays,
+                        category = selectedCategory,
+                        isRepeating = isAlarmRepeated,
+                    )
                 )
-            )
-            onShowSnackBar("추가 성공")
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "확인")
         }
     }
 }
@@ -158,7 +164,6 @@ fun SetupScreenPreview() {
     SetupScreen(
         onAddAlarm = {},
         selectedDays = emptyList(),
-        onDaySelected = {},
-        onShowSnackBar = {}
+        onDaySelected = {}
     )
 }
