@@ -23,4 +23,8 @@ class AlarmDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override fun getAlarmById(alarmId: Long): Flow<AlarmEntity?> {
+        TODO("Not yet implemented")
+    }
+
 }

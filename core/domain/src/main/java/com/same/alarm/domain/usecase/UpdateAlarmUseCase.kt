@@ -10,13 +10,10 @@ class UpdateAlarmUseCase @Inject constructor(
     private val alarmHelper: AlarmHelper
 ) {
     suspend operator fun invoke(alarm: Alarm): Result<Unit> {
-        return try {
+        return runCatching {
             alarmHelper.unScheduleAlarm(alarm)
             alarmRepository.updateAlarm(alarm)
             alarmHelper.scheduleAlarm(alarm)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
         }
     }
 }

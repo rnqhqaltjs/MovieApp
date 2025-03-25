@@ -1,4 +1,4 @@
-package com.same.alarm.edit.component
+package com.same.alarm.ui
 
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
@@ -31,7 +31,7 @@ import java.time.LocalTime
 
 @Composable
 fun TimeWheelPicker(
-    time: LocalTime,
+    time: LocalTime = LocalTime.of(9, 0),
     onTimeSelected: (LocalTime) -> Unit
 ) {
     val initialHour = time.hour - 1
