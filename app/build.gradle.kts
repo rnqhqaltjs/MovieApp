@@ -24,10 +24,12 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:database"))
     implementation(project(":core:model"))
+    implementation(project(":core:datastore"))
 
     implementation(project(":feature:main"))
     implementation(project(":feature:alarm"))
     implementation(project(":feature:calendar"))
+    implementation(project(":feature:login"))
     implementation(libs.androidx.hilt.common)
 
     testImplementation(libs.junit)
