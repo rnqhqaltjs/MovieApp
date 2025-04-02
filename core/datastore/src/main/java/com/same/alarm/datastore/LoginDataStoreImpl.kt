@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LoginDataStoreImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ): LoginDataStore {
-    override val accessToken: Flow<String> = dataStore.data
+    override fun getAccessToken(): Flow<String> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())

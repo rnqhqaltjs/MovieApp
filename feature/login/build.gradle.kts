@@ -17,4 +17,6 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
     implementation(project(":feature:main"))
+
+    implementation(libs.v2.user)
 }

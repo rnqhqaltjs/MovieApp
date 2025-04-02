@@ -18,7 +18,7 @@ class LoginActivity : ComponentActivity() {
         setContent {
             AlarmAppTheme {
                 LoginRoute(
-                    onLoginClick = {
+                    onLoginSuccess = {
                         navigateToMain()
                     }
                 )
