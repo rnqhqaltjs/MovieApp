@@ -1,7 +1,7 @@
 package com.same.alarm.network.di
 
-import com.same.alarm.data.datasource.LoginDataSource
-import com.same.alarm.network.datasource.LoginDataSourceImpl
+import com.same.alarm.data.datasource.AuthDataSource
+import com.same.alarm.network.datasource.AuthDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ internal abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLoginDataSource(loginDataSourceImpl: LoginDataSourceImpl): LoginDataSource
+    abstract fun bindLoginDataSource(authDataSourceImpl: AuthDataSourceImpl): AuthDataSource
 
 }

@@ -1,8 +1,9 @@
 package com.same.alarm.domain.repository
 
-import com.same.alarm.model.Login
+import com.same.alarm.model.LoginRequest
+import com.same.alarm.model.LoginResponse
 
 interface AuthRepository {
     suspend fun saveAccessToken(token: String)
-    suspend fun login(kakaoToken: String): Login
+    suspend fun login(kakaoAccessToken: String, loginRequest: LoginRequest): LoginResponse
 }

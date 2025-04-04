@@ -1,6 +1,6 @@
 package com.same.alarm.data.model
 
-data class LoginEntity(
+data class LoginResponseEntity(
     val accessToken: String,
     val refreshToken: String
 )

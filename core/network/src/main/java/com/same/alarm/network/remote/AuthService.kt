@@ -1,7 +1,15 @@
 package com.same.alarm.network.remote
 
-import com.same.alarm.data.model.LoginEntity
+import com.same.alarm.network.model.LoginRequestDto
+import com.same.alarm.network.model.LoginResponseDto
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
 
 interface AuthService {
-    suspend fun login(kakaoToken: String): LoginEntity
+    @POST("login")
+    suspend fun login(
+        @Header("Authorization") accessToken: String,
+        @Body loginRequestDto: LoginRequestDto
+    ): LoginResponseDto
 }

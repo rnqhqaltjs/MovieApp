@@ -1,6 +1,6 @@
 package com.same.alarm.model
 
-data class Login(
+data class LoginResponse(
     val accessToken: String,
     val refreshToken: String
 )

@@ -1,22 +1,17 @@
 package com.same.alarm.data.mapper
 
-import com.same.alarm.data.model.AlarmEntity
-import com.same.alarm.data.model.LoginEntity
-import com.same.alarm.model.Alarm
-import com.same.alarm.model.Login
+import com.same.alarm.data.model.LoginRequestEntity
+import com.same.alarm.data.model.LoginResponseEntity
+import com.same.alarm.model.LoginRequest
+import com.same.alarm.model.LoginResponse
 
 object AuthMapper {
-    fun LoginEntity.toDomain(): Login {
-        return Login(
-            accessToken = this.accessToken,
-            refreshToken = this.refreshToken
-        )
-    }
+    fun LoginRequest.toEntity() = LoginRequestEntity(
+        authType = authType
+    )
 
-    fun Login.toEntity(): LoginEntity {
-        return LoginEntity(
-            accessToken = this.accessToken,
-            refreshToken = this.refreshToken
-        )
-    }
+    fun LoginResponseEntity.toModel() = LoginResponse(
+        accessToken = accessToken,
+        refreshToken = refreshToken
+    )
 }
