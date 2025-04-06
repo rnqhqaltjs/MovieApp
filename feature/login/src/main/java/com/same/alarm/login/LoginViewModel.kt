@@ -1,7 +1,6 @@
 package com.same.alarm.login
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
@@ -36,8 +35,8 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun handleLoginSuccess(token: OAuthToken) {
         loginUseCase(token.accessToken, LoginRequest("kakao"))
-            .onSuccess {
-                _loginEvent.emit(LoginState.Success)
+            .onSuccess { isNewUser ->
+                _loginEvent.emit(LoginState.Success(isNewUser))
 
             }
             .onFailure { error ->
@@ -47,6 +46,6 @@ class LoginViewModel @Inject constructor(
 }
 
 sealed class LoginState {
-    data object Success : LoginState()
+    data class Success(val isNewUser: Boolean) : LoginState()
     data class Failure(val error: String) : LoginState()
 }

@@ -7,10 +7,14 @@ import javax.inject.Inject
 class LoginUseCase @Inject constructor(
     private val authRepository: AuthRepository
 ) {
-    suspend operator fun invoke(kakaoAccessToken: String, loginRequest: LoginRequest): Result<Unit> {
+    suspend operator fun invoke(kakaoAccessToken: String, loginRequest: LoginRequest): Result<Boolean> {
         return runCatching {
-            val login = authRepository.login(kakaoAccessToken = kakaoAccessToken, loginRequest)
+            val login = authRepository.login(
+                kakaoAccessToken = kakaoAccessToken,
+                loginRequest
+            )
             authRepository.saveAccessToken(login.accessToken)
+            true
         }
     }
 }

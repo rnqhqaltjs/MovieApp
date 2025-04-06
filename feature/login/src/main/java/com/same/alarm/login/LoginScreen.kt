@@ -14,18 +14,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun LoginRoute(
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (Boolean) -> Unit,
     onShowSnackBar: (String) -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
 //        loginViewModel.loginEvent.collect {
 //            when (it) {
-//                is LoginState.Success -> onLoginSuccess()
+//                is LoginState.Success -> onLoginSuccess(it.isNewUser)
 //                is LoginState.Failure -> onShowSnackBar(it.error)
 //            }
 //        }
-        onLoginSuccess()
+        onLoginSuccess(false)
     }
 
     LoginScreen(
