@@ -137,7 +137,7 @@ fun DrawDot(center: Offset, size: Float, color: Color = Color.Black) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun AlarmScreenPreview() {
     AlarmScreen(
         startAlarm = {},
         stopAlarm = {}

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -216,7 +217,14 @@ fun AlarmItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text(text = "알람 ID: ${alarm.id}", style = MaterialTheme.typography.bodyMedium)
+            if (alarm.isPinned) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "고정된 알람",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
             Text(
                 text = "시간: ${alarm.time.format(DateTimeFormatter.ofPattern("HH:mm"))}",
                 style = MaterialTheme.typography.bodyMedium
