@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
-    @POST("login")
+    @POST("/login")
     suspend fun login(
         @Header("Authorization") accessToken: String,
         @Body loginRequestDto: LoginRequestDto

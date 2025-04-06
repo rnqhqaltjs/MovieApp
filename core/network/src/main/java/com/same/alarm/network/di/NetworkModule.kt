@@ -54,6 +54,6 @@ object NetworkModule {
             .Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
-            .baseUrl("https://youarejustlikeme-production.up.railway.app/")
+            .baseUrl("https://17a6-125-190-25-106.ngrok-free.app")
             .build()
 }

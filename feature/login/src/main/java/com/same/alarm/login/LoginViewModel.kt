@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun handleLoginSuccess(token: OAuthToken) {
-        loginUseCase(token.accessToken, LoginRequest("KAKAO"))
+        loginUseCase(token.accessToken, LoginRequest("kakao"))
             .onSuccess {
                 _loginEvent.emit(LoginState.Success)
 
