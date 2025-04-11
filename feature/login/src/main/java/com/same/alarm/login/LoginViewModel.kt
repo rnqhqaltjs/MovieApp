@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.same.alarm.domain.usecase.LoginUseCase
+import com.same.alarm.domain.usecase.TryAutoLoginUseCase
 import com.same.alarm.model.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,10 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val tryAutoLoginUseCase: TryAutoLoginUseCase
 ) : ViewModel() {
     private val _loginEvent = MutableSharedFlow<LoginState>(replay = 0)
     val loginEvent = _loginEvent.asSharedFlow()
+
+    init {
+        tryAutoLogin()
+    }
 
     fun loginWithKakao() {
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
@@ -42,6 +48,19 @@ class LoginViewModel @Inject constructor(
             .onFailure { error ->
                 _loginEvent.emit(LoginState.Failure(error.toString()))
             }
+    }
+
+    private fun tryAutoLogin() {
+        viewModelScope.launch {
+            tryAutoLoginUseCase()
+                .onSuccess {
+                    _loginEvent.emit(LoginState.Success(false))
+
+                }
+                .onFailure { error ->
+                    _loginEvent.emit(LoginState.Failure(error.toString()))
+                }
+        }
     }
 }
 

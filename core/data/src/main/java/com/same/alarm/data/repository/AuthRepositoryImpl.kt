@@ -1,20 +1,23 @@
 package com.same.alarm.data.repository
 
 import com.same.alarm.data.datasource.AuthDataSource
-import com.same.alarm.data.datasource.LoginDataStore
+import com.same.alarm.data.datasource.TokenStorage
 import com.same.alarm.data.mapper.AuthMapper.toEntity
 import com.same.alarm.data.mapper.AuthMapper.toModel
 import com.same.alarm.domain.repository.AuthRepository
 import com.same.alarm.model.LoginRequest
 import com.same.alarm.model.LoginResponse
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val loginDataStore: LoginDataStore,
+    private val tokenStorage: TokenStorage,
     private val authDataSource: AuthDataSource
 ) : AuthRepository {
+    override fun getAccessToken(): Flow<String> = tokenStorage.getAccessToken()
+
     override suspend fun saveAccessToken(token: String) {
-        return loginDataStore.saveLoginToken(token)
+        return tokenStorage.saveLoginToken(token)
     }
 
     override suspend fun login(

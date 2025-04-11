@@ -47,7 +47,9 @@ internal fun LoginNavHost(
                     snackbarHostState.showMessage(coroutineScope, message)
                 },
             )
-            userInfoInputNavGraph()
+            userInfoInputNavGraph(
+                onUserInputComplete = navigateToMain
+            )
         }
     }
 }

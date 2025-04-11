@@ -2,7 +2,7 @@ package com.same.alarm.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.same.alarm.data.datasource.LoginDataStore
+import com.same.alarm.data.datasource.TokenStorage
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class LoginDataStoreImpl @Inject constructor(
+class TokenStorageImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): LoginDataStore {
+): TokenStorage {
     override fun getAccessToken(): Flow<String> = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
