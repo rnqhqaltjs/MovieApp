@@ -7,7 +7,7 @@ import com.same.alarm.model.LoginResponse
 
 object AuthMapper {
     fun LoginRequest.toEntity() = LoginRequestEntity(
-        authType = authType
+        authType = authType.toString().lowercase()
     )
 
     fun LoginResponseEntity.toModel() = LoginResponse(

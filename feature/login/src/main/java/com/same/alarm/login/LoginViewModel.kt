@@ -7,11 +7,14 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.same.alarm.domain.usecase.LoginUseCase
 import com.same.alarm.domain.usecase.TryAutoLoginUseCase
+import com.same.alarm.model.AuthType
 import com.same.alarm.model.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onSubscription
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,11 +25,13 @@ class LoginViewModel @Inject constructor(
     private val tryAutoLoginUseCase: TryAutoLoginUseCase
 ) : ViewModel() {
     private val _loginEvent = MutableSharedFlow<LoginState>(replay = 0)
-    val loginEvent = _loginEvent.asSharedFlow()
-
-    init {
-        tryAutoLogin()
-    }
+    val loginEvent = _loginEvent
+        .onSubscription {
+            tryAutoLogin()
+        }.shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000)
+        )
 
     fun loginWithKakao() {
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
@@ -40,7 +45,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun handleLoginSuccess(token: OAuthToken) {
-        loginUseCase(token.accessToken, LoginRequest("kakao"))
+        loginUseCase(token.accessToken, LoginRequest(AuthType.KAKAO))
             .onSuccess { isNewUser ->
                 _loginEvent.emit(LoginState.Success(isNewUser))
 
@@ -53,8 +58,8 @@ class LoginViewModel @Inject constructor(
     private fun tryAutoLogin() {
         viewModelScope.launch {
             tryAutoLoginUseCase()
-                .onSuccess {
-                    _loginEvent.emit(LoginState.Success(false))
+                .onSuccess { isNewUser ->
+                    _loginEvent.emit(LoginState.Success(isNewUser))
 
                 }
                 .onFailure { error ->
