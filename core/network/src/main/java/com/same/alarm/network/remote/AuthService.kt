@@ -15,4 +15,6 @@ interface AuthService {
         @Body loginRequestDto: LoginRequestDto
     ): LoginResponseDto
 
+    @GET("/auth/logout")
+    suspend fun logout()
 }

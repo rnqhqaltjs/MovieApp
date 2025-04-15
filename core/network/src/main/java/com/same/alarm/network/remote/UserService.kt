@@ -6,5 +6,4 @@ import retrofit2.http.GET
 interface UserService {
     @GET("/users/current")
     suspend fun getUserInfo(): UserInfoResponseDto
-
 }

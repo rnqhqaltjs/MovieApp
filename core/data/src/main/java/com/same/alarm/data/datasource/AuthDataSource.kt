@@ -8,4 +8,6 @@ interface AuthDataSource {
         kakaoAccessToken: String,
         loginRequestEntity: LoginRequestEntity
     ): LoginResponseEntity
+
+    suspend fun logout()
 }

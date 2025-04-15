@@ -21,4 +21,8 @@ class AuthDataSourceImpl @Inject constructor(
         )
         return response.toEntity()
     }
+
+    override suspend fun logout() {
+        return authService.logout()
+    }
 }

@@ -32,4 +32,8 @@ class AuthRepositoryImpl @Inject constructor(
 
         return response.toModel()
     }
+
+    override suspend fun logout() {
+        return authDataSource.logout()
+    }
 }
