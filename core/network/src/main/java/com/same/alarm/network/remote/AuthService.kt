@@ -2,6 +2,7 @@ package com.same.alarm.network.remote
 
 import com.same.alarm.network.model.LoginRequestDto
 import com.same.alarm.network.model.LoginResponseDto
+import com.same.alarm.network.model.ReissueResponseDto
 import com.same.alarm.network.model.UserInfoResponseDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,6 +16,9 @@ interface AuthService {
         @Body loginRequestDto: LoginRequestDto
     ): LoginResponseDto
 
-    @GET("/auth/logout")
+    @POST("/auth/reissue")
+    suspend fun reissue(@Header("Authorization") refreshToken: String) : ReissueResponseDto
+
+    @POST("/auth/logout")
     suspend fun logout()
 }

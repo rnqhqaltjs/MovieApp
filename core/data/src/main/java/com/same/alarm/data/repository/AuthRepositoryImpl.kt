@@ -17,7 +17,13 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getAccessToken(): Flow<String> = tokenStorage.getAccessToken()
 
     override suspend fun saveAccessToken(token: String) {
-        return tokenStorage.saveLoginToken(token)
+        return tokenStorage.saveAccessToken(BEARER + token)
+    }
+
+    override fun getRefreshToken(): Flow<String> = tokenStorage.getRefreshToken()
+
+    override suspend fun saveRefreshToken(token: String) {
+        return tokenStorage.saveRefreshToken(BEARER + token)
     }
 
     override suspend fun login(
@@ -26,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
     ): LoginResponse {
         val loginRequestEntity = loginRequest.toEntity()
         val response = authDataSource.login(
-            kakaoAccessToken = "Bearer $kakaoAccessToken",
+            kakaoAccessToken = BEARER + kakaoAccessToken,
             loginRequestEntity = loginRequestEntity
         )
 
@@ -35,5 +41,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         return authDataSource.logout()
+    }
+
+    companion object {
+        const val BEARER = "Bearer "
     }
 }

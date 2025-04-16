@@ -16,6 +16,7 @@ class LoginUseCase @Inject constructor(
                 loginRequest
             )
             authRepository.saveAccessToken(login.accessToken)
+            authRepository.saveRefreshToken(login.refreshToken)
 
             val userInfo = userRepository.getUserInfo()
             userInfo.isNewUser()

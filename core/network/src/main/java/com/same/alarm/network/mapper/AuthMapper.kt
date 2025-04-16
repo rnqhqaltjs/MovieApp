@@ -4,6 +4,7 @@ import com.same.alarm.data.model.LoginRequestEntity
 import com.same.alarm.data.model.LoginResponseEntity
 import com.same.alarm.network.model.LoginRequestDto
 import com.same.alarm.network.model.LoginResponseDto
+import com.same.alarm.network.model.ReissueResponseDto
 
 object AuthMapper {
     fun LoginRequestEntity.toDto() = LoginRequestDto(
@@ -11,6 +12,7 @@ object AuthMapper {
     )
 
     fun LoginResponseDto.toEntity() = LoginResponseEntity(
-        accessToken = accessToken
+        accessToken = accessToken,
+        refreshToken = refreshToken
     )
 }

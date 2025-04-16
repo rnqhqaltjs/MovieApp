@@ -12,8 +12,13 @@ fun NavController.navigateToLogin(navOptions: NavOptions) {
     navigate(AuthRoute.Login, navOptions = navOptions)
 }
 
-fun NavController.navigateToUserInfoInput(navOptions: NavOptions? = null) {
-    navigate(AuthRoute.UserInfoInput, navOptions = navOptions)
+fun NavController.navigateToUserInfoInput() {
+    navigate(AuthRoute.UserInfoInput) {
+        popUpTo(AuthRoute.Login) {
+            inclusive = true
+        }
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.loginNavGraph(

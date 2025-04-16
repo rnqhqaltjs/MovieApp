@@ -62,9 +62,6 @@ class LoginViewModel @Inject constructor(
                     _loginEvent.emit(LoginState.Success(isNewUser))
 
                 }
-                .onFailure { error ->
-                    _loginEvent.emit(LoginState.Failure(error.toString()))
-                }
         }
     }
 }

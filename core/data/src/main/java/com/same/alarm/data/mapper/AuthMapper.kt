@@ -11,6 +11,7 @@ object AuthMapper {
     )
 
     fun LoginResponseEntity.toModel() = LoginResponse(
-        accessToken = accessToken
+        accessToken = accessToken,
+        refreshToken = refreshToken
     )
 }

@@ -9,7 +9,7 @@ data class UserInfoResponse(
     val address: String
 ) {
     fun isNewUser(): Boolean {
-        return name.isEmpty() || role.isEmpty()
+        return age == 0
     }
 }
 
