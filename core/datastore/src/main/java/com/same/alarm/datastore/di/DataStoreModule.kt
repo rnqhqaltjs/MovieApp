@@ -20,6 +20,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
+    private const val ALARM_PREFERENCES_NAME = "Alarm"
 
     @Singleton
     @Provides
@@ -30,7 +31,7 @@ object DataStoreModule {
                 emptyPreferences()
             },
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-            produceFile = { context.preferencesDataStoreFile("Alarm") }
+            produceFile = { context.preferencesDataStoreFile(ALARM_PREFERENCES_NAME) }
         )
     }
 }

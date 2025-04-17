@@ -1,7 +1,7 @@
 package com.same.alarm.datastore.di
 
-import com.same.alarm.data.datasource.LoginDataStore
-import com.same.alarm.datastore.LoginDataStoreImpl
+import com.same.alarm.data.datasource.TokenStorage
+import com.same.alarm.datastore.TokenStorageImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ internal abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLoginDataStore(loginDataStoreImpl: LoginDataStoreImpl): LoginDataStore
+    abstract fun bindLoginDataStore(tokenStorageImpl: TokenStorageImpl): TokenStorage
 
 }

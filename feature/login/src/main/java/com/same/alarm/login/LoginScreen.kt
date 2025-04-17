@@ -11,21 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.same.alarm.login.model.LoginState
 
 @Composable
 fun LoginRoute(
-    onLoginSuccess: () -> Unit,
+    onLoginSuccess: (Boolean) -> Unit,
     onShowSnackBar: (String) -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-//        loginViewModel.loginEvent.collect {
-//            when (it) {
-//                is LoginState.Success -> onLoginSuccess()
-//                is LoginState.Failure -> onShowSnackBar(it.error)
-//            }
-//        }
-        onLoginSuccess()
+        loginViewModel.loginEvent.collect {
+            when (it) {
+                is LoginState.Success -> onLoginSuccess(it.isNewUser)
+                is LoginState.Failure -> onShowSnackBar(it.error)
+            }
+        }
     }
 
     LoginScreen(

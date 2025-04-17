@@ -17,3 +17,11 @@ sealed interface MainTabRoute : Route {
     @Serializable
     data object List : MainTabRoute
 }
+
+sealed interface AuthRoute : Route {
+    @Serializable
+    data object Login : AuthRoute
+
+    @Serializable
+    data object UserInfoInput : AuthRoute
+}
