@@ -1,4 +1,4 @@
-package com.same.alarm.model
+package com.same.alarm.model.login
 
 data class LoginResponse(
     val accessToken: String,

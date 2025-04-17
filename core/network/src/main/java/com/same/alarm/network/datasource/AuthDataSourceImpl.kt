@@ -1,8 +1,8 @@
 package com.same.alarm.network.datasource
 
 import com.same.alarm.data.datasource.AuthDataSource
-import com.same.alarm.data.model.LoginRequestEntity
-import com.same.alarm.data.model.LoginResponseEntity
+import com.same.alarm.data.model.login.LoginRequestEntity
+import com.same.alarm.data.model.login.LoginResponseEntity
 import com.same.alarm.network.mapper.AuthMapper.toDto
 import com.same.alarm.network.mapper.AuthMapper.toEntity
 import com.same.alarm.network.remote.AuthService

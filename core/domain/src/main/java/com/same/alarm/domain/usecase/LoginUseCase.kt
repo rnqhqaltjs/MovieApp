@@ -2,7 +2,7 @@ package com.same.alarm.domain.usecase
 
 import com.same.alarm.domain.repository.AuthRepository
 import com.same.alarm.domain.repository.UserRepository
-import com.same.alarm.model.LoginRequest
+import com.same.alarm.model.login.LoginRequest
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(

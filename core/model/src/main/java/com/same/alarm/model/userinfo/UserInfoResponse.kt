@@ -1,4 +1,4 @@
-package com.same.alarm.model
+package com.same.alarm.model.userinfo
 
 data class UserInfoResponse(
     val name: String,
@@ -11,8 +11,4 @@ data class UserInfoResponse(
     fun isNewUser(): Boolean {
         return age == 0
     }
-}
-
-enum class Gender {
-    MALE, FEMALE
 }

@@ -48,7 +48,10 @@ internal fun LoginNavHost(
                 },
             )
             userInfoInputNavGraph(
-                onUserInputComplete = navigateToMain
+                onUserInfoInputSuccess = { navigateToMain() },
+                onShowSnackBar = { message ->
+                    snackbarHostState.showMessage(coroutineScope, message)
+                }
             )
         }
     }

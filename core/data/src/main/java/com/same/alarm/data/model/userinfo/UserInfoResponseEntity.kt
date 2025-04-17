@@ -1,4 +1,4 @@
-package com.same.alarm.data.model
+package com.same.alarm.data.model.userinfo
 
 data class UserInfoResponseEntity(
     val name: String,
@@ -9,6 +9,3 @@ data class UserInfoResponseEntity(
     val address: String
 )
 
-enum class Gender {
-    MALE, FEMALE
-}

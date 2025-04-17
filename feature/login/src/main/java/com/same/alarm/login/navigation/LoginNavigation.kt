@@ -34,11 +34,13 @@ fun NavGraphBuilder.loginNavGraph(
 }
 
 fun NavGraphBuilder.userInfoInputNavGraph(
-    onUserInputComplete: () -> Unit
+    onUserInfoInputSuccess: () -> Unit,
+    onShowSnackBar: (String) -> Unit
 ) {
     composable<AuthRoute.UserInfoInput> {
         UserInfoInputRoute(
-            onUserInputComplete = onUserInputComplete
+            onUserInfoInputSuccess = onUserInfoInputSuccess,
+            onShowSnackBar = onShowSnackBar
         )
     }
 }

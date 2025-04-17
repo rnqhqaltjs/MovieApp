@@ -7,8 +7,9 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.same.alarm.domain.usecase.LoginUseCase
 import com.same.alarm.domain.usecase.TryAutoLoginUseCase
-import com.same.alarm.model.AuthType
-import com.same.alarm.model.LoginRequest
+import com.same.alarm.login.model.LoginState
+import com.same.alarm.model.login.AuthType
+import com.same.alarm.model.login.LoginRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -60,13 +61,8 @@ class LoginViewModel @Inject constructor(
             tryAutoLoginUseCase()
                 .onSuccess { isNewUser ->
                     _loginEvent.emit(LoginState.Success(isNewUser))
-
                 }
         }
     }
 }
 
-sealed class LoginState {
-    data class Success(val isNewUser: Boolean) : LoginState()
-    data class Failure(val error: String) : LoginState()
-}
