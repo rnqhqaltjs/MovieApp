@@ -51,6 +51,7 @@ fun UserInfoInputRoute(
 
     UserInfoInputScreen(
         userName = userName,
+        updateUserName = userInfoInputViewModel::updateUserName,
         onSaveUser = userInfoInputViewModel::saveUserInfo
     )
 }
@@ -59,9 +60,9 @@ fun UserInfoInputRoute(
 @Composable
 fun UserInfoInputScreen(
     userName: String,
+    updateUserName: (String) -> Unit,
     onSaveUser: (UserInfoRequest) -> Unit
 ) {
-    var name by remember { mutableStateOf(userName) }
     var age by remember { mutableIntStateOf(0) }
     var gender by remember { mutableStateOf(Gender.MALE) }
     var job by remember { mutableStateOf("") }
@@ -77,8 +78,8 @@ fun UserInfoInputScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
+            value = userName,
+            onValueChange = { updateUserName(it) },
             label = { Text("이름/별명") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -114,7 +115,9 @@ fun UserInfoInputScreen(
 
         OutlinedTextField(
             value = age.toString(),
-            onValueChange = { age = it.toInt() },
+            onValueChange = {
+                age = it.toIntOrNull() ?: 0
+            },
             label = { Text("나이") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
@@ -136,7 +139,7 @@ fun UserInfoInputScreen(
 
         Button(
             onClick = { onSaveUser(
-                UserInfoRequest(name, age, gender, job, address)
+                UserInfoRequest(userName, age, gender, job, address)
             ) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -152,6 +155,7 @@ fun UserInfoInputScreen(
 fun UserInfoInputScreenPreview() {
     UserInfoInputScreen(
         userName = "",
+        updateUserName = {},
         onSaveUser = {}
     )
 }

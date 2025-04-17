@@ -42,6 +42,10 @@ class UserInfoInputViewModel @Inject constructor(
         }
     }
 
+    fun updateUserName(newName: String) {
+        _userName.value = newName
+    }
+
     fun saveUserInfo(userInfoRequest: UserInfoRequest) {
         viewModelScope.launch {
             saveUserInfoUseCase(userInfoRequest)
@@ -49,8 +53,10 @@ class UserInfoInputViewModel @Inject constructor(
                     _userInfoInputEvent.emit(UserInfoInputState.Success)
             }
                 .onFailure { error ->
-                    _userInfoInputEvent.emit(UserInfoInputState.Failure(error.toString()))
-            }
+                    error.message?.let {
+                        _userInfoInputEvent.emit(UserInfoInputState.Failure(it))
+                    }
+                }
         }
     }
 }
