@@ -23,7 +23,7 @@ internal class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = MainTab.SETUP.route
+    val startDestination = MainTab.LIST.route
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
@@ -41,12 +41,9 @@ internal class MainNavigator(
 
         when (tab) {
             MainTab.SETUP -> navController.navigateToSetup(navOptions)
+            MainTab.LIST -> navController.navigateToList(navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions)
         }
-    }
-
-    fun navigateToList() {
-        navController.navigateToList()
     }
 
     fun navigateToEdit(alarmId: Int) {

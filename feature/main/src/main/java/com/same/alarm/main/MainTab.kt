@@ -11,8 +11,13 @@ internal enum class MainTab(
 ) {
     SETUP(
         iconResId = R.drawable.ic_setup,
-        contentDescription = "알람",
+        contentDescription = "설정",
         MainTabRoute.Setup,
+    ),
+    LIST(
+        iconResId = R.drawable.ic_list,
+        contentDescription = "리스트",
+        MainTabRoute.List
     ),
     CALENDAR(
         iconResId = R.drawable.ic_calendar,

@@ -22,10 +22,14 @@ internal fun MainScreen(
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    val onShowSnackBar: (String) -> Unit = { message ->
+        snackBarHostState.showMessage(coroutineScope, message)
+    }
+
     MainScreenContent(
         navigator = navigator,
         snackBarHostState = snackBarHostState,
-        coroutineScope = coroutineScope
+        onShowSnackBar = onShowSnackBar
     )
 }
 
@@ -34,16 +38,14 @@ private fun MainScreenContent(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
     snackBarHostState: SnackbarHostState,
-    coroutineScope: CoroutineScope
+    onShowSnackBar: (String) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
         content = { padding ->
             MainNavHost(
                 navigator = navigator,
-                onShowSnackBar = { message ->
-                    snackBarHostState.showMessage(coroutineScope, message)
-                },
+                onShowSnackBar = onShowSnackBar,
                 padding = padding
             )
         },
@@ -55,8 +57,7 @@ private fun MainScreenContent(
                 visible = navigator.shouldShowBottomBar(),
                 tabs = MainTab.entries,
                 currentTab = navigator.currentTab,
-                onTabSelected = { navigator.navigate(it) },
-                onBottomSheetClicked = { navigator.navigateToList() }
+                onTabSelected = { navigator.navigate(it) }
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) }
