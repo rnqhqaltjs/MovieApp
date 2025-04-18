@@ -22,20 +22,7 @@ fun NavGraphBuilder.listNavGraph(
     onEditClicked: (Alarm) -> Unit,
     onAlarmUpdated: () -> Unit
 ) {
-    composable<MainTabRoute.List>(
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Up,
-                animationSpec = tween(700)
-            ) + fadeIn(animationSpec = tween(700))
-        },
-        exitTransition = {
-            slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Down,
-                animationSpec = tween(700)
-            ) + fadeOut(animationSpec = tween(700))
-        }
-    ) {
+    composable<MainTabRoute.List> {
         ListRoute(
             onEditClicked = onEditClicked
         )

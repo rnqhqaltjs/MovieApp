@@ -1,7 +1,6 @@
 package com.same.alarm.list
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -78,17 +76,6 @@ fun ListScreen(
             .statusBarsPadding()
             .noRippleClickable { resetRevealedState() }
     ) {
-        HorizontalDivider(
-            modifier = Modifier
-                .padding(bottom = 12.dp)
-                .fillMaxWidth(0.23f)
-                .align(Alignment.CenterHorizontally)
-                .clickable {
-                },
-            thickness = 4.dp,
-            color = MaterialTheme.colorScheme.outline
-        )
-
         Text(
             text = "알람 리스트",
             style = MaterialTheme.typography.headlineSmall,

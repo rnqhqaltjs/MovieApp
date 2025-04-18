@@ -41,8 +41,7 @@ internal fun MainBottomBar(
     visible: Boolean,
     tabs: List<MainTab>,
     currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit,
-    onBottomSheetClicked: () -> Unit
+    onTabSelected: (MainTab) -> Unit
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -76,17 +75,6 @@ internal fun MainBottomBar(
                     )
                 }
             }
-            HorizontalDivider(
-                modifier = Modifier
-                    .padding(top = 12.dp, bottom = 12.dp)
-                    .fillMaxWidth(0.23f)
-                    .align(Alignment.CenterHorizontally)
-                    .clickable {
-                        onBottomSheetClicked()
-                    },
-                thickness = 4.dp,
-                color = MaterialTheme.colorScheme.outline
-            )
         }
     }
 }
@@ -131,9 +119,8 @@ private fun MainBottomBarPreview() {
         MainBottomBar(
             visible = true,
             tabs = MainTab.entries,
-            currentTab = MainTab.SETUP,
-            onTabSelected = { },
-            onBottomSheetClicked = { }
+            currentTab = MainTab.LIST,
+            onTabSelected = {}
         )
     }
 }

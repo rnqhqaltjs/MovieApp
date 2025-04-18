@@ -20,12 +20,13 @@ fun LoginRoute(
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
-        loginViewModel.loginEvent.collect {
-            when (it) {
-                is LoginState.Success -> onLoginSuccess(it.isNewUser)
-                is LoginState.Failure -> onShowSnackBar(it.error)
-            }
-        }
+//        loginViewModel.loginEvent.collect {
+//            when (it) {
+//                is LoginState.Success -> onLoginSuccess(it.isNewUser)
+//                is LoginState.Failure -> onShowSnackBar(it.error)
+//            }
+//        }
+        onLoginSuccess(false)
     }
 
     LoginScreen(
