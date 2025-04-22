@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 sealed interface Route {
     @Serializable
     data class Edit(val alarmId: Int) : Route
+
+    @Serializable
+    data object SetupDetail : Route
 }
 
 sealed interface MainTabRoute : Route {

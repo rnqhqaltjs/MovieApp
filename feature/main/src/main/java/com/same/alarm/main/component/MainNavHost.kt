@@ -22,6 +22,7 @@ internal fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         setupNavGraph(
+            onDetailClick = { navigator.navigateToSetupDetail() },
             onShowSnackBar = onShowSnackBar
         )
         calendarNavGraph()

@@ -1,15 +1,16 @@
 package com.same.alarm.setup
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,28 +20,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.model.Alarm
-import com.same.alarm.setup.component.CategoryDropdown
-import com.same.alarm.setup.component.RepeatSwitchLabel
-import com.same.alarm.setup.component.StatusMessageInput
-import com.same.alarm.setup.component.TodayDateText
+import com.same.alarm.setup.component.TodayDateHeader
 import com.same.alarm.ui.TimeWheelPicker
 import java.time.DayOfWeek
 import java.time.LocalTime
-import java.time.format.TextStyle
-import java.util.Locale
 
 @Composable
 fun SetupRoute(
-    setupViewModel: SetupViewModel = hiltViewModel(),
+    onDetailClick: () -> Unit,
     onShowSnackBar: (String) -> Unit,
+    setupViewModel: SetupViewModel = hiltViewModel()
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
 
@@ -53,7 +53,8 @@ fun SetupRoute(
     SetupScreen(
         onAddAlarm = setupViewModel::addAlarm,
         selectedDays = selectedDays,
-        onDaySelected = setupViewModel::toggleDay
+        onDaySelected = setupViewModel::toggleDay,
+        onDetailClick = onDetailClick
     )
 }
 
@@ -61,7 +62,8 @@ fun SetupRoute(
 fun SetupScreen(
     onAddAlarm: (Alarm) -> Unit,
     selectedDays: List<Int>,
-    onDaySelected: (Int) -> Unit
+    onDaySelected: (Int) -> Unit,
+    onDetailClick: () -> Unit
 ) {
     var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
     var isAlarmRepeated by remember { mutableStateOf(true) }
@@ -72,75 +74,15 @@ fun SetupScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = Modifier.statusBarsPadding()
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .fillMaxSize()
     ) {
-        TodayDateText()
-
-        TimeWheelPicker { selectedTime ->
-            time = selectedTime
-        }
-
-        RepeatSwitchLabel(
-            label = "알람 반복",
-            isChecked = isAlarmRepeated,
-            onCheckedChange = { isAlarmRepeated = it }
-        )
-
-        Text(
-            text = "요일 반복",
-            fontSize = 18.sp,
-            modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            days.forEachIndexed { index, day ->
-                val isSelected = index in selectedDays
-
-                Text(
-                    text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
-                    fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(if (isSelected) Color.Blue else Color.LightGray)
-                        .clickable { onDaySelected(index) }
-                        .padding(8.dp)
-                )
-            }
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "상태 메시지",
-                fontSize = 18.sp,
-                modifier = Modifier.weight(1f)
-            )
-
-            CategoryDropdown(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = { selectedCategory = it }
-            )
-        }
-
-        StatusMessageInput(
-            statusMessage = statusMessage,
-            onStatusMessageChange = { statusMessage = it }
-        )
-
-        Button(
-            onClick = {
+        TodayDateHeader(
+            onRefreshClick = {},
+            onConfirmClick = {
                 onAddAlarm(
                     Alarm(
                         time = time,
@@ -150,11 +92,42 @@ fun SetupScreen(
                         isRepeating = isAlarmRepeated,
                     )
                 )
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "확인")
+            }
+        )
+
+//        Spacer(modifier = Modifier.height(83.dp))
+
+        TimeWheelPicker { selectedTime ->
+            time = selectedTime
         }
+//
+//        Spacer(modifier = Modifier.height(144.dp))
+
+        Text(
+            text = "기업디 회의",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+        )
+
+//        Spacer(modifier = Modifier.heightIn(31.dp))
+
+        Text(
+            text = "발표문 프린트 챙기기",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+        )
+
+//        Spacer(modifier = Modifier.height(31.dp))
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_down),
+            contentDescription = "arrow_down",
+            modifier = Modifier.noRippleClickable { onDetailClick() }
+        )
+
+        Spacer(modifier = Modifier.height(19.dp))
     }
 }
 
@@ -164,6 +137,7 @@ fun SetupScreenPreview() {
     SetupScreen(
         onAddAlarm = {},
         selectedDays = emptyList(),
-        onDaySelected = {}
+        onDaySelected = {},
+        onDetailClick = {}
     )
 }
