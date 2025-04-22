@@ -70,6 +70,6 @@ object NetworkModule {
             .Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
-            .baseUrl("https://82b2-125-190-25-106.ngrok-free.app/")
+            .baseUrl("https://ddbf-125-190-25-106.ngrok-free.app/")
             .build()
 }
