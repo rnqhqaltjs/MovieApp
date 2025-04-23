@@ -5,11 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,7 +29,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.setup.component.CategoryDropdown
 import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.component.StatusMessageInput
-import com.same.alarm.setup.component.TodayDateHeader
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
@@ -50,28 +49,17 @@ fun SetupDetailRoute(
 fun SetupDetailScreen(
     selectedDays: List<Int>,
     onDaySelected: (Int) -> Unit,
-
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         var isAlarmRepeated by remember { mutableStateOf(true) }
         val categories = listOf("일반", "중요", "기타")
         var selectedCategory by remember { mutableStateOf(categories[0]) }
         var statusMessage by remember { mutableStateOf("") }
         val days = DayOfWeek.entries.toTypedArray()
-
-        TodayDateHeader(
-            onRefreshClick = {},
-            onConfirmClick = {
-
-            }
-        )
 
         RepeatSwitchLabel(
             label = "알람 반복",
@@ -130,6 +118,8 @@ fun SetupDetailScreen(
             statusMessage = statusMessage,
             onStatusMessageChange = { statusMessage = it }
         )
+
+        Spacer(modifier = Modifier.height(19.dp))
     }
 }
 

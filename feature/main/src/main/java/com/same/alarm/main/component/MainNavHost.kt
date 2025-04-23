@@ -22,13 +22,12 @@ internal fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         setupNavGraph(
-            onDetailClick = { navigator.navigateToSetupDetail() },
             onShowSnackBar = onShowSnackBar
         )
         calendarNavGraph()
         listNavGraph(
             onEditClicked = { navigator.navigateToEdit(it.id) },
-            onAlarmUpdated = navigator::popBackStackIfNotSetup
+            onAlarmUpdated = navigator::popBackStack
         )
     }
 }

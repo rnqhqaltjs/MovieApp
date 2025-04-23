@@ -1,16 +1,11 @@
 package com.same.alarm.setup
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,9 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.model.Alarm
-import com.same.alarm.setup.component.TodayDateHeader
 import com.same.alarm.ui.TimeWheelPicker
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @Composable
@@ -70,30 +63,12 @@ fun SetupScreen(
     val categories = listOf("일반", "중요", "기타")
     var selectedCategory by remember { mutableStateOf(categories[0]) }
     var statusMessage by remember { mutableStateOf("") }
-    val days = DayOfWeek.entries.toTypedArray()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
-        TodayDateHeader(
-            onRefreshClick = {},
-            onConfirmClick = {
-                onAddAlarm(
-                    Alarm(
-                        time = time,
-                        statusMessage = statusMessage,
-                        daysOfWeek = selectedDays,
-                        category = selectedCategory,
-                        isRepeating = isAlarmRepeated,
-                    )
-                )
-            }
-        )
 
 //        Spacer(modifier = Modifier.height(83.dp))
 
