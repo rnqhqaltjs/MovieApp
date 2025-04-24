@@ -1,5 +1,6 @@
 package com.same.alarm.setup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.AddAlarmUseCase

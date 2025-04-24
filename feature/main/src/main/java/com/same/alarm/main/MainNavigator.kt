@@ -15,7 +15,6 @@ import com.same.alarm.list.navigation.navigateToList
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
 import com.same.alarm.setup.navigation.navigateToSetup
-import com.same.alarm.setup.navigation.navigateToSetupDetail
 
 internal class MainNavigator(
     val navController: NavHostController,
@@ -41,7 +40,7 @@ internal class MainNavigator(
         }
 
         when (tab) {
-            MainTab.SETUP -> navController.navigateToSetup(navOptions)
+            MainTab.SETUP -> navController.navigateToSetup(MainTabRoute.Setup, navOptions)
             MainTab.LIST -> navController.navigateToList(navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions)
         }
@@ -49,10 +48,6 @@ internal class MainNavigator(
 
     fun navigateToEdit(alarmId: Int) {
         navController.navigateToEdit(alarmId)
-    }
-
-    fun navigateToSetupDetail() {
-        navController.navigateToSetupDetail()
     }
 
     fun popBackStack() {

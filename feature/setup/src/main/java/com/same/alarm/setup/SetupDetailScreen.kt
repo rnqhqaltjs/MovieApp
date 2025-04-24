@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.setup.component.CategoryDropdown
 import com.same.alarm.setup.component.RepeatSwitchLabel
@@ -35,7 +34,7 @@ import java.util.Locale
 
 @Composable
 fun SetupDetailRoute(
-    setupViewModel: SetupViewModel = hiltViewModel()
+    setupViewModel: SetupViewModel
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
 

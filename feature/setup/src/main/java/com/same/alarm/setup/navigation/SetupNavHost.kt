@@ -9,14 +9,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
+import com.same.alarm.navigation.SetupRoute
 import com.same.alarm.setup.SetupDetailRoute
 import com.same.alarm.setup.SetupRoute
+import com.same.alarm.setup.SetupViewModel
 import com.same.alarm.setup.component.TodayDateHeader
 
 @Composable
@@ -24,6 +30,16 @@ fun SetupNavHost(
     onShowSnackBar: (String) -> Unit
 ) {
     val navController = rememberNavController()
+
+    LaunchedEffect(Unit) {
+        if (isSameCurrentDestination<SetupRoute.SetupDetail>(navController)) {
+            navController.navigate(SetupRoute.Setup) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -38,25 +54,37 @@ fun SetupNavHost(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = MainTabRoute.Setup,
+            startDestination = SetupRoute.Setup,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable<MainTabRoute.Setup>(
+            composable<SetupRoute.Setup>(
                 enterTransition = { slideInVertically { -it } + fadeIn() },
                 exitTransition = { slideOutVertically { -it } + fadeOut() }
-            ) {
+            ) { backStackEntry ->
+                val setupViewModel: SetupViewModel = hiltViewModel(backStackEntry)
                 SetupRoute(
-                    onDetailClick = { navController.navigateToSetupDetail() },
+                    setupViewModel = setupViewModel,
+                    onDetailClick = navController::navigateToSetupDetail,
                     onShowSnackBar = onShowSnackBar
                 )
             }
 
-            composable<Route.SetupDetail>(
+            composable<SetupRoute.SetupDetail>(
                 enterTransition = { slideInVertically { it } + fadeIn() },
                 exitTransition = { slideOutVertically { it } + fadeOut() }
             ) {
-                SetupDetailRoute()
+                val setupViewModel: SetupViewModel =
+                    navController.previousBackStackEntry?.let {
+                        hiltViewModel(it)
+                    } ?: hiltViewModel()
+                SetupDetailRoute(
+                    setupViewModel = setupViewModel
+                )
             }
         }
     }
+}
+
+private inline fun <reified T : Route> isSameCurrentDestination(navController: NavHostController): Boolean {
+    return navController.currentDestination?.hasRoute<T>() == true
 }
