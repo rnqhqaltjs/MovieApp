@@ -20,11 +20,28 @@ class SetupViewModel @Inject constructor(
     private val addAlarmUseCase: AddAlarmUseCase
 ) : ViewModel() {
 
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
+    private val _statusMessage = MutableStateFlow("")
+    val statusMessage: StateFlow<String> = _statusMessage.asStateFlow()
+
     private val _selectedDays = MutableStateFlow<List<Int>>(emptyList())
     val selectedDays: StateFlow<List<Int>> = _selectedDays.asStateFlow()
 
+    private val _selectedCategory = MutableStateFlow("")
+    val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+
     private val _addEvent = MutableSharedFlow<Unit>(replay = 0)
     val addEvent: SharedFlow<Unit> = _addEvent
+
+    fun updateTitle(newTitle: String) {
+        _title.value = newTitle
+    }
+
+    fun updateStatusMessage(newMessage: String) {
+        _statusMessage.value = newMessage
+    }
 
     fun toggleDay(day: Int) {
         _selectedDays.update { currentDays ->
@@ -33,6 +50,12 @@ class SetupViewModel @Inject constructor(
             } else {
                 (currentDays + day).sorted()
             }
+        }
+    }
+
+    fun toggleCategory(category: String) {
+        _selectedCategory.update { currentCategory ->
+            if (currentCategory == category) "" else category
         }
     }
 
