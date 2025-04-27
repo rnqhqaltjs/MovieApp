@@ -30,6 +30,8 @@ fun SetupNavHost(
     onShowSnackBar: (String) -> Unit
 ) {
     val navController = rememberNavController()
+    var onConfirmClick: () -> Unit = {}
+    var onRefreshClick: () -> Unit = {}
 
     LaunchedEffect(Unit) {
         if (isSameCurrentDestination<SetupRoute.SetupDetail>(navController)) {
@@ -44,8 +46,8 @@ fun SetupNavHost(
     Scaffold(
         topBar = {
             TodayDateHeader(
-                onRefreshClick = {},
-                onConfirmClick = {}
+                onRefreshClick = { onRefreshClick() },
+                onConfirmClick = { onConfirmClick() }
             )
         },
         modifier = Modifier
@@ -62,11 +64,15 @@ fun SetupNavHost(
                 exitTransition = { slideOutVertically { -it } + fadeOut() }
             ) { backStackEntry ->
                 val setupViewModel: SetupViewModel = hiltViewModel(backStackEntry)
+
                 SetupRoute(
                     setupViewModel = setupViewModel,
                     onDetailClick = navController::navigateToSetupDetail,
                     onShowSnackBar = onShowSnackBar
                 )
+
+                onConfirmClick = setupViewModel::addAlarm
+                onRefreshClick = setupViewModel::clearData
             }
 
             composable<SetupRoute.SetupDetail>(
@@ -77,9 +83,14 @@ fun SetupNavHost(
                     navController.previousBackStackEntry?.let {
                         hiltViewModel(it)
                     } ?: hiltViewModel()
+
                 SetupDetailRoute(
-                    setupViewModel = setupViewModel
+                    setupViewModel = setupViewModel,
+                    onShowSnackBar = onShowSnackBar
                 )
+
+                onConfirmClick = setupViewModel::addAlarm
+                onRefreshClick = setupViewModel::clearData
             }
         }
     }

@@ -7,17 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.noRippleClickable
+import com.same.alarm.setup.model.SetupState
 import com.same.alarm.ui.TimeWheelPicker
 import java.time.LocalTime
 
@@ -42,18 +38,24 @@ fun SetupRoute(
     onShowSnackBar: (String) -> Unit,
     setupViewModel: SetupViewModel
 ) {
+    val time by setupViewModel.time.collectAsStateWithLifecycle()
     val title by setupViewModel.title.collectAsStateWithLifecycle()
     val statusMessage by setupViewModel.statusMessage.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        setupViewModel.addEvent.collect {
-            onShowSnackBar("추가 성공")
+        setupViewModel.addEvent.collect { 
+            when (it) {
+                is SetupState.Success -> onShowSnackBar("추가 성공")
+                is SetupState.Failure -> onShowSnackBar(it.error)
+            }
         }
     }
 
     SetupScreen(
+        time = time,
         title = title,
         statusMessage = statusMessage,
+        updateTime = setupViewModel::updateTime,
         updateTitle = setupViewModel::updateTitle,
         updateStatusMessage = setupViewModel::updateStatusMessage,
         onDetailClick = onDetailClick
@@ -62,26 +64,29 @@ fun SetupRoute(
 
 @Composable
 fun SetupScreen(
+    time: LocalTime,
     title: String,
     statusMessage: String,
+    updateTime: (LocalTime) -> Unit,
     updateTitle: (String) -> Unit,
     updateStatusMessage: (String) -> Unit,
     onDetailClick: () -> Unit
 ) {
-    var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize()
     ) {
-
 //        Spacer(modifier = Modifier.height(83.dp))
 
-        TimeWheelPicker { selectedTime ->
-            time = selectedTime
-        }
-//
+        TimeWheelPicker(
+            time = time,
+            onTimeSelected = { selectedTime ->
+                updateTime(selectedTime)
+            }
+        )
+
 //        Spacer(modifier = Modifier.height(144.dp))
 
         Box(
@@ -160,8 +165,10 @@ fun SetupScreen(
 @Composable
 fun SetupScreenPreview() {
     SetupScreen(
+        time = LocalTime.of(9, 0),
         title = "",
         statusMessage = "",
+        updateTime = {},
         updateTitle = {},
         updateStatusMessage = {},
         onDetailClick = {}

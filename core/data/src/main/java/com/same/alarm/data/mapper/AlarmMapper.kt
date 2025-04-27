@@ -8,6 +8,7 @@ object AlarmMapper {
         return Alarm(
             id = this.id.toInt(),
             time = this.time,
+            title = this.title,
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,
             category = this.category,
@@ -21,6 +22,7 @@ object AlarmMapper {
         return AlarmEntity(
             id = this.id.toLong(),
             time = this.time,
+            title = this.title,
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,
             category = this.category,

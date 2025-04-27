@@ -72,6 +72,7 @@ fun ListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(16.dp)
             .statusBarsPadding()
             .noRippleClickable { resetRevealedState() }

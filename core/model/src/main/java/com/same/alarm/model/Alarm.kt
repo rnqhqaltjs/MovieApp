@@ -8,6 +8,7 @@ import java.time.ZoneId
 data class Alarm(
     val id: Int = 0,
     val time: LocalTime,
+    val title: String,
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,

@@ -168,6 +168,7 @@ fun EditScreen(
                         Alarm(
                             id = it.id,
                             time = time,
+                            title = it.title,
                             statusMessage = statusMessage,
                             daysOfWeek = selectedDays,
                             category = selectedCategory,
@@ -188,7 +189,7 @@ fun EditScreen(
 @Composable
 fun EditScreenPreview() {
     EditScreen(
-        alarm = Alarm(0, LocalTime.of(9, 0), "", emptyList(), "", true),
+        alarm = Alarm(0, LocalTime.of(9, 0), "", "", emptyList(), "", true),
         selectedDays = emptyList(),
         onDaySelected = {},
         onUpdateAlarm = {}

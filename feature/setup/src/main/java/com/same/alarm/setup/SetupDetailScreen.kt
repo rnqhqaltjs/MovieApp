@@ -17,10 +17,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,23 +30,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.common.Constants.CATEGORIES
+import com.same.alarm.common.Constants.DAYS_OF_WEEK
 import com.same.alarm.setup.component.RepeatSwitchLabel
-import java.time.DayOfWeek
+import com.same.alarm.setup.model.SetupState
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
 fun SetupDetailRoute(
+    onShowSnackBar: (String) -> Unit,
     setupViewModel: SetupViewModel
 ) {
     val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
     val selectCategory by setupViewModel.selectedCategory.collectAsStateWithLifecycle()
+    val isAlarmRepeated by setupViewModel.isAlarmRepeated.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        setupViewModel.addEvent.collect {
+            when (it) {
+                is SetupState.Success -> onShowSnackBar("추가 성공")
+                is SetupState.Failure -> onShowSnackBar(it.error)
+            }
+        }
+    }
 
     SetupDetailScreen(
         selectedDays = selectedDays,
         selectedCategory = selectCategory,
+        isAlarmRepeated = isAlarmRepeated,
         onDaySelected = setupViewModel::toggleDay,
-        onCategorySelected = setupViewModel::toggleCategory
+        onCategorySelected = setupViewModel::toggleCategory,
+        onRepeatChange = setupViewModel::toggleRepeat
     )
 }
 
@@ -56,18 +69,16 @@ fun SetupDetailRoute(
 fun SetupDetailScreen(
     selectedDays: List<Int>,
     selectedCategory: String,
+    isAlarmRepeated: Boolean,
     onDaySelected: (Int) -> Unit,
-    onCategorySelected: (String) -> Unit
+    onCategorySelected: (String) -> Unit,
+    onRepeatChange: (Boolean) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
 //        verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize()
     ) {
-        var isAlarmRepeated by remember { mutableStateOf(true) }
-        val days = DayOfWeek.entries.toTypedArray()
-        val categories = listOf("스터디", "기상", "미팅", "집안일")
-
         Text(
             text = "반복",
             fontSize = 20.sp,
@@ -82,7 +93,7 @@ fun SetupDetailScreen(
                 .padding(30.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            days.forEachIndexed { index, day ->
+            DAYS_OF_WEEK.forEachIndexed { index, day ->
                 val isSelected = index in selectedDays
 
                 Text(
@@ -115,7 +126,7 @@ fun SetupDetailScreen(
                 .padding(30.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            categories.forEach { category ->
+            CATEGORIES.forEach { category ->
                 val isSelected = selectedCategory == category
 
                 Box(
@@ -143,7 +154,7 @@ fun SetupDetailScreen(
         RepeatSwitchLabel(
             label = "다시 알림",
             isChecked = isAlarmRepeated,
-            onCheckedChange = { isAlarmRepeated = it }
+            onCheckedChange = onRepeatChange
         )
 
         Spacer(modifier = Modifier.height(19.dp))
@@ -156,7 +167,9 @@ fun SetupDetailScreenPreview() {
     SetupDetailScreen(
         selectedDays = emptyList(),
         selectedCategory = "",
+        isAlarmRepeated = false,
         onDaySelected = {},
-        onCategorySelected = {}
+        onCategorySelected = {},
+        onRepeatChange = {}
     )
 }
