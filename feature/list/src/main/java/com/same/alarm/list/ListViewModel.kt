@@ -1,5 +1,6 @@
 package com.same.alarm.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.LoadAlarmListUseCase
@@ -55,7 +56,7 @@ class ListViewModel @Inject constructor(
 
     fun togglePin(alarm: Alarm) {
         viewModelScope.launch {
-            togglePinUseCase(alarm)
+            togglePinUseCase(alarm.copy(isPinned = !alarm.isPinned))
         }
     }
 }
