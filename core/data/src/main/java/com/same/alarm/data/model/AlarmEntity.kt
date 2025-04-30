@@ -5,6 +5,7 @@ import java.time.LocalTime
 data class AlarmEntity (
     val id: Long,
     val time: LocalTime,
+    val title: String,
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,

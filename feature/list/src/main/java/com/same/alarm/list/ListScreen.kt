@@ -1,42 +1,47 @@
 package com.same.alarm.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.component.ActionIcon
+import com.same.alarm.list.component.AlarmItem
 import com.same.alarm.list.component.SwipeableItemWithActions
+import com.same.alarm.list.component.TodayDateHeader
 import com.same.alarm.model.Alarm
-import java.time.format.DateTimeFormatter
+import java.time.LocalTime
 
 @Composable
 fun ListRoute(
@@ -44,10 +49,14 @@ fun ListRoute(
     onEditClicked: (Alarm) -> Unit
 ) {
     val alarmListState by listViewModel.alarmListState.collectAsStateWithLifecycle()
+    val selectedCategory by listViewModel.selectedCategory.collectAsStateWithLifecycle()
     val revealedState by listViewModel.revealedState.collectAsStateWithLifecycle()
 
     ListScreen(
         alarmList = alarmListState,
+        categories = listViewModel.categories,
+        selectedCategory = selectedCategory,
+        onCategorySelected = listViewModel::selectCategory,
         revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
         onToggleAlarm = listViewModel::toggleAlarm,
@@ -61,6 +70,9 @@ fun ListRoute(
 @Composable
 fun ListScreen(
     alarmList: List<Alarm>,
+    categories: List<String>,
+    selectedCategory: String,
+    onCategorySelected: (String) -> Unit,
     revealedState: Map<Int, Boolean>,
     onRemoveAlarm: (Alarm) -> Unit,
     onToggleAlarm: (Alarm) -> Unit,
@@ -72,23 +84,54 @@ fun ListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color.White)
             .statusBarsPadding()
+            .navigationBarsPadding()
             .noRippleClickable { resetRevealedState() }
     ) {
-        Text(
-            text = "알람 리스트",
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        TodayDateHeader()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(30.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            categories.forEach { category ->
+                val isSelected = selectedCategory == category
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(if (isSelected) Color.Blue else Color.LightGray)
+                        .clickable { onCategorySelected(category) }
+                        .height(40.dp)
+                        .padding(horizontal = 3.dp)
+                ) {
+                    Text(
+                        text = category,
+                        fontSize = 20.sp,
+                        color = if (isSelected) Color.White else Color.Black,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+            }
+        }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
+            val (pinned, normal) = alarmList.partition { it.isPinned }
+
             items(
-                items = alarmList.filter { it.isPinned },
+                items = pinned,
                 key = { it.id }
             ) { alarm ->
                 AlarmRow(
@@ -104,7 +147,7 @@ fun ListScreen(
             }
 
             items(
-                items = alarmList.filter { !it.isPinned },
+                items = normal,
                 key = { it.id }
             ) { alarm ->
                 AlarmRow(
@@ -145,15 +188,6 @@ fun AlarmRow(
             onSwipeRevealed(alarm.id, false)
         },
         leftActions = {
-            ActionIcon(
-                onClick = {
-                    onTogglePin(alarm)
-                    resetRevealedState()
-                },
-                backgroundColor = if (alarm.isPinned) Color.Yellow else Color.Gray,
-                icon = if (alarm.isPinned) Icons.Default.Star else Icons.Default.Star,
-                modifier = Modifier.fillMaxHeight()
-            )
         },
         rightActions = {
             ActionIcon(
@@ -173,71 +207,12 @@ fun AlarmRow(
                 icon = Icons.Default.Delete,
                 modifier = Modifier.fillMaxHeight()
             )
-        },
+        }
     ) {
         AlarmItem(
             alarm = alarm,
-            onUpdateAlarm = onToggleAlarm
-        )
-    }
-}
-
-@Composable
-fun AlarmItem(
-    alarm: Alarm,
-    onUpdateAlarm: (Alarm) -> Unit
-) {
-    val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = MaterialTheme.shapes.medium
-            )
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            if (alarm.isPinned) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "고정된 알람",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Text(
-                text = "시간: ${alarm.time.format(DateTimeFormatter.ofPattern("HH:mm"))}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "상태 메시지: ${alarm.statusMessage}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(text = "카테고리: ${alarm.category}", style = MaterialTheme.typography.bodyMedium)
-            Text(
-                text = "반복 여부: ${if (alarm.isRepeating) "반복" else "단일"}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-
-            val daysOfWeekText = alarm.daysOfWeek.joinToString(", ") { day ->
-                daysOfWeekMap.getOrNull(day) ?: ""
-            }
-            Text(text = "반복 요일: $daysOfWeekText", style = MaterialTheme.typography.bodyMedium)
-        }
-
-        Switch(
-            checked = alarm.isActive,
-            onCheckedChange = { isChecked ->
-                onUpdateAlarm(alarm.copy(isActive = isChecked))
-            },
-            modifier = Modifier.padding(start = 8.dp)
+            onTogglePin = onTogglePin,
+            onToggleAlarm = onToggleAlarm
         )
     }
 }
@@ -246,7 +221,22 @@ fun AlarmItem(
 @Composable
 fun ListScreenPreview() {
     ListScreen(
-        alarmList = listOf(),
+        alarmList = listOf(
+            Alarm(
+                id = 1,
+                title = "기업디 회의",
+                statusMessage = "발표문 프린트 챙기기",
+                time = LocalTime.of(9, 0),
+                isActive = true,
+                isPinned = true,
+                daysOfWeek = listOf(0, 1, 2, 3, 4, 5 ,6),
+                category = "Work",
+                isRepeating = true
+            )
+        ),
+        categories = listOf("스터디", "기상"),
+        selectedCategory = "기상",
+        onCategorySelected = {},
         revealedState = mapOf(),
         onRemoveAlarm = {},
         onToggleAlarm = {},

@@ -5,16 +5,23 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.same.alarm.navigation.MainTabRoute
-import com.same.alarm.setup.SetupRoute
+import com.same.alarm.navigation.Route
+import com.same.alarm.navigation.SetupRoute
 
-fun NavController.navigateToSetup(navOptions: NavOptions? = null) {
-    navigate(MainTabRoute.Setup, navOptions = navOptions)
+fun NavController.navigateToSetup(route: Route, navOptions: NavOptions? = null) {
+    navigate(route, navOptions = navOptions)
+}
+
+fun NavController.navigateToSetupDetail(navOptions: NavOptions? = null) {
+    navigate(SetupRoute.SetupDetail, navOptions = navOptions)
 }
 
 fun NavGraphBuilder.setupNavGraph(
     onShowSnackBar: (String) -> Unit
 ) {
     composable<MainTabRoute.Setup> {
-        SetupRoute(onShowSnackBar = onShowSnackBar)
+        SetupNavHost (
+            onShowSnackBar = onShowSnackBar
+        )
     }
 }

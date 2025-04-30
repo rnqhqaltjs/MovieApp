@@ -9,6 +9,7 @@ data class AlarmLocal (
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val time: LocalTime,
+    val title: String,
     val statusMessage: String,
     val daysOfWeek: List<Int>,
     val category: String,

@@ -18,4 +18,5 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":feature:edit"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:common"))
 }

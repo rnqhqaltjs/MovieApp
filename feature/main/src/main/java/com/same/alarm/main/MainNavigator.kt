@@ -40,7 +40,7 @@ internal class MainNavigator(
         }
 
         when (tab) {
-            MainTab.SETUP -> navController.navigateToSetup(navOptions)
+            MainTab.SETUP -> navController.navigateToSetup(MainTabRoute.Setup, navOptions)
             MainTab.LIST -> navController.navigateToList(navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions)
         }
@@ -50,7 +50,7 @@ internal class MainNavigator(
         navController.navigateToEdit(alarmId)
     }
 
-    private fun popBackStack() {
+    fun popBackStack() {
         navController.popBackStack()
     }
 

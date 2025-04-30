@@ -18,7 +18,16 @@ sealed interface MainTabRoute : Route {
     data object List : MainTabRoute
 }
 
-sealed interface AuthRoute : Route {
+sealed interface SetupRoute {
+    @Serializable
+    data object Setup : MainTabRoute
+
+    @Serializable
+    data object SetupDetail : Route
+}
+
+
+sealed interface AuthRoute {
     @Serializable
     data object Login : AuthRoute
 

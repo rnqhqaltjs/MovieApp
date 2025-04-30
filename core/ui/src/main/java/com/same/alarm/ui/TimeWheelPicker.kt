@@ -1,12 +1,14 @@
 package com.same.alarm.ui
 
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,13 +22,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.same.alarm.designsystem.noRippleClickable
 import java.time.LocalTime
 
 @Composable
@@ -47,11 +50,10 @@ fun TimeWheelPicker(
 
     val hourListState = rememberLazyListState(initialHourOffset)
     val minuteListState = rememberLazyListState(initialMinuteOffset)
-    val amPmListState = rememberLazyListState(initialAmPm)
 
     val hour by remember { derivedStateOf { (hourListState.firstVisibleItemIndex % hourSize + hourSize) % hourSize } }
     val minute by remember { derivedStateOf { (minuteListState.firstVisibleItemIndex % minuteSize + minuteSize) % minuteSize } }
-    val amPm by remember { derivedStateOf { amPmListState.firstVisibleItemIndex % 2 } }
+    var amPm by remember { mutableIntStateOf(initialAmPm) }
 
     var prevHour by remember { mutableIntStateOf(hour) }
 
@@ -75,10 +77,8 @@ fun TimeWheelPicker(
 
     LaunchedEffect(hour, prevHour) {
         if (prevHour != hour) {
-            if (prevHour == 10 && hour == 11) {
-                amPmListState.scrollToItem(1 - amPmListState.firstVisibleItemIndex)
-            } else if (prevHour == 0 && hour == 11) {
-                amPmListState.scrollToItem(1 - amPmListState.firstVisibleItemIndex)
+            if ((prevHour == 10 && hour == 11) || (prevHour == 0 && hour == 11)) {
+                amPm = 1 - amPm
             }
             prevHour = hour
         }
@@ -88,117 +88,98 @@ fun TimeWheelPicker(
         onTimeSelected(selectedTime)
     }
 
-    amPmListState.SnapToNearestItem()
     hourListState.SnapToNearestItem()
     minuteListState.SnapToNearestItem()
 
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(72.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp)
-                .drawBehind {
-                    drawLine(
-                        Color(0xFFD0D0D0),
-                        start = Offset(0f, 0f),
-                        end = Offset(size.width, 0f),
-                        strokeWidth = 0.75.dp.toPx()
-                    )
-                    drawLine(
-                        Color(0xFFD0D0D0),
-                        start = Offset(0f, size.height),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = 0.75.dp.toPx()
-                    )
-                }
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(19.dp)
+        ) {
+            listOf("오전", "오후").forEachIndexed { index, label ->
+                Text(
+                    text = label,
+                    fontSize = 20.sp,
+                    fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
+                    color = if (index == amPm) Color.Black else Color(0xFFD0D0D0),
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    modifier = Modifier
+                        .noRippleClickable {
+                            amPm = index
+                        }
+                )
+            }
+        }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
+            verticalAlignment = Alignment.CenterVertically
         ) {
             LazyColumn(
-                state = amPmListState,
-                contentPadding = PaddingValues(16.dp, 80.dp),
-                flingBehavior = rememberSnapFlingBehavior(amPmListState),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(204.dp)
-            ) {
-                items(2) { index ->
-                    val displayAmPm = if (index == 0) "오전" else "오후"
-
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                    ) {
-                        Text(
-                            text = displayAmPm,
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = if (index == amPm) Color.Black else Color(0xFFD0D0D0)
-                        )
-                    }
-                }
-            }
-
-            LazyColumn(
                 state = hourListState,
-                contentPadding = PaddingValues(16.dp, 80.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
                 flingBehavior = maxScrollSpeedFlingBehavior(),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(204.dp)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.height(293.dp).width(150.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayHour = (index % hourSize) + 1
+                    fun hour12(h: Int) = if (h % 12 == 0) 12 else h % 12
 
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                    ) {
-                        Text(
-                            text = "$displayHour 시",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = if (displayHour == hour + 1) Color.Black else Color(0xFFD0D0D0)
+                    val isSelected = displayHour in listOf(
+                        hour12(hour),
+                        hour12(hour + 1),
+                        hour12(hour + 2)
+                    )
+
+                    Text(
+                        text = displayHour.toString().padStart(2, '0'),
+                        fontSize = if (displayHour == hour + 1) 96.sp else 32.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        color = if (displayHour == hour + 1) Color.Black else Color(0xFFD0D0D0),
+                        modifier = Modifier.padding(
+                            vertical = if (isSelected) 0.dp else 11.dp
                         )
-                    }
+                    )
                 }
             }
 
+            Text(
+                text = ":",
+                fontSize = 96.sp,
+                fontWeight = FontWeight.ExtraBold,
+                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                color = Color.Black,
+                modifier = Modifier.offset(y = (-10).dp)
+            )
+
             LazyColumn(
                 state = minuteListState,
-                contentPadding = PaddingValues(16.dp, 80.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 flingBehavior = maxScrollSpeedFlingBehavior(),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(204.dp)
+                modifier = Modifier.height(293.dp).width(150.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayMinute = index % minuteSize
+                    val isSelected = displayMinute in listOf(
+                        (minute - 1 + minuteSize) % minuteSize,
+                        minute % minuteSize,
+                        (minute + 1) % minuteSize
+                    )
 
-                    Box(
-                        contentAlignment = Alignment.Center,
+                    Text(
+                        text =  displayMinute.toString().padStart(2, '0'),
+                        fontSize = if(displayMinute == minute) 96.sp else 32.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        color = if (displayMinute == minute) Color.Black else Color(0xFFD0D0D0),
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(44.dp)
-                    ) {
-                        Text(
-                            text = "$displayMinute 분",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = if (displayMinute == minute) Color.Black else Color(0xFFD0D0D0)
-                        )
-                    }
+                            .padding(vertical = if (isSelected) 0.dp else 11.dp)
+                    )
                 }
             }
         }
@@ -218,6 +199,6 @@ fun LazyListState.SnapToNearestItem() {
 @Composable
 fun TimeWheelPickerPreview() {
     TimeWheelPicker(
-        time = LocalTime.of(9, 0)
+        time = LocalTime.of(9, 44)
     ) {  }
 }

@@ -1,160 +1,163 @@
 package com.same.alarm.setup
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.same.alarm.model.Alarm
-import com.same.alarm.setup.component.CategoryDropdown
-import com.same.alarm.setup.component.RepeatSwitchLabel
-import com.same.alarm.setup.component.StatusMessageInput
-import com.same.alarm.setup.component.TodayDateText
+import com.same.alarm.designsystem.noRippleClickable
+import com.same.alarm.setup.model.SetupState
 import com.same.alarm.ui.TimeWheelPicker
-import java.time.DayOfWeek
 import java.time.LocalTime
-import java.time.format.TextStyle
-import java.util.Locale
 
 @Composable
 fun SetupRoute(
-    setupViewModel: SetupViewModel = hiltViewModel(),
+    onDetailClick: () -> Unit,
     onShowSnackBar: (String) -> Unit,
+    setupViewModel: SetupViewModel
 ) {
-    val selectedDays by setupViewModel.selectedDays.collectAsStateWithLifecycle()
+    val time by setupViewModel.time.collectAsStateWithLifecycle()
+    val title by setupViewModel.title.collectAsStateWithLifecycle()
+    val statusMessage by setupViewModel.statusMessage.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        setupViewModel.addEvent.collect {
-            onShowSnackBar("추가 성공")
+        setupViewModel.addEvent.collect { 
+            when (it) {
+                is SetupState.Success -> onShowSnackBar("추가 성공")
+                is SetupState.Failure -> onShowSnackBar(it.error)
+            }
         }
     }
 
     SetupScreen(
-        onAddAlarm = setupViewModel::addAlarm,
-        selectedDays = selectedDays,
-        onDaySelected = setupViewModel::toggleDay
+        time = time,
+        title = title,
+        statusMessage = statusMessage,
+        updateTime = setupViewModel::updateTime,
+        updateTitle = setupViewModel::updateTitle,
+        updateStatusMessage = setupViewModel::updateStatusMessage,
+        onDetailClick = onDetailClick
     )
 }
 
 @Composable
 fun SetupScreen(
-    onAddAlarm: (Alarm) -> Unit,
-    selectedDays: List<Int>,
-    onDaySelected: (Int) -> Unit
+    time: LocalTime,
+    title: String,
+    statusMessage: String,
+    updateTime: (LocalTime) -> Unit,
+    updateTitle: (String) -> Unit,
+    updateStatusMessage: (String) -> Unit,
+    onDetailClick: () -> Unit
 ) {
-    var time by remember { mutableStateOf(LocalTime.of(9, 0)) }
-    var isAlarmRepeated by remember { mutableStateOf(true) }
-    val categories = listOf("일반", "중요", "기타")
-    var selectedCategory by remember { mutableStateOf(categories[0]) }
-    var statusMessage by remember { mutableStateOf("") }
-    val days = DayOfWeek.entries.toTypedArray()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = Modifier.statusBarsPadding()
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxSize()
     ) {
-        TodayDateText()
+//        Spacer(modifier = Modifier.height(83.dp))
 
-        TimeWheelPicker { selectedTime ->
-            time = selectedTime
-        }
-
-        RepeatSwitchLabel(
-            label = "알람 반복",
-            isChecked = isAlarmRepeated,
-            onCheckedChange = { isAlarmRepeated = it }
+        TimeWheelPicker(
+            time = time,
+            onTimeSelected = { selectedTime ->
+                updateTime(selectedTime)
+            }
         )
 
-        Text(
-            text = "요일 반복",
-            fontSize = 18.sp,
-            modifier = Modifier.align(Alignment.Start).padding(start = 16.dp)
-        )
+//        Spacer(modifier = Modifier.height(144.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.wrapContentSize()
         ) {
-            days.forEachIndexed { index, day ->
-                val isSelected = index in selectedDays
-
+            if (title.isEmpty()) {
                 Text(
-                    text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
-                    fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(if (isSelected) Color.Blue else Color.LightGray)
-                        .clickable { onDaySelected(index) }
-                        .padding(8.dp)
+                    text = "기업디 회의",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    modifier = Modifier.alpha(0.5f)
                 )
             }
+
+            BasicTextField(
+                value = title,
+                onValueChange = updateTitle,
+                textStyle = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    textAlign = TextAlign.Center
+                ),
+                singleLine = true
+            )
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+//        Spacer(modifier = Modifier.heightIn(31.dp))
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.wrapContentSize()
         ) {
-            Text(
-                text = "상태 메시지",
-                fontSize = 18.sp,
-                modifier = Modifier.weight(1f)
-            )
+            if (statusMessage.isEmpty()) {
+                Text(
+                    text = "발표문 프린트 챙기기",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    modifier = Modifier.alpha(0.5f)
+                )
+            }
 
-            CategoryDropdown(
-                categories = categories,
-                selectedCategory = selectedCategory,
-                onCategorySelected = { selectedCategory = it }
+            BasicTextField(
+                value = statusMessage,
+                onValueChange = updateStatusMessage,
+                textStyle = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    textAlign = TextAlign.Center
+                ),
+                singleLine = true
             )
         }
 
-        StatusMessageInput(
-            statusMessage = statusMessage,
-            onStatusMessageChange = { statusMessage = it }
+//        Spacer(modifier = Modifier.height(31.dp))
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_down),
+            contentDescription = "arrow_down",
+            modifier = Modifier.noRippleClickable { onDetailClick() }
         )
 
-        Button(
-            onClick = {
-                onAddAlarm(
-                    Alarm(
-                        time = time,
-                        statusMessage = statusMessage,
-                        daysOfWeek = selectedDays,
-                        category = selectedCategory,
-                        isRepeating = isAlarmRepeated,
-                    )
-                )
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "확인")
-        }
+        Spacer(modifier = Modifier.height(19.dp))
     }
 }
 
@@ -162,8 +165,12 @@ fun SetupScreen(
 @Composable
 fun SetupScreenPreview() {
     SetupScreen(
-        onAddAlarm = {},
-        selectedDays = emptyList(),
-        onDaySelected = {}
+        time = LocalTime.of(9, 0),
+        title = "",
+        statusMessage = "",
+        updateTime = {},
+        updateTitle = {},
+        updateStatusMessage = {},
+        onDetailClick = {}
     )
 }

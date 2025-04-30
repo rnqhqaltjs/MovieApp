@@ -8,5 +8,5 @@ class TogglePinUseCase @Inject constructor(
     private val alarmRepository: AlarmRepository
 ) {
     suspend operator fun invoke(alarm: Alarm) =
-        alarmRepository.updateAlarm(alarm.copy(isPinned = !alarm.isPinned))
+        alarmRepository.updateAlarm(alarm)
 }
