@@ -87,6 +87,7 @@ class SetupViewModel @Inject constructor(
             addAlarmUseCase(alarm)
                 .onSuccess {
                     _addEvent.emit(SetupState.Success)
+                    clearData()
                 }
                 .onFailure { error ->
                     error.message?.let { message ->

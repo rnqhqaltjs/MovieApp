@@ -46,7 +46,7 @@ fun AlarmItem(
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
 
     Row(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.height(153.dp)
     ) {
         Box(
             modifier = Modifier

@@ -1,30 +1,45 @@
 package com.same.alarm.list
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.component.ActionIcon
 import com.same.alarm.list.component.AlarmItem
 import com.same.alarm.list.component.SwipeableItemWithActions
+import com.same.alarm.list.component.TodayDateHeader
 import com.same.alarm.model.Alarm
 import java.time.LocalTime
 
@@ -34,10 +49,14 @@ fun ListRoute(
     onEditClicked: (Alarm) -> Unit
 ) {
     val alarmListState by listViewModel.alarmListState.collectAsStateWithLifecycle()
+    val selectedCategory by listViewModel.selectedCategory.collectAsStateWithLifecycle()
     val revealedState by listViewModel.revealedState.collectAsStateWithLifecycle()
 
     ListScreen(
         alarmList = alarmListState,
+        categories = listViewModel.categories,
+        selectedCategory = selectedCategory,
+        onCategorySelected = listViewModel::selectCategory,
         revealedState = revealedState,
         onRemoveAlarm = listViewModel::removeAlarm,
         onToggleAlarm = listViewModel::toggleAlarm,
@@ -51,6 +70,9 @@ fun ListRoute(
 @Composable
 fun ListScreen(
     alarmList: List<Alarm>,
+    categories: List<String>,
+    selectedCategory: String,
+    onCategorySelected: (String) -> Unit,
     revealedState: Map<Int, Boolean>,
     onRemoveAlarm: (Alarm) -> Unit,
     onToggleAlarm: (Alarm) -> Unit,
@@ -64,19 +86,54 @@ fun ListScreen(
             .fillMaxSize()
             .background(Color.White)
             .statusBarsPadding()
+            .navigationBarsPadding()
             .noRippleClickable { resetRevealedState() }
     ) {
+        TodayDateHeader()
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(30.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            categories.forEach { category ->
+                val isSelected = selectedCategory == category
+
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(if (isSelected) Color.Blue else Color.LightGray)
+                        .clickable { onCategorySelected(category) }
+                        .height(40.dp)
+                        .padding(horizontal = 3.dp)
+                ) {
+                    Text(
+                        text = category,
+                        fontSize = 20.sp,
+                        color = if (isSelected) Color.White else Color.Black,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 28.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
+            val (pinned, normal) = alarmList.partition { it.isPinned }
+
             items(
-                items = alarmList.filter { it.isPinned },
+                items = pinned,
                 key = { it.id }
             ) { alarm ->
-                Log.d( "alarm", alarm.toString())
                 AlarmRow(
                     alarm = alarm,
                     revealedState = revealedState,
@@ -90,7 +147,7 @@ fun ListScreen(
             }
 
             items(
-                items = alarmList.filter { !it.isPinned },
+                items = normal,
                 key = { it.id }
             ) { alarm ->
                 AlarmRow(
@@ -122,6 +179,7 @@ fun AlarmRow(
     SwipeableItemWithActions(
         isRevealed = revealedState[alarm.id] ?: false,
         onLeftExpanded = {
+            onSwipeRevealed(alarm.id, true)
         },
         onRightExpanded = {
             onSwipeRevealed(alarm.id, true)
@@ -176,6 +234,9 @@ fun ListScreenPreview() {
                 isRepeating = true
             )
         ),
+        categories = listOf("스터디", "기상"),
+        selectedCategory = "기상",
+        onCategorySelected = {},
         revealedState = mapOf(),
         onRemoveAlarm = {},
         onToggleAlarm = {},

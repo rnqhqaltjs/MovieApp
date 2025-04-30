@@ -122,7 +122,7 @@ fun TimeWheelPicker(
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
                 flingBehavior = maxScrollSpeedFlingBehavior(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.height(293.dp).width(149.dp)
+                modifier = Modifier.height(293.dp).width(150.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayHour = (index % hourSize) + 1
@@ -161,7 +161,7 @@ fun TimeWheelPicker(
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 flingBehavior = maxScrollSpeedFlingBehavior(),
-                modifier = Modifier.height(293.dp).width(149.dp)
+                modifier = Modifier.height(293.dp).width(150.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayMinute = index % minuteSize
