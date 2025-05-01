@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.same.alarm.calendar.navigation.navigateToCalendar
 import com.same.alarm.edit.navigation.navigateToEdit
+import com.same.alarm.feed.navigation.navigateToFeed
 import com.same.alarm.list.navigation.navigateToList
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
@@ -42,7 +42,7 @@ internal class MainNavigator(
         when (tab) {
             MainTab.SETUP -> navController.navigateToSetup(MainTabRoute.Setup, navOptions)
             MainTab.LIST -> navController.navigateToList(navOptions)
-            MainTab.CALENDAR -> navController.navigateToCalendar(navOptions)
+            MainTab.CALENDAR -> navController.navigateToFeed(navOptions)
         }
     }
 

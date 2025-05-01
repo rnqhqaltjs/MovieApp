@@ -1,4 +1,4 @@
-package com.same.alarm.calendar
+package com.same.alarm.feed
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

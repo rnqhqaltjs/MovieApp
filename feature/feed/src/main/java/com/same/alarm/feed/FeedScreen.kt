@@ -1,4 +1,4 @@
-package com.same.alarm.calendar
+package com.same.alarm.feed
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CalendarScreen() {
+fun FeedScreen() {
 
     Column(
         modifier = Modifier
@@ -39,5 +39,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun FeedScreenPreview() {
+    FeedScreen()
 }

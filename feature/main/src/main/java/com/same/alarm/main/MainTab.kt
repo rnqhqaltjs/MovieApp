@@ -21,8 +21,8 @@ internal enum class MainTab(
     ),
     CALENDAR(
         iconResId = R.drawable.ic_feed,
-        contentDescription = "캘린더",
-        MainTabRoute.Calendar
+        contentDescription = "피드",
+        MainTabRoute.Feed
     );
 
     companion object {

@@ -1,4 +1,4 @@
-package com.same.alarm.calendar
+package com.same.alarm.feed
 
 import org.junit.Test
 

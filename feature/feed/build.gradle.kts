@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.calendar"
+    namespace = "com.same.alarm.feed"
     kotlinOptions {
         jvmTarget = "21"
     }

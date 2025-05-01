@@ -34,7 +34,7 @@ dependencies {
 
     implementation(project(":feature:main"))
     implementation(project(":feature:alarm"))
-    implementation(project(":feature:calendar"))
+    implementation(project(":feature:feed"))
     implementation(project(":feature:login"))
     implementation(libs.androidx.hilt.common)
     implementation(libs.v2.user)

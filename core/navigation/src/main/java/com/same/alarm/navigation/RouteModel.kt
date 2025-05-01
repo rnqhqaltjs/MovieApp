@@ -12,10 +12,10 @@ sealed interface MainTabRoute : Route {
     data object Setup : MainTabRoute
 
     @Serializable
-    data object Calendar : MainTabRoute
+    data object List : MainTabRoute
 
     @Serializable
-    data object List : MainTabRoute
+    data object Feed : MainTabRoute
 }
 
 sealed interface SetupRoute {
