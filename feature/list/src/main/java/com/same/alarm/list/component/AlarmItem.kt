@@ -8,14 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,9 +42,7 @@ fun AlarmItem(
 ) {
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
 
-    Row(
-        modifier = Modifier.height(153.dp)
-    ) {
+    Row {
         Box(
             modifier = Modifier
                 .width(19.dp)
@@ -61,7 +56,7 @@ fun AlarmItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 13.dp),
+                .padding(vertical = 11.dp),
             horizontalAlignment = Alignment.End
         ) {
             Row(
@@ -81,18 +76,18 @@ fun AlarmItem(
                 Column(
                     modifier = Modifier
                         .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
                     Text(
                         text = alarm.title,
-                        fontSize = 20.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     )
 
                     Text(
                         text = alarm.statusMessage,
-                        fontSize = 13.sp,
+                        fontSize = 11.sp,
                         fontWeight = FontWeight.Medium,
                         fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     )
@@ -106,7 +101,7 @@ fun AlarmItem(
                 )
             }
 
-            Spacer(modifier = Modifier.height(9.dp))
+            Spacer(modifier = Modifier.height(7.dp))
 
             Text(
                 text = buildAnnotatedString {
@@ -126,15 +121,15 @@ fun AlarmItem(
                     }
                 },
                 color = Color.Gray,
-                fontSize = 15.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                 modifier = Modifier.padding(end = 16.dp),
-                letterSpacing = (-1).sp
+                letterSpacing = (-0.5).sp
             )
 
             Row(
-                modifier = Modifier.padding(top = 5.dp, end = 13.dp),
+                modifier = Modifier.padding(top = 2.dp, end = 13.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
@@ -142,14 +137,14 @@ fun AlarmItem(
                     fontSize = 15.sp,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 1.dp)
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
                     text = alarm.time.format(DateTimeFormatter.ofPattern("hh:mm")),
-                    fontSize = 32.sp,
+                    fontSize = 26.sp,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     fontWeight = FontWeight.Medium
                 )

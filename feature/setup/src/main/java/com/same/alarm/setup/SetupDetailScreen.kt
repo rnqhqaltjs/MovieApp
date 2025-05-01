@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -34,6 +37,7 @@ import com.same.alarm.common.Constants.CATEGORIES
 import com.same.alarm.common.Constants.DAYS_OF_WEEK
 import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.model.SetupState
+import com.same.alarm.ui.CategoryTabs
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -81,16 +85,18 @@ fun SetupDetailScreen(
     ) {
         Text(
             text = "반복",
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
             modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
         )
 
+        Spacer(modifier = Modifier.height(15.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(30.dp),
+                .padding(horizontal = 30.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             DAYS_OF_WEEK.forEachIndexed { index, day ->
@@ -98,12 +104,12 @@ fun SetupDetailScreen(
 
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     color = if (isSelected) Color.White else Color.Black,
                     fontWeight = FontWeight.Medium,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(35.dp)
                         .clip(CircleShape)
                         .background(if (isSelected) Color.Blue else Color.LightGray)
                         .clickable { onDaySelected(index) }
@@ -114,42 +120,19 @@ fun SetupDetailScreen(
 
         Text(
             text = "카테고리",
-            fontSize = 20.sp,
+            fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
             modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
         )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            CATEGORIES.forEach { category ->
-                val isSelected = selectedCategory == category
+        Spacer(modifier = Modifier.height(15.dp))
 
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(50))
-                        .background(if (isSelected) Color.Blue else Color.LightGray)
-                        .clickable { onCategorySelected(category) }
-                        .height(40.dp)
-                        .padding(horizontal = 3.dp)
-                ) {
-                    Text(
-                        text = category,
-                        fontSize = 20.sp,
-                        color = if (isSelected) Color.White else Color.Black,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                }
-            }
-        }
-
+        CategoryTabs(
+            categories = CATEGORIES,
+            selectedCategory = selectedCategory,
+            onCategorySelected = onCategorySelected
+        )
 
         RepeatSwitchLabel(
             label = "다시 알림",

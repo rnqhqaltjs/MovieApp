@@ -1,5 +1,6 @@
 package com.same.alarm.setup
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -75,10 +77,11 @@ fun SetupScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
     ) {
-//        Spacer(modifier = Modifier.height(83.dp))
+        Spacer(modifier = Modifier.height(68.dp))
 
         TimeWheelPicker(
             time = time,
@@ -87,7 +90,7 @@ fun SetupScreen(
             }
         )
 
-//        Spacer(modifier = Modifier.height(144.dp))
+        Spacer(modifier = Modifier.height(90.dp))
 
         Box(
             contentAlignment = Alignment.Center,
@@ -96,7 +99,7 @@ fun SetupScreen(
             if (title.isEmpty()) {
                 Text(
                     text = "기업디 회의",
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
@@ -109,7 +112,7 @@ fun SetupScreen(
                 value = title,
                 onValueChange = updateTitle,
                 textStyle = TextStyle(
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     textAlign = TextAlign.Center
@@ -118,7 +121,7 @@ fun SetupScreen(
             )
         }
 
-//        Spacer(modifier = Modifier.heightIn(31.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
         Box(
             contentAlignment = Alignment.Center,
@@ -127,8 +130,8 @@ fun SetupScreen(
             if (statusMessage.isEmpty()) {
                 Text(
                     text = "발표문 프린트 챙기기",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
@@ -140,8 +143,8 @@ fun SetupScreen(
                 value = statusMessage,
                 onValueChange = updateStatusMessage,
                 textStyle = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     textAlign = TextAlign.Center
                 ),
@@ -149,15 +152,20 @@ fun SetupScreen(
             )
         }
 
-//        Spacer(modifier = Modifier.height(31.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down),
             contentDescription = "arrow_down",
-            modifier = Modifier.noRippleClickable { onDetailClick() }
+            modifier = Modifier
+                .graphicsLayer(
+                    scaleX = 0.8f,
+                    scaleY = 0.8f
+                )
+                .noRippleClickable { onDetailClick() }
         )
 
-        Spacer(modifier = Modifier.height(19.dp))
+        Spacer(modifier = Modifier.height(29.dp))
     }
 }
 

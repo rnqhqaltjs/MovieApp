@@ -94,7 +94,7 @@ fun TimeWheelPicker(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(72.dp)
+        verticalArrangement = Arrangement.spacedBy(51.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(19.dp)
@@ -102,7 +102,7 @@ fun TimeWheelPicker(
             listOf("오전", "오후").forEachIndexed { index, label ->
                 Text(
                     text = label,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
                     color = if (index == amPm) Color.Black else Color(0xFFD0D0D0),
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
@@ -119,10 +119,10 @@ fun TimeWheelPicker(
         ) {
             LazyColumn(
                 state = hourListState,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 73.dp),
                 flingBehavior = maxScrollSpeedFlingBehavior(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.height(293.dp).width(150.dp)
+                modifier = Modifier.height(240.dp).width(121.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayHour = (index % hourSize) + 1
@@ -136,7 +136,7 @@ fun TimeWheelPicker(
 
                     Text(
                         text = displayHour.toString().padStart(2, '0'),
-                        fontSize = if (displayHour == hour + 1) 96.sp else 32.sp,
+                        fontSize = if (displayHour == hour + 1) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                         color = if (displayHour == hour + 1) Color.Black else Color(0xFFD0D0D0),
@@ -149,7 +149,7 @@ fun TimeWheelPicker(
 
             Text(
                 text = ":",
-                fontSize = 96.sp,
+                fontSize = 77.sp,
                 fontWeight = FontWeight.ExtraBold,
                 fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                 color = Color.Black,
@@ -158,10 +158,10 @@ fun TimeWheelPicker(
 
             LazyColumn(
                 state = minuteListState,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 88.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 73.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 flingBehavior = maxScrollSpeedFlingBehavior(),
-                modifier = Modifier.height(293.dp).width(150.dp)
+                modifier = Modifier.height(240.dp).width(121.dp)
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayMinute = index % minuteSize
@@ -173,7 +173,7 @@ fun TimeWheelPicker(
 
                     Text(
                         text =  displayMinute.toString().padStart(2, '0'),
-                        fontSize = if(displayMinute == minute) 96.sp else 32.sp,
+                        fontSize = if(displayMinute == minute) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                         color = if (displayMinute == minute) Color.Black else Color(0xFFD0D0D0),
