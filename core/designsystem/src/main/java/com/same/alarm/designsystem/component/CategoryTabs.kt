@@ -1,4 +1,4 @@
-package com.same.alarm.ui
+package com.same.alarm.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.same.alarm.designsystem.R
 
 @Composable
 fun CategoryTabs(
@@ -51,7 +52,7 @@ fun CategoryTabs(
                     fontSize = 16.sp,
                     color = if (isSelected) Color.White else Color.Black,
                     fontWeight = FontWeight.Medium,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }

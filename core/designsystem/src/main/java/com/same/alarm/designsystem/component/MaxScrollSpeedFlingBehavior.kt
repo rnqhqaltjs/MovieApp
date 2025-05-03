@@ -1,4 +1,4 @@
-package com.same.alarm.ui
+package com.same.alarm.designsystem.component
 
 import androidx.compose.animation.core.AnimationState
 import androidx.compose.animation.core.DecayAnimationSpec

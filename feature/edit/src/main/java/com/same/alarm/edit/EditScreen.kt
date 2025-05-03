@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.edit.component.CategoryDropdown
 import com.same.alarm.edit.component.TodayDateText
 import com.same.alarm.model.Alarm
-import com.same.alarm.ui.TimeWheelPicker
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.TextStyle
@@ -79,12 +78,6 @@ fun EditScreen(
             val categories = listOf("일반", "중요", "기타")
             var selectedCategory by remember { mutableStateOf(it.category) }
             var statusMessage by remember { mutableStateOf(it.statusMessage) }
-
-            TimeWheelPicker(
-                time = time
-            ) { selectedTime ->
-                time = selectedTime
-            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,

@@ -1,7 +1,6 @@
 package com.same.alarm.setup
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.setup.model.SetupState
-import com.same.alarm.ui.TimeWheelPicker
+import com.same.alarm.designsystem.component.TimeWheelPicker
 import java.time.LocalTime
 
 @Composable

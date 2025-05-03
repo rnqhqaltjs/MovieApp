@@ -1,4 +1,4 @@
-package com.same.alarm.ui
+package com.same.alarm.designsystem.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.same.alarm.designsystem.R
 import com.same.alarm.designsystem.noRippleClickable
 import java.time.LocalTime
 
@@ -105,7 +106,7 @@ fun TimeWheelPicker(
                     fontSize = 16.sp,
                     fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
                     color = if (index == amPm) Color.Black else Color(0xFFD0D0D0),
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    fontFamily = FontFamily(Font(R.font.inter)),
                     modifier = Modifier
                         .noRippleClickable {
                             amPm = index
@@ -126,9 +127,9 @@ fun TimeWheelPicker(
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayHour = (index % hourSize) + 1
-                    fun hour12(h: Int) = if (h % 12 == 0) 12 else h % 12
+                    val hour12: (Int) -> Int = { if (it % 12 == 0) 12 else it % 12 }
 
-                    val isSelected = displayHour in listOf(
+                    val isNearFocusedHour = displayHour in listOf(
                         hour12(hour),
                         hour12(hour + 1),
                         hour12(hour + 2)
@@ -138,10 +139,10 @@ fun TimeWheelPicker(
                         text = displayHour.toString().padStart(2, '0'),
                         fontSize = if (displayHour == hour + 1) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         color = if (displayHour == hour + 1) Color.Black else Color(0xFFD0D0D0),
                         modifier = Modifier.padding(
-                            vertical = if (isSelected) 0.dp else 11.dp
+                            vertical = if (isNearFocusedHour) 0.dp else 11.dp
                         )
                     )
                 }
@@ -151,7 +152,7 @@ fun TimeWheelPicker(
                 text = ":",
                 fontSize = 77.sp,
                 fontWeight = FontWeight.ExtraBold,
-                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                fontFamily = FontFamily(Font(R.font.inter)),
                 color = Color.Black,
                 modifier = Modifier.offset(y = (-10).dp)
             )
@@ -165,7 +166,7 @@ fun TimeWheelPicker(
             ) {
                 items(Int.MAX_VALUE) { index ->
                     val displayMinute = index % minuteSize
-                    val isSelected = displayMinute in listOf(
+                    val isNearFocusedMinute = displayMinute in listOf(
                         (minute - 1 + minuteSize) % minuteSize,
                         minute % minuteSize,
                         (minute + 1) % minuteSize
@@ -175,10 +176,10 @@ fun TimeWheelPicker(
                         text =  displayMinute.toString().padStart(2, '0'),
                         fontSize = if(displayMinute == minute) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        fontFamily = FontFamily(Font(R.font.inter)),
                         color = if (displayMinute == minute) Color.Black else Color(0xFFD0D0D0),
                         modifier = Modifier
-                            .padding(vertical = if (isSelected) 0.dp else 11.dp)
+                            .padding(vertical = if (isNearFocusedMinute) 0.dp else 11.dp)
                     )
                 }
             }
