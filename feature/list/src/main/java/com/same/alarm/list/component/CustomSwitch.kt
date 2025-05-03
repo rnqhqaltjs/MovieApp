@@ -26,9 +26,9 @@ import com.same.alarm.designsystem.noRippleClickable
 fun CustomSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    width: Dp = 60.dp,
-    height: Dp = 30.dp,
-    thumbSize: Dp = 24.dp,
+    width: Dp = 49.dp,
+    height: Dp = 24.dp,
+    thumbSize: Dp = 20.dp,
     activeTrackColor: Color = Color(0xFF8C9BEA),
     inactiveTrackColor: Color = Color(0xFFC8C8C8),
     thumbColor: Color = Color.White,

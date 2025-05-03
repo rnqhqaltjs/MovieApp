@@ -20,9 +20,9 @@ internal enum class MainTab(
         MainTabRoute.List
     ),
     CALENDAR(
-        iconResId = R.drawable.ic_calendar,
-        contentDescription = "캘린더",
-        MainTabRoute.Calendar
+        iconResId = R.drawable.ic_feed,
+        contentDescription = "피드",
+        MainTabRoute.Feed
     );
 
     companion object {

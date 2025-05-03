@@ -32,18 +32,13 @@ fun TodayDateHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 20.dp,
-                shape = RectangleShape,
-                clip = false
-            )
-            .height(80.dp)
+            .height(65.dp)
             .background(Color.White)
     ) {
         Text(
             text = "${month}월 ${day}일 $dayOfWeek",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(R.font.inter)),
             modifier = Modifier.align(Alignment.Center)
         )

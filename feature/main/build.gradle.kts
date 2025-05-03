@@ -15,7 +15,7 @@ android {
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":feature:setup"))
-    implementation(project(":feature:calendar"))
+    implementation(project(":feature:feed"))
     implementation(project(":feature:list"))
     implementation(project(":feature:edit"))
     implementation(project(":core:navigation"))

@@ -1,17 +1,15 @@
 package com.same.alarm.main.component
 
+import android.graphics.BlurMaskFilter
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,17 +19,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import com.same.alarm.designsystem.theme.AlarmAppTheme
 import com.same.alarm.main.MainTab
 
@@ -48,24 +51,45 @@ internal fun MainBottomBar(
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
-        Column(
-            modifier = modifier.fillMaxWidth()
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp, start = 15.dp, end = 15.dp)
+                .drawBehind {
+                    val paint = Paint().asFrameworkPaint().apply {
+                        isAntiAlias = true
+                        color = "#FF956E".toColorInt()
+                        maskFilter = BlurMaskFilter(12f, BlurMaskFilter.Blur.NORMAL)
+                    }
+
+                    drawIntoCanvas {
+                        val left = 0f
+                        val top = 0f
+                        val right = size.width
+                        val bottom = size.height
+
+                        it.nativeCanvas.drawRoundRect(
+                            left,
+                            top,
+                            right,
+                            bottom,
+                            47.dp.toPx(),
+                            47.dp.toPx(),
+                            paint
+                        )
+                    }
+                }
         ) {
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(56.dp)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                        shape = RoundedCornerShape(size = 28.dp),
-                    )
+                    .height(60.dp)
                     .background(
                         color = MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(28.dp),
+                        shape = RoundedCornerShape(47.dp),
                     )
-                    .padding(horizontal = 28.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(horizontal = 15.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 tabs.forEach { tab ->
                     MainBottomBarItem(
@@ -102,11 +126,7 @@ private fun RowScope.MainBottomBarItem(
         Icon(
             painter = painterResource(tab.iconResId),
             contentDescription = tab.contentDescription,
-            tint = if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.outline
-            },
+            tint = if (selected) Color.Black else Color.Unspecified,
             modifier = Modifier.size(34.dp),
         )
     }

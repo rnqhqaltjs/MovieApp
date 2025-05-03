@@ -1,9 +1,7 @@
 package com.same.alarm.setup.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -39,7 +38,7 @@ fun TodayDateHeader(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(65.dp)
             .background(Color.White)
     ) {
         Icon(
@@ -47,14 +46,18 @@ fun TodayDateHeader(
             contentDescription = "refresh",
             modifier = Modifier
                 .align(Alignment.CenterStart)
+                .graphicsLayer(
+                    scaleX = 0.8f,
+                    scaleY = 0.8f
+                )
                 .padding(start = 15.dp)
                 .noRippleClickable { onRefreshClick() }
         )
 
         Text(
             text = "${month}월 ${day}일 $dayOfWeek",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
             modifier = Modifier.align(Alignment.Center)
         )
@@ -64,6 +67,10 @@ fun TodayDateHeader(
             contentDescription = "confirm",
             modifier = Modifier
                 .align(Alignment.CenterEnd)
+                .graphicsLayer(
+                    scaleX = 0.8f,
+                    scaleY = 0.8f
+                )
                 .padding(end = 11.dp)
                 .noRippleClickable { onConfirmClick() }
         )
