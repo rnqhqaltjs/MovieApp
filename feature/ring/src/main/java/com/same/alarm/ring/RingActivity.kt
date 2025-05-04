@@ -22,7 +22,8 @@ class RingActivity : ComponentActivity() {
         setContent {
             AlarmAppTheme {
                 RingRoute(
-                    onFinish = { stopRingAndFinish() }
+                    stopRingCurrent = { stopRingCurrentAndFinish() },
+                    stopRingAll = { stopRingAllAndFinish() }
                 )
             }
         }
@@ -40,9 +41,14 @@ class RingActivity : ComponentActivity() {
         }
     }
 
-
-    private fun stopRingAndFinish() {
+    private fun stopRingCurrentAndFinish() {
         ringViewModel.stopRing()
+        finishAndRemoveTask()
+    }
+
+    private fun stopRingAllAndFinish() {
+        ringViewModel.stopRing()
+        ringViewModel.cancelTodayAlarms()
         finishAndRemoveTask()
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.PowerManager
 import android.view.WindowManager
 import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
+import com.same.alarm.alarm.AlarmConstants.Companion.BUNDLE_KEY_ALARM_ID
 import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TAG
 import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TIME_OUT
 import com.same.alarm.ring.RingActivity
@@ -15,8 +16,9 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         intent.action?.let { action ->
             if (action == ACTION_NAME) {
+                val alarmId = intent.getIntExtra(BUNDLE_KEY_ALARM_ID, -1)
                 wakeLock(context)
-                moveAlarmActivity(context)
+                moveAlarmActivity(context, alarmId)
             }
         }
     }
@@ -31,11 +33,12 @@ class AlarmReceiver : BroadcastReceiver() {
         wakeLock.acquire(WAKE_LOCK_TIME_OUT)
     }
 
-    private fun moveAlarmActivity(context: Context) {
+    private fun moveAlarmActivity(context: Context, alarmId: Int) {
         val alarmIntent = Intent(context, RingActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(BUNDLE_KEY_ALARM_ID, alarmId)
         }
         context.startActivity(alarmIntent)
     }

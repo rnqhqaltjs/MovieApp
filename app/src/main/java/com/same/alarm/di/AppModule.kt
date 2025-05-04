@@ -23,7 +23,7 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindAlarmPlayer(ringPlayerImpl: RingPlayerImpl): RingPlayer
+    abstract fun bindRingPlayer(ringPlayerImpl: RingPlayerImpl): RingPlayer
 }
 
 @Module

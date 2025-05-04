@@ -31,12 +31,13 @@ import kotlinx.coroutines.delay
 @Composable
 fun RingRoute(
     ringViewModel: RingViewModel = hiltViewModel(),
-    onFinish: () -> Unit
+    stopRingAll: () -> Unit,
+    stopRingCurrent: () -> Unit
 ) {
     RingScreen(
         startRing = ringViewModel::startRing,
-        stopRing = ringViewModel::stopRing,
-        onFinish = onFinish
+        stopRingCurrent = stopRingCurrent,
+        stopRingAll = stopRingAll
     )
 }
 
@@ -44,15 +45,13 @@ fun RingRoute(
 @Composable
 fun RingScreen(
     startRing: () -> Unit,
-    stopRing: () -> Unit,
-    onFinish: () -> Unit
+    stopRingAll: () -> Unit,
+    stopRingCurrent: () -> Unit
 ) {
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
-        startRing()
+        startRing
         delay(60_000)
-        onFinish()
+        stopRingCurrent
     }
 
     Column(
@@ -76,7 +75,7 @@ fun RingScreen(
         
 
         Button(
-            onClick = onFinish,
+            onClick = stopRingAll,
             modifier = Modifier
                 .width(241.dp)
                 .height(40.dp),
@@ -91,7 +90,7 @@ fun RingScreen(
         }
 
         Button(
-            onClick = onFinish,
+            onClick = stopRingCurrent,
             modifier = Modifier
                 .width(197.dp)
                 .height(40.dp),
@@ -122,7 +121,7 @@ fun DrawDot(center: Offset, size: Float, color: Color = Color.Black) {
 fun RingScreenPreview() {
     RingScreen(
         startRing = {},
-        stopRing = {},
-        onFinish = {}
+        stopRingCurrent = {},
+        stopRingAll = {}
     )
 }
