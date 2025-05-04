@@ -33,7 +33,7 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(project(":feature:main"))
-    implementation(project(":feature:alarm"))
+    implementation(project(":feature:ring"))
     implementation(project(":feature:feed"))
     implementation(project(":feature:login"))
     implementation(libs.androidx.hilt.common)

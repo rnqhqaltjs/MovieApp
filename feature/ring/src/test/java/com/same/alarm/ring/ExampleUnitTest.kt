@@ -1,4 +1,4 @@
-package com.same.alarm.alarm
+package com.same.alarm.ring
 
 import org.junit.Test
 

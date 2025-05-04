@@ -13,5 +13,4 @@ android {
 
 dependencies {
     implementation(project(":core:navigation"))
-    implementation(project(":feature:alarm"))
 }

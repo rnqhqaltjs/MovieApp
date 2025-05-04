@@ -8,6 +8,7 @@ import android.view.WindowManager
 import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
 import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TAG
 import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TIME_OUT
+import com.same.alarm.ring.RingActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 
@@ -31,7 +32,7 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun moveAlarmActivity(context: Context) {
-        val alarmIntent = Intent(context, AlarmActivity::class.java).apply {
+        val alarmIntent = Intent(context, RingActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
