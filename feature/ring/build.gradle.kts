@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.alarm"
+    namespace = "com.same.alarm.ring"
     kotlinOptions {
         jvmTarget = "21"
     }

@@ -5,15 +5,15 @@ import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import com.same.alarm.domain.repository.AlarmPlayer
+import com.same.alarm.domain.repository.RingPlayer
 import javax.inject.Inject
 
-class AlarmPlayerImpl @Inject constructor(
+class RingPlayerImpl @Inject constructor(
     private val context: Context
-) : AlarmPlayer {
+) : RingPlayer {
     private lateinit var ringtone: Ringtone
 
-    override fun playAlarm() {
+    override fun playRing() {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE ||
@@ -27,7 +27,7 @@ class AlarmPlayerImpl @Inject constructor(
         ringtone.play()
     }
 
-    override fun stopAlarm() {
+    override fun stopRing() {
         if (::ringtone.isInitialized) {
             ringtone.stop()
         }

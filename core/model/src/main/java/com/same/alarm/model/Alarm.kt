@@ -22,7 +22,7 @@ data class Alarm(
         var alarmDateTime = LocalDateTime.of(LocalDate.now(), time)
 
         val nowDateTime = LocalDateTime.now()
-        val nowDayOfWeek = nowDateTime.dayOfWeek.ordinal
+        val nowDayOfWeek = nowDateTime.dayOfWeek.ordinal  // 0 = Monday, 6 = Sunday
         val nowTime = nowDateTime.toLocalTime()
 
         val isTimeBefore = time < nowTime

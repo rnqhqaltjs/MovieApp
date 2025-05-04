@@ -12,10 +12,12 @@ import com.same.alarm.alarm.AlarmConstants.Companion.BUNDLE_KEY_ALARM_ID
 import com.same.alarm.alarm.AlarmConstants.Companion.REPEAT_COUNT
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.model.Alarm
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.LocalDate
 import javax.inject.Inject
 
 class AlarmHelperImpl @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : AlarmHelper {
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -37,8 +39,34 @@ class AlarmHelperImpl @Inject constructor(
         }
     }
 
+    override fun unSetTodayAlarms(alarm: Alarm) {
+        val todayDayOfWeek = LocalDate.now().dayOfWeek.value
+
+        when {
+            alarm.isRepeating && alarm.daysOfWeek.contains(todayDayOfWeek) -> {
+                repeat(REPEAT_COUNT) { repeatCount ->
+                    val requestId = generateUniqueId(alarm.id, todayDayOfWeek, repeatCount)
+                    val pendingIntent = getPendingIntent(alarm.id, requestId)
+
+                    pendingIntent.cancel()
+                    alarmManager.cancel(pendingIntent)
+                }
+            }
+            alarm.isRepeating -> {
+                repeat(REPEAT_COUNT) { repeatCount ->
+                    val requestId = generateUniqueId(alarm.id, repeatCount = repeatCount)
+                    val pendingIntent = getPendingIntent(alarm.id, requestId)
+
+                    pendingIntent.cancel()
+                    alarmManager.cancel(pendingIntent)
+                }
+            }
+        }
+    }
+
     private fun setNonRepeatingAlarm(alarm: Alarm) {
-        val pendingIntent = getPendingIntent(alarm.id, alarm.id)
+        val requestId = generateUniqueId(alarm.id)
+        val pendingIntent = getPendingIntent(alarm.id, requestId)
 
         alarmManager.setAlarmClock(
             AlarmManager.AlarmClockInfo(alarm.getAlarmFirstTriggerMillis(), pendingIntent),
@@ -47,7 +75,8 @@ class AlarmHelperImpl @Inject constructor(
     }
 
     private fun unSetNonRepeatingAlarm(alarm: Alarm) {
-        val pendingIntent = getPendingIntent(alarm.id, alarm.id)
+        val requestId = generateUniqueId(alarm.id)
+        val pendingIntent = getPendingIntent(alarm.id, requestId)
 
         pendingIntent.cancel()
         alarmManager.cancel(pendingIntent)
@@ -56,7 +85,8 @@ class AlarmHelperImpl @Inject constructor(
     private fun setDayOfWeekRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
             val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek)
-            val pendingIntent = getPendingIntent(alarm.id, alarm.id * 10 + dayOfWeek)
+            val requestId = generateUniqueId(alarm.id, dayOfWeek = dayOfWeek)
+            val pendingIntent = getPendingIntent(alarm.id, requestId)
 
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
@@ -69,7 +99,8 @@ class AlarmHelperImpl @Inject constructor(
 
     private fun unSetDayOfWeekRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
-            val pendingIntent = getPendingIntent(alarm.id, alarm.id * 10 + dayOfWeek)
+            val requestId = generateUniqueId(alarm.id, dayOfWeek = dayOfWeek)
+            val pendingIntent = getPendingIntent(alarm.id, requestId)
 
             pendingIntent.cancel()
             alarmManager.cancel(pendingIntent)
@@ -80,7 +111,8 @@ class AlarmHelperImpl @Inject constructor(
         repeat(REPEAT_COUNT) { repeatCount ->
             val firstAlarmTriggerMillis =
                 alarm.getAlarmFirstTriggerMillis() + (repeatCount * ALARM_INTERVAL_MILLS)
-            val pendingIntent = getPendingIntent(alarm.id, alarm.id * 100 + repeatCount)
+            val requestId = generateUniqueId(alarm.id, repeatCount = repeatCount)
+            val pendingIntent = getPendingIntent(alarm.id, requestId)
 
             alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(firstAlarmTriggerMillis, pendingIntent),
@@ -91,7 +123,8 @@ class AlarmHelperImpl @Inject constructor(
 
     private fun unSetIntervalRepeatingAlarm(alarm: Alarm) {
         repeat(REPEAT_COUNT) { repeatCount ->
-            val pendingIntent = getPendingIntent(alarm.id, alarm.id * 100 + repeatCount)
+            val requestId = generateUniqueId(alarm.id, repeatCount = repeatCount)
+            val pendingIntent = getPendingIntent(alarm.id, requestId)
 
             pendingIntent.cancel()
             alarmManager.cancel(pendingIntent)
@@ -102,7 +135,8 @@ class AlarmHelperImpl @Inject constructor(
         alarm.daysOfWeek.forEach { dayOfWeek ->
             repeat(REPEAT_COUNT) { repeatCount ->
                 val firstAlarmTriggerMillis = alarm.getAlarmFirstTriggerMillis(dayOfWeek) + (repeatCount * ALARM_INTERVAL_MILLS)
-                val pendingIntent = getPendingIntent(alarm.id, alarm.id * 1000 + dayOfWeek * 10 + repeatCount)
+                val requestId = generateUniqueId(alarm.id, dayOfWeek, repeatCount)
+                val pendingIntent = getPendingIntent(alarm.id, requestId)
 
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
@@ -117,7 +151,8 @@ class AlarmHelperImpl @Inject constructor(
     private fun unSetDayOfWeekAndIntervalRepeatingAlarm(alarm: Alarm) {
         alarm.daysOfWeek.forEach { dayOfWeek ->
             repeat(REPEAT_COUNT) { repeatCount ->
-                val pendingIntent = getPendingIntent(alarm.id, alarm.id * 1000 + dayOfWeek * 10 + repeatCount)
+                val requestId = generateUniqueId(alarm.id, dayOfWeek, repeatCount)
+                val pendingIntent = getPendingIntent(alarm.id, requestId)
 
                 pendingIntent.cancel()
                 alarmManager.cancel(pendingIntent)
@@ -134,5 +169,14 @@ class AlarmHelperImpl @Inject constructor(
         return PendingIntent.getBroadcast(
             context, requestId, intent, FLAG_UPDATE_CURRENT or FLAG_IMMUTABLE
         )
+    }
+
+    private fun generateUniqueId(alarmId: Int, dayOfWeek: Int? = null, repeatCount: Int? = null): Int {
+        return when {
+            dayOfWeek != null && repeatCount != null -> "$alarmId-$dayOfWeek-$repeatCount".hashCode()
+            dayOfWeek != null -> "$alarmId-$dayOfWeek".hashCode()
+            repeatCount != null -> "$alarmId-$repeatCount".hashCode()
+            else -> alarmId.hashCode()
+        }
     }
 }

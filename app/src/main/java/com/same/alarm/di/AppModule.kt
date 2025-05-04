@@ -2,9 +2,9 @@ package com.same.alarm.di
 
 import android.content.Context
 import com.same.alarm.alarm.AlarmHelperImpl
-import com.same.alarm.alarm.AlarmPlayerImpl
+import com.same.alarm.alarm.RingPlayerImpl
 import com.same.alarm.domain.repository.AlarmHelper
-import com.same.alarm.domain.repository.AlarmPlayer
+import com.same.alarm.domain.repository.RingPlayer
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,7 +23,7 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindAlarmPlayer(alarmPlayerImpl: AlarmPlayerImpl): AlarmPlayer
+    abstract fun bindRingPlayer(ringPlayerImpl: RingPlayerImpl): RingPlayer
 }
 
 @Module

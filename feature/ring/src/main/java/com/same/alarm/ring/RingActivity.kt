@@ -1,4 +1,4 @@
-package com.same.alarm.alarm
+package com.same.alarm.ring
 
 import android.os.Build
 import android.os.Bundle
@@ -6,11 +6,14 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import com.same.alarm.designsystem.theme.AlarmAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AlarmActivity : ComponentActivity() {
+class RingActivity : ComponentActivity() {
+    private val ringViewModel: RingViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         showWhenLockedAndTurnScreenOn()
         super.onCreate(savedInstanceState)
@@ -18,7 +21,10 @@ class AlarmActivity : ComponentActivity() {
 
         setContent {
             AlarmAppTheme {
-                AlarmRoute()
+                RingRoute(
+                    stopRingCurrent = { stopRingCurrentAndFinish() },
+                    stopRingAll = { stopRingAllAndFinish() }
+                )
             }
         }
     }
@@ -33,5 +39,16 @@ class AlarmActivity : ComponentActivity() {
                         or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
             )
         }
+    }
+
+    private fun stopRingCurrentAndFinish() {
+        ringViewModel.stopRing()
+        finishAndRemoveTask()
+    }
+
+    private fun stopRingAllAndFinish() {
+        ringViewModel.stopRing()
+        ringViewModel.cancelTodayAlarms()
+        finishAndRemoveTask()
     }
 }

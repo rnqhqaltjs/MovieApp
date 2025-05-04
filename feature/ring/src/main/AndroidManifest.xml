@@ -6,13 +6,13 @@
     <application>
 
         <activity
-            android:name=".AlarmActivity"
+            android:name=".RingActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:showOnLockScreen="true"
             android:theme="@style/Theme.AlarmApp">
             <intent-filter>
-                <action android:name="com.same.alarm.alarm" />
+                <action android:name="com.same.alarm.ring" />
             </intent-filter>
         </activity>
 
