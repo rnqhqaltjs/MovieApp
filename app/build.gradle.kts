@@ -36,6 +36,8 @@ dependencies {
     implementation(project(":feature:ring"))
     implementation(project(":feature:feed"))
     implementation(project(":feature:login"))
+
+    implementation(project(":infra"))
     implementation(libs.androidx.hilt.common)
     implementation(libs.v2.user)
 

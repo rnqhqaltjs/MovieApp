@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.same.alarm.data"
+    namespace = "com.same.alarm.infra"
     kotlinOptions {
         jvmTarget = "21"
     }
 }
 
 dependencies {
+    implementation(project(":core:common"))
     implementation(project(":core:domain"))
     implementation(project(":core:model"))
-    implementation(project(":core:common"))
-    implementation(project(":infra"))
+    implementation(project(":feature:ring"))
 }

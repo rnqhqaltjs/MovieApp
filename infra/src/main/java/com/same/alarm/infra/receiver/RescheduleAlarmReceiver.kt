@@ -1,10 +1,11 @@
-package com.same.alarm.alarm
+package com.same.alarm.infra.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_BOOT_COMPLETED
 import android.content.Intent.ACTION_LOCKED_BOOT_COMPLETED
+import com.same.alarm.infra.service.ForegroundAlarmService
 
 class RescheduleAlarmReceiver : BroadcastReceiver() {
 

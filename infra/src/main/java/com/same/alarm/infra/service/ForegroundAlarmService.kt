@@ -1,4 +1,4 @@
-package com.same.alarm.alarm
+package com.same.alarm.infra.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,7 +6,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.same.alarm.alarm.AlarmConstants.Companion.NOTIFICATION_ID
+import com.same.alarm.common.AlarmConstants.NOTIFICATION_ID
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.domain.repository.AlarmRepository
 import dagger.hilt.android.AndroidEntryPoint

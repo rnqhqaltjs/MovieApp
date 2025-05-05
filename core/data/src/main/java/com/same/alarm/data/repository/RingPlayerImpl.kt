@@ -1,4 +1,4 @@
-package com.same.alarm.alarm
+package com.same.alarm.data.repository
 
 import android.content.Context
 import android.media.AudioManager

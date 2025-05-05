@@ -28,8 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.same.alarm.common.Constants.CATEGORIES
-import com.same.alarm.common.Constants.DAYS_OF_WEEK
+import com.same.alarm.common.AlarmConfig.CATEGORIES
+import com.same.alarm.common.AlarmConfig.DAYS_OF_WEEK
 import com.same.alarm.setup.component.RepeatSwitchLabel
 import com.same.alarm.setup.model.SetupState
 import com.same.alarm.designsystem.component.CategoryTabs

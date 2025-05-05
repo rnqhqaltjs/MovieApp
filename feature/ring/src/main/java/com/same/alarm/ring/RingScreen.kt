@@ -49,9 +49,9 @@ fun RingScreen(
     stopRingCurrent: () -> Unit
 ) {
     LaunchedEffect(Unit) {
-        startRing
+        startRing()
         delay(60_000)
-        stopRingCurrent
+        stopRingCurrent()
     }
 
     Column(

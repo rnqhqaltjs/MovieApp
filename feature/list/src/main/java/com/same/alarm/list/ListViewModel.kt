@@ -2,7 +2,7 @@ package com.same.alarm.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.same.alarm.common.Constants.CATEGORIES
+import com.same.alarm.common.AlarmConfig.CATEGORIES
 import com.same.alarm.domain.usecase.LoadAlarmListUseCase
 import com.same.alarm.domain.usecase.RemoveAlarmUseCase
 import com.same.alarm.domain.usecase.ToggleAlarmUseCase

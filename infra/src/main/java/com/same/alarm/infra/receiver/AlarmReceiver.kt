@@ -1,14 +1,14 @@
-package com.same.alarm.alarm
+package com.same.alarm.infra.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.view.WindowManager
-import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
-import com.same.alarm.alarm.AlarmConstants.Companion.BUNDLE_KEY_ALARM_ID
-import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TAG
-import com.same.alarm.alarm.AlarmConstants.Companion.WAKE_LOCK_TIME_OUT
+import com.same.alarm.common.AlarmConstants.ACTION_NAME
+import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_ALARM_ID
+import com.same.alarm.common.AlarmConstants.WAKE_LOCK_TAG
+import com.same.alarm.common.AlarmConstants.WAKE_LOCK_TIME_OUT
 import com.same.alarm.ring.RingActivity
 
 class AlarmReceiver : BroadcastReceiver() {

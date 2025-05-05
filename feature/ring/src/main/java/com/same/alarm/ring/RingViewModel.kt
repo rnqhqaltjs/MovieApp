@@ -3,6 +3,7 @@ package com.same.alarm.ring
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_ALARM_ID
 import com.same.alarm.domain.repository.RingPlayer
 import com.same.alarm.domain.usecase.CancelTodayAlarmsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,9 +30,5 @@ class RingViewModel @Inject constructor(
         viewModelScope.launch {
             cancelTodayAlarmsUseCase(alarmId)
         }
-    }
-
-    companion object {
-        const val BUNDLE_KEY_ALARM_ID = "BUNDLE_KEY_ALARM_ID"
     }
 }

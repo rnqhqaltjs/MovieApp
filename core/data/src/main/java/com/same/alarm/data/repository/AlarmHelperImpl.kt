@@ -1,4 +1,4 @@
-package com.same.alarm.alarm
+package com.same.alarm.data.repository
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,11 +6,13 @@ import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
-import com.same.alarm.alarm.AlarmConstants.Companion.ACTION_NAME
-import com.same.alarm.alarm.AlarmConstants.Companion.ALARM_INTERVAL_MILLS
-import com.same.alarm.alarm.AlarmConstants.Companion.BUNDLE_KEY_ALARM_ID
-import com.same.alarm.alarm.AlarmConstants.Companion.REPEAT_COUNT
+import com.same.alarm.common.AlarmConstants.ACTION_NAME
+import com.same.alarm.common.AlarmConstants.ALARM_INTERVAL_MILLS
+import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_ALARM_ID
+import com.same.alarm.common.AlarmConstants.REPEAT_COUNT
+import com.same.alarm.common.AlarmConstants.WEEK_INTERVAL_MILLIS
 import com.same.alarm.domain.repository.AlarmHelper
+import com.same.alarm.infra.receiver.AlarmReceiver
 import com.same.alarm.model.Alarm
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
@@ -91,7 +93,7 @@ class AlarmHelperImpl @Inject constructor(
             alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 firstAlarmTriggerMillis,
-                AlarmConstants.WEEK_INTERVAL_MILLIS,
+                WEEK_INTERVAL_MILLIS,
                 pendingIntent
             )
         }
@@ -141,7 +143,7 @@ class AlarmHelperImpl @Inject constructor(
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     firstAlarmTriggerMillis,
-                    AlarmConstants.WEEK_INTERVAL_MILLIS,
+                    WEEK_INTERVAL_MILLIS,
                     pendingIntent
                 )
             }
