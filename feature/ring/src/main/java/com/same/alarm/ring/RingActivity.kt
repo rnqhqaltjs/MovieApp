@@ -42,12 +42,12 @@ class RingActivity : ComponentActivity() {
     }
 
     private fun stopRingCurrentAndFinish() {
-        ringViewModel.stopRing()
+        ringViewModel.stopPlayer()
         finishAndRemoveTask()
     }
 
     private fun stopRingAllAndFinish() {
-        ringViewModel.stopRing()
+        ringViewModel.stopPlayer()
         ringViewModel.cancelTodayAlarms()
         finishAndRemoveTask()
     }

@@ -43,6 +43,7 @@
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/ring" />
             <option value="$PROJECT_DIR$/feature/setup" />
+            <option value="$PROJECT_DIR$/infra" />
           </set>
         </option>
       </GradleProjectSettings>
