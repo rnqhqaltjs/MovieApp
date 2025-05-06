@@ -1,12 +1,12 @@
 package com.same.alarm.data.repository
 
 import android.content.Context
-import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import com.same.alarm.common.PlayerUtils.createAlarmAttributes
 import com.same.alarm.domain.repository.RingPlayer
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class RingPlayerImpl @Inject constructor(
 ) : RingPlayer {
     private lateinit var ringtone: Ringtone
 
-    override fun playRing() {
+    override fun start() {
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         audioManager.setStreamVolume(
@@ -31,17 +31,11 @@ class RingPlayerImpl @Inject constructor(
             ringtone.volume = 1.0f
         }
 
-        ringtone.audioAttributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ALARM)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .build()
-
+        ringtone.audioAttributes = createAlarmAttributes()
         ringtone.play()
     }
 
-    override fun stopRing() {
-        if (::ringtone.isInitialized) {
-            ringtone.stop()
-        }
+    override fun stop() {
+        ringtone.stop()
     }
 }

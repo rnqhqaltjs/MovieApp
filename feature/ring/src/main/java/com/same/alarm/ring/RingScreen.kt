@@ -32,7 +32,7 @@ fun RingRoute(
     stopRingCurrent: () -> Unit
 ) {
     RingScreen(
-        startRing = ringViewModel::startRing,
+        startRing = ringViewModel::startPlayer,
         stopRingCurrent = stopRingCurrent,
         stopRingAll = stopRingAll
     )
