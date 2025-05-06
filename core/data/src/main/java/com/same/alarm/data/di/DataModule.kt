@@ -6,11 +6,13 @@ import com.same.alarm.data.repository.AlarmRepositoryImpl
 import com.same.alarm.data.repository.AuthRepositoryImpl
 import com.same.alarm.data.repository.RingPlayerImpl
 import com.same.alarm.data.repository.UserRepositoryImpl
+import com.same.alarm.data.repository.VibrationPlayerImpl
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.domain.repository.AlarmRepository
 import com.same.alarm.domain.repository.AuthRepository
 import com.same.alarm.domain.repository.RingPlayer
 import com.same.alarm.domain.repository.UserRepository
+import com.same.alarm.domain.repository.VibrationPlayer
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -41,6 +43,10 @@ internal abstract class DataModule {
     @Singleton
     @Binds
     abstract fun bindRingPlayer(ringPlayerImpl: RingPlayerImpl): RingPlayer
+
+    @Singleton
+    @Binds
+    abstract fun bindVibrationPlayer(vibrationPlayerImpl: VibrationPlayerImpl): VibrationPlayer
 }
 
 @Module
