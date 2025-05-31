@@ -48,6 +48,7 @@ class RingActivity : ComponentActivity() {
 
     private fun stopRingAllAndFinish() {
         ringViewModel.stopPlayer()
+        ringViewModel.autoStopAlarm(force = true)
         ringViewModel.cancelTodayAlarms()
         finishAndRemoveTask()
     }
