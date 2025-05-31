@@ -20,4 +20,6 @@ dependencies {
     implementation(project(":feature:edit"))
     implementation(project(":core:navigation"))
     implementation(project(":core:model"))
+
+    implementation(libs.tedpermission.normal)
 }

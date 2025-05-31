@@ -29,6 +29,7 @@ compose-compiler = "1.5.15"
 navigationCompose = "2.8.7"
 roomRuntime = "2.6.1"
 hiltCommon = "1.2.0"
+tedpermissionNormal = "3.4.2"
 v2User = "2.21.0"
 secretsGradle = "2.0.1"
 
@@ -77,6 +78,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterMoshi" }
 androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
+tedpermission-normal = { module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "tedpermissionNormal" }
 v2-user = { module = "com.kakao.sdk:v2-user", version.ref = "v2User" }
 
 [plugins]

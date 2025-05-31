@@ -9,6 +9,7 @@ import android.content.Intent
 import com.same.alarm.common.AlarmConstants.ACTION_NAME
 import com.same.alarm.common.AlarmConstants.ALARM_INTERVAL_MILLS
 import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_ALARM_ID
+import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_REPEAT_COUNT
 import com.same.alarm.common.AlarmConstants.REPEAT_COUNT
 import com.same.alarm.common.AlarmConstants.WEEK_INTERVAL_MILLIS
 import com.same.alarm.domain.repository.AlarmHelper
@@ -19,10 +20,9 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class AlarmHelperImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val alarmManager: AlarmManager
 ) : AlarmHelper {
-    private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
     override fun scheduleAlarm(alarm: Alarm) {
         when {
             alarm.isRepeating && alarm.daysOfWeek.isNotEmpty() -> setDayOfWeekAndIntervalRepeatingAlarm(alarm)
@@ -114,7 +114,7 @@ class AlarmHelperImpl @Inject constructor(
             val firstAlarmTriggerMillis =
                 alarm.getAlarmFirstTriggerMillis() + (repeatCount * ALARM_INTERVAL_MILLS)
             val requestId = generateUniqueId(alarm.id, repeatCount = repeatCount)
-            val pendingIntent = getPendingIntent(alarm.id, requestId)
+            val pendingIntent = getPendingIntent(alarm.id, requestId, repeatCount)
 
             alarmManager.setAlarmClock(
                 AlarmManager.AlarmClockInfo(firstAlarmTriggerMillis, pendingIntent),
@@ -126,7 +126,7 @@ class AlarmHelperImpl @Inject constructor(
     private fun unSetIntervalRepeatingAlarm(alarm: Alarm) {
         repeat(REPEAT_COUNT) { repeatCount ->
             val requestId = generateUniqueId(alarm.id, repeatCount = repeatCount)
-            val pendingIntent = getPendingIntent(alarm.id, requestId)
+            val pendingIntent = getPendingIntent(alarm.id, requestId, repeatCount)
 
             pendingIntent.cancel()
             alarmManager.cancel(pendingIntent)
@@ -162,10 +162,17 @@ class AlarmHelperImpl @Inject constructor(
         }
     }
 
-    private fun getPendingIntent(alarmId: Int, requestId: Int): PendingIntent {
+    private fun getPendingIntent(
+        alarmId: Int,
+        requestId: Int,
+        repeatCount: Int? = null
+    ): PendingIntent {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             action = ACTION_NAME
             putExtra(BUNDLE_KEY_ALARM_ID, alarmId)
+            repeatCount?.let {
+                putExtra(BUNDLE_KEY_REPEAT_COUNT, it)
+            }
         }
 
         return PendingIntent.getBroadcast(

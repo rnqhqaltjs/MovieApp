@@ -8,10 +8,11 @@ import android.net.Uri
 import android.os.Build
 import com.same.alarm.common.PlayerUtils.createAlarmAttributes
 import com.same.alarm.domain.repository.RingPlayer
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class RingPlayerImpl @Inject constructor(
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : RingPlayer {
     private lateinit var ringtone: Ringtone
 

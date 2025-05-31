@@ -1,5 +1,6 @@
 package com.same.alarm.data.di
 
+import android.app.AlarmManager
 import android.content.Context
 import com.same.alarm.data.repository.AlarmHelperImpl
 import com.same.alarm.data.repository.AlarmRepositoryImpl
@@ -17,7 +18,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ServiceScoped
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import javax.inject.Singleton
@@ -50,11 +53,3 @@ internal abstract class DataModule {
     abstract fun bindVibrationPlayer(vibrationPlayerImpl: VibrationPlayerImpl): VibrationPlayer
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object AppContextModule {
-
-    @Provides
-    @Singleton
-    fun provideApplicationContext(@ApplicationContext context: Context): Context = context
-}
