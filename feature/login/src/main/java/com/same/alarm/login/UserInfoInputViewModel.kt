@@ -2,8 +2,8 @@ package com.same.alarm.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.same.alarm.domain.usecase.GetUserInfoUseCase
-import com.same.alarm.domain.usecase.SaveUserInfoUseCase
+import com.same.alarm.domain.usecase.user.GetUserInfoUseCase
+import com.same.alarm.domain.usecase.user.SaveUserInfoUseCase
 import com.same.alarm.login.model.UserInfoInputState
 import com.same.alarm.model.userinfo.UserInfoRequest
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.same.alarm.domain.usecase
+package com.same.alarm.domain.usecase.ring
 
 import com.same.alarm.domain.repository.RingPlayer
 import com.same.alarm.domain.repository.VibrationPlayer

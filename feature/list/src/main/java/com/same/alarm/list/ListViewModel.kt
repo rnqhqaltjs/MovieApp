@@ -3,10 +3,10 @@ package com.same.alarm.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.common.AlarmConfig.CATEGORIES
-import com.same.alarm.domain.usecase.LoadAlarmListUseCase
-import com.same.alarm.domain.usecase.RemoveAlarmUseCase
-import com.same.alarm.domain.usecase.ToggleAlarmUseCase
-import com.same.alarm.domain.usecase.TogglePinUseCase
+import com.same.alarm.domain.usecase.alarm.LoadAlarmListUseCase
+import com.same.alarm.domain.usecase.alarm.RemoveAlarmUseCase
+import com.same.alarm.domain.usecase.alarm.ToggleAlarmUseCase
+import com.same.alarm.domain.usecase.alarm.TogglePinUseCase
 import com.same.alarm.model.Alarm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
