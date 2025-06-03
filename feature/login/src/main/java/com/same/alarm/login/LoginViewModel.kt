@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
-import com.same.alarm.domain.usecase.LoginUseCase
-import com.same.alarm.domain.usecase.TryAutoLoginUseCase
+import com.same.alarm.domain.usecase.auth.LoginUseCase
+import com.same.alarm.domain.usecase.auth.TryAutoLoginUseCase
 import com.same.alarm.login.model.LoginState
 import com.same.alarm.model.login.AuthType
 import com.same.alarm.model.login.LoginRequest

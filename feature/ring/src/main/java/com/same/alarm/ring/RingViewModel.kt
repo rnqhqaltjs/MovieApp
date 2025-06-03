@@ -4,11 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.common.AlarmConstants.BUNDLE_KEY_ALARM_ID
-import com.same.alarm.domain.repository.RingPlayer
-import com.same.alarm.domain.usecase.AutoStopAlarmUseCase
-import com.same.alarm.domain.usecase.CancelTodayAlarmsUseCase
-import com.same.alarm.domain.usecase.StartPlayerUseCase
-import com.same.alarm.domain.usecase.StopPlayerUseCase
+import com.same.alarm.domain.usecase.alarm.AutoStopAlarmUseCase
+import com.same.alarm.domain.usecase.alarm.CancelTodayAlarmsUseCase
+import com.same.alarm.domain.usecase.ring.StartPlayerUseCase
+import com.same.alarm.domain.usecase.ring.StopPlayerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

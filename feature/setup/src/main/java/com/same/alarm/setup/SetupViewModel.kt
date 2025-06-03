@@ -2,7 +2,7 @@ package com.same.alarm.setup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.same.alarm.domain.usecase.AddAlarmUseCase
+import com.same.alarm.domain.usecase.alarm.AddAlarmUseCase
 import com.same.alarm.model.Alarm
 import com.same.alarm.setup.model.SetupState
 import dagger.hilt.android.lifecycle.HiltViewModel

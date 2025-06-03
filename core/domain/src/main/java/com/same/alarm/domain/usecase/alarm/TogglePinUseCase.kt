@@ -1,4 +1,4 @@
-package com.same.alarm.domain.usecase
+package com.same.alarm.domain.usecase.alarm
 
 import com.same.alarm.domain.repository.AlarmRepository
 import com.same.alarm.model.Alarm

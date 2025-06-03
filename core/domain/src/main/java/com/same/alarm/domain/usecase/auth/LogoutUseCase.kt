@@ -1,4 +1,4 @@
-package com.same.alarm.domain.usecase
+package com.same.alarm.domain.usecase.auth
 
 import com.same.alarm.domain.repository.AuthRepository
 import javax.inject.Inject
