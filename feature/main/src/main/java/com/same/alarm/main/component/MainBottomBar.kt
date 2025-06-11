@@ -54,7 +54,7 @@ internal fun MainBottomBar(
         Box(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 5.dp, start = 15.dp, end = 15.dp)
+                .padding(bottom = 8.dp, start = 15.dp, end = 15.dp)
                 .drawBehind {
                     val paint = Paint().asFrameworkPaint().apply {
                         isAntiAlias = true
@@ -126,7 +126,7 @@ private fun RowScope.MainBottomBarItem(
         Icon(
             painter = painterResource(tab.iconResId),
             contentDescription = tab.contentDescription,
-            tint = if (selected) Color.Black else Color.Unspecified,
+            tint = if (selected) Color(0xFF0D0D0D) else Color.Unspecified,
             modifier = Modifier.size(34.dp),
         )
     }

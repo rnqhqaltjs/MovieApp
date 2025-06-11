@@ -4,6 +4,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -11,6 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -43,54 +48,68 @@ fun SetupNavHost(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TodayDateHeader(
-                onRefreshClick = { onRefreshClick() },
-                onConfirmClick = { onConfirmClick() }
-            )
-        },
+    Box(
         modifier = Modifier
-            .statusBarsPadding()
-            .navigationBarsPadding()
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = SetupRoute.Setup,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable<SetupRoute.Setup>(
-                enterTransition = { slideInVertically { -it } + fadeIn() },
-                exitTransition = { slideOutVertically { -it } + fadeOut() }
-            ) { backStackEntry ->
-                val setupViewModel: SetupViewModel = hiltViewModel(backStackEntry)
-
-                SetupRoute(
-                    setupViewModel = setupViewModel,
-                    onDetailClick = navController::navigateToSetupDetail,
-                    onShowSnackBar = onShowSnackBar
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(255, 106, 51, 204),
+                        Color(255, 211, 115, 204)
+                    )
                 )
-
-                onConfirmClick = setupViewModel::addAlarm
-                onRefreshClick = setupViewModel::clearData
-            }
-
-            composable<SetupRoute.SetupDetail>(
-                enterTransition = { slideInVertically { it } + fadeIn() },
-                exitTransition = { slideOutVertically { it } + fadeOut() }
+            )
+    ) {
+        Scaffold(
+            topBar = {
+                TodayDateHeader(
+                    onRefreshClick = { onRefreshClick() },
+                    onConfirmClick = { onConfirmClick() }
+                )
+            },
+            modifier = Modifier
+                .statusBarsPadding()
+                .navigationBarsPadding(),
+            containerColor = Color.Transparent
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = SetupRoute.Setup,
+                modifier = Modifier.padding(innerPadding)
             ) {
-                val setupViewModel: SetupViewModel =
-                    navController.previousBackStackEntry?.let {
-                        hiltViewModel(it)
-                    } ?: hiltViewModel()
+                composable<SetupRoute.Setup>(
+                    enterTransition = { slideInVertically { -it } + fadeIn() },
+                    exitTransition = { slideOutVertically { -it } + fadeOut() }
+                ) { backStackEntry ->
+                    val setupViewModel: SetupViewModel = hiltViewModel(backStackEntry)
 
-                SetupDetailRoute(
-                    setupViewModel = setupViewModel,
-                    onShowSnackBar = onShowSnackBar
-                )
+                    SetupRoute(
+                        setupViewModel = setupViewModel,
+                        onDetailClick = navController::navigateToSetupDetail,
+                        onShowSnackBar = onShowSnackBar
+                    )
 
-                onConfirmClick = setupViewModel::addAlarm
-                onRefreshClick = setupViewModel::clearData
+                    onConfirmClick = setupViewModel::addAlarm
+                    onRefreshClick = setupViewModel::clearData
+                }
+
+                composable<SetupRoute.SetupDetail>(
+                    enterTransition = { slideInVertically { it } + fadeIn() },
+                    exitTransition = { slideOutVertically { it } + fadeOut() }
+                ) {
+                    val setupViewModel: SetupViewModel =
+                        navController.previousBackStackEntry?.let {
+                            hiltViewModel(it)
+                        } ?: hiltViewModel()
+
+                    SetupDetailRoute(
+                        setupViewModel = setupViewModel,
+                        onShowSnackBar = onShowSnackBar
+                    )
+
+                    onConfirmClick = setupViewModel::addAlarm
+                    onRefreshClick = setupViewModel::clearData
+                }
             }
         }
     }

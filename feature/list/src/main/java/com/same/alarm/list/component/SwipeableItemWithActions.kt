@@ -59,7 +59,7 @@ fun SwipeableItemWithActions(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(30.dp))
             .height(IntrinsicSize.Min)
     ) {
         Row(

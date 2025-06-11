@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,7 +75,14 @@ fun ListScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(255, 106, 51, 204),
+                        Color(255, 211, 115, 204)
+                    )
+                )
+            )
             .statusBarsPadding()
             .navigationBarsPadding()
             .noRippleClickable { resetRevealedState() }
@@ -147,7 +155,7 @@ fun AlarmRow(
     onTogglePin: (Alarm) -> Unit
 ) {
     SwipeableItemWithActions(
-        isRevealed = revealedState[alarm.id] ?: false,
+        isRevealed = revealedState[alarm.id] == true,
         onLeftExpanded = {
             onSwipeRevealed(alarm.id, true)
         },

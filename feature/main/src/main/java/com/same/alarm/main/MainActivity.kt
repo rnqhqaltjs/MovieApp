@@ -29,8 +29,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
-                Color.White.toArgb(),
-                Color.Black.toArgb()
+                Color.Transparent.toArgb(),
+                Color.Transparent.toArgb()
             )
         )
         checkOverlayPermission()

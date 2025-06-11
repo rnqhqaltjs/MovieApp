@@ -29,7 +29,7 @@ fun CustomSwitch(
     width: Dp = 49.dp,
     height: Dp = 24.dp,
     thumbSize: Dp = 20.dp,
-    activeTrackColor: Color = Color(0xFF8C9BEA),
+    activeTrackColor: Color = Color(0xFFFF956E),
     inactiveTrackColor: Color = Color(0xFFC8C8C8),
     thumbColor: Color = Color.White,
     animationDuration: Int = 200

@@ -75,15 +75,17 @@ fun SetupDetailScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(33.dp))
+
         Text(
             text = "반복",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -100,25 +102,28 @@ fun SetupDetailScreen(
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
                     fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    fontWeight = FontWeight.Medium,
+                    color = if (isSelected) Color.White else Color(0xFF484848),
+                    fontWeight = if(isSelected) FontWeight.SemiBold else FontWeight.Medium,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     modifier = Modifier
                         .size(35.dp)
                         .clip(CircleShape)
-                        .background(if (isSelected) Color.Blue else Color.LightGray)
+                        .background(if (isSelected) Color(0xFFFF7542) else Color.White)
                         .clickable { onDaySelected(index) }
                         .wrapContentSize(Alignment.Center)
                 )
             }
         }
 
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(
             text = "카테고리",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
         )
 
         Spacer(modifier = Modifier.height(15.dp))

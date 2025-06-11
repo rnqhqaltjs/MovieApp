@@ -42,113 +42,102 @@ fun AlarmItem(
 ) {
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
 
-    Row {
-        Box(
-            modifier = Modifier
-                .width(19.dp)
-                .fillMaxHeight()
-                .background(
-                    color = Color.Green,
-                    shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
-                )
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 11.dp),
-            horizontalAlignment = Alignment.End
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White.copy(alpha = 0.3f))
+            .padding(vertical = 11.dp),
+        horizontalAlignment = Alignment.End,
+    ) {
+        Row(
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier.padding(end = 13.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier.padding(end = 13.dp)
-            ) {
-                Image(
-                    painter = painterResource(
-                        id = if (alarm.isPinned) R.drawable.ic_pin_filled else R.drawable.ic_pin_outline
-                    ),
-                    contentDescription = "고정 핀",
-                    modifier = Modifier
-                        .padding(top = 3.dp, start = 5.dp, end = 5.dp)
-                        .noRippleClickable { onTogglePin(alarm) }
-                )
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Text(
-                        text = alarm.title,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    )
-
-                    Text(
-                        text = alarm.statusMessage,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    )
-                }
-
-                CustomSwitch(
-                    checked = alarm.isActive,
-                    onCheckedChange = { isActive ->
-                        onToggleAlarm(alarm.copy(isActive = isActive))
-                    },
-                )
-            }
-
-            Spacer(modifier = Modifier.height(7.dp))
-
-            Text(
-                text = buildAnnotatedString {
-                    daysOfWeekMap.forEachIndexed { index, day ->
-                        if (alarm.daysOfWeek.contains(index)) {
-                            withStyle(
-                                style = SpanStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Black
-                                )
-                            ) {
-                                append("$day ")
-                            }
-                        } else {
-                            append("$day ")
-                        }
-                    }
-                },
-                color = Color.Gray,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                modifier = Modifier.padding(end = 16.dp),
-                letterSpacing = (-0.5).sp
+            Image(
+                painter = painterResource(
+                    id = if (alarm.isPinned) R.drawable.ic_pin_filled else R.drawable.ic_pin_outline
+                ),
+                contentDescription = "고정 핀",
+                modifier = Modifier
+                    .padding(top = 3.dp, start = 5.dp, end = 5.dp)
+                    .noRippleClickable { onTogglePin(alarm) }
             )
 
-            Row(
-                modifier = Modifier.padding(top = 2.dp, end = 13.dp),
-                verticalAlignment = Alignment.Bottom
+            Column(
+                modifier = Modifier
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
-                    text = alarm.time.format(DateTimeFormatter.ofPattern("a")),
-                    fontSize = 15.sp,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    text = alarm.title,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 1.dp)
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                 )
-
-                Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = alarm.time.format(DateTimeFormatter.ofPattern("hh:mm")),
-                    fontSize = 26.sp,
+                    text = alarm.statusMessage,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    fontWeight = FontWeight.Medium
                 )
             }
+
+            CustomSwitch(
+                checked = alarm.isActive,
+                onCheckedChange = { isActive ->
+                    onToggleAlarm(alarm.copy(isActive = isActive))
+                },
+            )
+        }
+
+        Spacer(modifier = Modifier.height(7.dp))
+
+        Text(
+            text = buildAnnotatedString {
+                daysOfWeekMap.forEachIndexed { index, day ->
+                    if (alarm.daysOfWeek.contains(index)) {
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                        ) {
+                            append("$day ")
+                        }
+                    } else {
+                        append("$day ")
+                    }
+                }
+            },
+            color = Color.Gray,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+            modifier = Modifier.padding(end = 16.dp),
+            letterSpacing = (-0.5).sp
+        )
+
+        Row(
+            modifier = Modifier.padding(top = 2.dp, end = 13.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = alarm.time.format(DateTimeFormatter.ofPattern("a")),
+                fontSize = 15.sp,
+                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 1.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = alarm.time.format(DateTimeFormatter.ofPattern("hh:mm")),
+                fontSize = 26.sp,
+                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                fontWeight = FontWeight.Medium,
+            )
         }
     }
 }

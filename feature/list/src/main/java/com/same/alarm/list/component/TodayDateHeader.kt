@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,14 +34,16 @@ fun TodayDateHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .height(65.dp)
-            .background(Color.White)
     ) {
         Text(
             text = "${month}월 ${day}일 $dayOfWeek",
-            fontSize = 16.sp,
+            fontSize = 19.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(R.font.inter)),
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 35.dp),
+            color = Color.White
         )
     }
 }

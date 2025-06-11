@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +40,6 @@ fun TodayDateHeader(
         modifier = Modifier
             .fillMaxWidth()
             .height(65.dp)
-            .background(Color.White)
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_refresh),
@@ -51,7 +51,8 @@ fun TodayDateHeader(
                     scaleY = 0.8f
                 )
                 .padding(start = 15.dp)
-                .noRippleClickable { onRefreshClick() }
+                .noRippleClickable { onRefreshClick() },
+            tint = Color.White
         )
 
         Text(
@@ -59,7 +60,8 @@ fun TodayDateHeader(
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
+            color = Color.White
         )
 
         Icon(
@@ -72,7 +74,8 @@ fun TodayDateHeader(
                     scaleY = 0.8f
                 )
                 .padding(end = 11.dp)
-                .noRippleClickable { onConfirmClick() }
+                .noRippleClickable { onConfirmClick() },
+            tint = Color.White
         )
     }
 }

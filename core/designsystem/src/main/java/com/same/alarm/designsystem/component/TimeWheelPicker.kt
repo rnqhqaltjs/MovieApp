@@ -95,7 +95,7 @@ fun TimeWheelPicker(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(51.dp)
+        verticalArrangement = Arrangement.spacedBy(44.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(19.dp)
@@ -105,7 +105,7 @@ fun TimeWheelPicker(
                     text = label,
                     fontSize = 16.sp,
                     fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
-                    color = if (index == amPm) Color.Black else Color(0xFFD0D0D0),
+                    color = if (index == amPm) Color.White else Color(0xFFFACCBC),
                     fontFamily = FontFamily(Font(R.font.inter)),
                     modifier = Modifier
                         .noRippleClickable {
@@ -135,12 +135,20 @@ fun TimeWheelPicker(
                         hour12(hour + 2)
                     )
 
+                    val color = if(displayHour == hour12(hour + 1)) {
+                        Color.White
+                    } else if(displayHour ==  hour12(hour) || displayHour ==  hour12(hour + 2)) {
+                        Color(0xFFF9F9F9)
+                    } else {
+                        Color(0xFFF3F3F3)
+                    }
+
                     Text(
                         text = displayHour.toString().padStart(2, '0'),
                         fontSize = if (displayHour == hour + 1) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = FontFamily(Font(R.font.inter)),
-                        color = if (displayHour == hour + 1) Color.Black else Color(0xFFD0D0D0),
+                        color = color,
                         modifier = Modifier.padding(
                             vertical = if (isNearFocusedHour) 0.dp else 11.dp
                         )
@@ -153,7 +161,7 @@ fun TimeWheelPicker(
                 fontSize = 77.sp,
                 fontWeight = FontWeight.ExtraBold,
                 fontFamily = FontFamily(Font(R.font.inter)),
-                color = Color.Black,
+                color = Color.White,
                 modifier = Modifier.offset(y = (-10).dp)
             )
 
@@ -172,12 +180,20 @@ fun TimeWheelPicker(
                         (minute + 1) % minuteSize
                     )
 
+                    val color = if (displayMinute == minute % minuteSize) {
+                        Color.White
+                    } else if (displayMinute == (minute - 1 + minuteSize) % minuteSize || displayMinute == (minute + 1) % minuteSize) {
+                        Color(0xFFF9F9F9)
+                    } else {
+                        Color(0xFFF3F3F3)
+                    }
+
                     Text(
                         text =  displayMinute.toString().padStart(2, '0'),
                         fontSize = if(displayMinute == minute) 77.sp else 26.sp,
                         fontWeight = FontWeight.ExtraBold,
                         fontFamily = FontFamily(Font(R.font.inter)),
-                        color = if (displayMinute == minute) Color.Black else Color(0xFFD0D0D0),
+                        color = color,
                         modifier = Modifier
                             .padding(vertical = if (isNearFocusedMinute) 0.dp else 11.dp)
                     )

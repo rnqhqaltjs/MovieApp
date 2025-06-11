@@ -42,7 +42,7 @@ fun CategoryTabs(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
-                    .background(if (isSelected) Color.Blue else Color.LightGray)
+                    .background(if (isSelected) Color(0xFFFF6A33) else Color.White)
                     .clickable { onCategorySelected(category) }
                     .height(33.dp)
                     .padding(horizontal = 3.dp)
