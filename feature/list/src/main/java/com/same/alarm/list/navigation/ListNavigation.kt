@@ -10,7 +10,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.same.alarm.edit.EditRoute
 import com.same.alarm.list.ListRoute
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
 

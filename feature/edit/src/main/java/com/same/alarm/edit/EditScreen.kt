@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.edit.component.CategoryDropdown
 import com.same.alarm.edit.component.TodayDateText
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.TextStyle

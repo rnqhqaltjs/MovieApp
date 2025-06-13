@@ -1,11 +1,11 @@
 package com.same.alarm.domain.repository
 
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import kotlinx.coroutines.flow.Flow
 
 interface AlarmRepository {
     suspend fun addAlarm(alarm: Alarm): Int
-    suspend fun removeAlarm(alarm: Alarm)
+    suspend fun removeAlarm(alarmId: Int)
     suspend fun updateAlarm(alarm: Alarm)
     suspend fun toggleAlarm(alarm: Alarm)
     fun getAllAlarms() : Flow<List<Alarm>>

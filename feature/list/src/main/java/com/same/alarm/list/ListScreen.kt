@@ -30,7 +30,7 @@ import com.same.alarm.list.component.ActionIcon
 import com.same.alarm.list.component.AlarmItem
 import com.same.alarm.list.component.SwipeableItemWithActions
 import com.same.alarm.list.component.TodayDateHeader
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import com.same.alarm.designsystem.component.CategoryTabs
 import java.time.LocalTime
 

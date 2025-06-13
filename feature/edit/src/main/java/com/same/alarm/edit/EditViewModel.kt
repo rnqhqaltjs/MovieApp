@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.same.alarm.domain.usecase.alarm.LoadAlarmUseCase
 import com.same.alarm.domain.usecase.alarm.UpdateAlarmUseCase
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import com.same.alarm.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

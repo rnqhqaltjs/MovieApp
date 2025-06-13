@@ -7,7 +7,7 @@ import com.same.alarm.domain.usecase.alarm.LoadAlarmListUseCase
 import com.same.alarm.domain.usecase.alarm.RemoveAlarmUseCase
 import com.same.alarm.domain.usecase.alarm.ToggleAlarmUseCase
 import com.same.alarm.domain.usecase.alarm.TogglePinUseCase
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

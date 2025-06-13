@@ -7,16 +7,16 @@ import com.same.alarm.model.userinfo.UserInfoRequest
 import com.same.alarm.model.userinfo.UserInfoResponse
 
 object UserMapper {
-    fun UserInfoResponseEntity.toModel() = UserInfoResponse(
+    fun UserInfoResponseEntity.toDomain() = UserInfoResponse(
         name = name,
         role = role,
         age = age,
-        gender = gender.toModel(),
+        gender = gender.toDomain(),
         job = job,
         address = address
     )
 
-    private fun Gender.toModel(): com.same.alarm.model.userinfo.Gender = when (this) {
+    private fun Gender.toDomain(): com.same.alarm.model.userinfo.Gender = when (this) {
         Gender.MALE -> com.same.alarm.model.userinfo.Gender.MALE
         Gender.FEMALE -> com.same.alarm.model.userinfo.Gender.FEMALE
     }

@@ -14,7 +14,7 @@ import com.same.alarm.common.AlarmConstants.REPEAT_COUNT
 import com.same.alarm.common.AlarmConstants.WEEK_INTERVAL_MILLIS
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.infra.receiver.AlarmReceiver
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import javax.inject.Inject

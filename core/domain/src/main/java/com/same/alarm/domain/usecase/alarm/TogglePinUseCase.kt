@@ -1,7 +1,7 @@
 package com.same.alarm.domain.usecase.alarm
 
 import com.same.alarm.domain.repository.AlarmRepository
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import javax.inject.Inject
 
 class TogglePinUseCase @Inject constructor(

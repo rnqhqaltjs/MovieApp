@@ -2,7 +2,7 @@ package com.same.alarm.data.repository
 
 import com.same.alarm.data.datasource.UserDataSource
 import com.same.alarm.data.mapper.UserMapper.toEntity
-import com.same.alarm.data.mapper.UserMapper.toModel
+import com.same.alarm.data.mapper.UserMapper.toDomain
 import com.same.alarm.domain.repository.UserRepository
 import com.same.alarm.model.userinfo.UserInfoRequest
 import com.same.alarm.model.userinfo.UserInfoResponse
@@ -12,7 +12,7 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
     override suspend fun getUserInfo(): UserInfoResponse {
-        return userDataSource.getUserInfo().toModel()
+        return userDataSource.getUserInfo().toDomain()
     }
 
     override suspend fun saveUserInfo(userInfoRequest: UserInfoRequest) {

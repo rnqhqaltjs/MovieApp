@@ -3,7 +3,7 @@ package com.same.alarm.domain.usecase.alarm
 import com.same.alarm.common.AlarmConstants.REPEAT_COUNT
 import com.same.alarm.domain.repository.AlarmHelper
 import com.same.alarm.domain.repository.AlarmRepository
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 

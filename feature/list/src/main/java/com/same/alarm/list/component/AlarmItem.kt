@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.R
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
