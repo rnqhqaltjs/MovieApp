@@ -49,7 +49,6 @@ class LoginViewModel @Inject constructor(
         loginUseCase(token.accessToken, LoginRequest(AuthType.KAKAO))
             .onSuccess { isNewUser ->
                 _loginEvent.emit(LoginState.Success(isNewUser))
-
             }
             .onFailure { error ->
                 _loginEvent.emit(LoginState.Failure(error.toString()))

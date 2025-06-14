@@ -6,15 +6,15 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class UserInfoResponseDto(
     @Json(name = "name")
-    val name: String?,
-    @Json(name = "provider")
-    val provider: String?,
+    val name: String,
+    @Json(name = "oauthProvider")
+    val oauthProvider: String,
     @Json(name = "oauthId")
-    val oauthId: String?,
+    val oauthId: String,
     @Json(name = "role")
-    val role: String?,
+    val role: String,
     @Json(name = "age")
-    val age: Int,
+    val age: Int?,
     @Json(name = "gender")
     val gender: Gender?,
     @Json(name = "job")

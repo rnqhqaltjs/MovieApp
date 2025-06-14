@@ -8,9 +8,9 @@ import com.same.alarm.network.model.userinfo.UserInfoResponseDto
 
 object UserMapper {
     fun UserInfoResponseDto.toEntity() = UserInfoResponseEntity(
-        name = name ?: "",
-        role = role ?: "",
-        age = age,
+        name = name,
+        role = role,
+        age = age ?: -1,
         gender = gender?.toEntity() ?: com.same.alarm.data.model.userinfo.Gender.MALE,
         job = job ?: "",
         address = address ?: ""

@@ -15,9 +15,10 @@ class AlarmRepositoryImpl @Inject constructor(
     private val alarmLocalDataSource: AlarmLocalDataSource,
     private val alarmRemoteDataSource: AlarmRemoteDataSource
 ) : AlarmRepository {
-
     override suspend fun addAlarm(alarm: Alarm): Int {
-        return alarmLocalDataSource.addAlarm(alarm.toLocalEntity()).toInt()
+        val remoteId = alarmRemoteDataSource.saveAlarm(alarm.toRemoteEntity())
+        val localId = alarmLocalDataSource.addAlarm(alarm.copy(id = remoteId.toInt()).toLocalEntity())
+        return localId.toInt()
     }
 
     override fun getAllAlarms(): Flow<List<Alarm>> {
@@ -33,14 +34,12 @@ class AlarmRepositoryImpl @Inject constructor(
     }
 
     override suspend fun removeAlarm(alarmId: Int) {
-        return alarmLocalDataSource.removeAlarm(alarmId.toLong())
+        alarmLocalDataSource.removeAlarm(alarmId.toLong())
+        alarmRemoteDataSource.deleteAlarm(alarmId.toLong())
     }
 
     override suspend fun updateAlarm(alarm: Alarm) {
-        return alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
-    }
-
-    override suspend fun toggleAlarm(alarm: Alarm) {
-        return alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
+        alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
+        alarmRemoteDataSource.updateAlarm(alarm.id.toLong(), alarm.toRemoteEntity())
     }
 }

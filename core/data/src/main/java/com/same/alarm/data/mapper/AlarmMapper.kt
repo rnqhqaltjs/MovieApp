@@ -3,6 +3,7 @@ package com.same.alarm.data.mapper
 import com.same.alarm.data.model.alarm.AlarmLocalEntity
 import com.same.alarm.data.model.alarm.AlarmRemoteEntity
 import com.same.alarm.model.alarm.Alarm
+import java.time.LocalTime
 
 object AlarmMapper {
     fun AlarmLocalEntity.toDomain(): Alarm {
@@ -21,7 +22,7 @@ object AlarmMapper {
 
     fun AlarmRemoteEntity.toDomain(): Alarm {
         return Alarm(
-            time = this.time,
+            time = LocalTime.parse(this.time),
             title = this.title,
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,
@@ -48,7 +49,7 @@ object AlarmMapper {
 
     fun Alarm.toRemoteEntity(): AlarmRemoteEntity {
         return AlarmRemoteEntity(
-            time = this.time,
+            time = this.time.toString(),
             title = this.title,
             statusMessage = this.statusMessage,
             daysOfWeek = this.daysOfWeek,

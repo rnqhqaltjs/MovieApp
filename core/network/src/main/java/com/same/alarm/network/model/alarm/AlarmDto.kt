@@ -13,7 +13,7 @@ data class AlarmDto (
     @Json(name = "category")
     val category: String,
     @Json(name = "time")
-    val time: LocalTime,
+    val time: String,
     @Json(name = "dayOfWeek")
     val daysOfWeek: List<Int>,
     @Json(name = "repeating")

@@ -1,5 +1,6 @@
 package com.same.alarm.setup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.alarm.AddAlarmUseCase
@@ -92,6 +93,7 @@ class SetupViewModel @Inject constructor(
                 .onFailure { error ->
                     error.message?.let { message ->
                         _addEvent.emit(SetupState.Failure(message))
+                        Log.d("SetupViewModel", message)
                     }
                 }
         }

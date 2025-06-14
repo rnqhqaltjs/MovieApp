@@ -1,5 +1,6 @@
 package com.same.alarm.network.remote
 
+import com.same.alarm.network.model.util.ApiResponse
 import com.same.alarm.network.model.alarm.AlarmDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -10,7 +11,7 @@ import retrofit2.http.Path
 
 interface AlarmService {
     @POST("/alarm")
-    suspend fun saveAlarm(@Body alarmDto: AlarmDto)
+    suspend fun saveAlarm(@Body alarmDto: AlarmDto): ApiResponse<Long>
 
     @DELETE("/alarm/{alarmId}")
     suspend fun deleteAlarm(@Path("alarmId") alarmId: Long)
@@ -19,8 +20,8 @@ interface AlarmService {
     suspend fun updateAlarm(
         @Path("alarmId") alarmId: Long,
         @Body alarmDto: AlarmDto
-    )
+    ): ApiResponse<AlarmDto>
 
     @GET("/alarm/{alarmId}")
-    suspend fun getAlarmById(@Path("alarmId") alarmId: Long): AlarmDto
+    suspend fun getAlarmById(@Path("alarmId") alarmId: Long): ApiResponse<AlarmDto>
 }
