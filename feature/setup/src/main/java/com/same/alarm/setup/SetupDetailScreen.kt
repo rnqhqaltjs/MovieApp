@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,11 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.same.alarm.common.AlarmConfig.CATEGORIES
 import com.same.alarm.common.AlarmConfig.DAYS_OF_WEEK
-import com.same.alarm.setup.component.RepeatSwitchLabel
-import com.same.alarm.setup.model.SetupState
 import com.same.alarm.designsystem.component.CategoryTabs
+import com.same.alarm.model.alarm.Category
+import com.same.alarm.setup.model.SetupState
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -129,14 +129,24 @@ fun SetupDetailScreen(
         Spacer(modifier = Modifier.height(15.dp))
 
         CategoryTabs(
-            categories = CATEGORIES,
+            categories = Category.entries.map { it.displayName },
             selectedCategory = selectedCategory,
             onCategorySelected = onCategorySelected
         )
 
-        RepeatSwitchLabel(
-            label = "다시 알림",
-            isChecked = isAlarmRepeated,
+        Spacer(modifier = Modifier.height(39.dp))
+
+        Text(
+            text = "다시 알림",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
+        )
+
+        Switch(
+            checked = isAlarmRepeated,
             onCheckedChange = onRepeatChange
         )
 

@@ -50,8 +50,8 @@ fun CategoryTabs(
                 Text(
                     text = category,
                     fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    fontWeight = FontWeight.Medium,
+                    color = if (isSelected) Color.White else Color(0xFF484848),
+                    fontWeight = if(isSelected) FontWeight.SemiBold else FontWeight.Medium,
                     fontFamily = FontFamily(Font(R.font.inter)),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )

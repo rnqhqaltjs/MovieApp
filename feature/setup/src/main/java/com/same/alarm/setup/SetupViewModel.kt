@@ -33,7 +33,7 @@ class SetupViewModel @Inject constructor(
     private val _selectedDays = MutableStateFlow<List<Int>>(emptyList())
     val selectedDays: StateFlow<List<Int>> = _selectedDays.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow("")
+    private val _selectedCategory = MutableStateFlow("스터디")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
     private val _isAlarmRepeated = MutableStateFlow(false)
@@ -93,7 +93,6 @@ class SetupViewModel @Inject constructor(
                 .onFailure { error ->
                     error.message?.let { message ->
                         _addEvent.emit(SetupState.Failure(message))
-                        Log.d("SetupViewModel", message)
                     }
                 }
         }
@@ -104,7 +103,7 @@ class SetupViewModel @Inject constructor(
         _title.value = ""
         _statusMessage.value = ""
         _selectedDays.value = emptyList()
-        _selectedCategory.value = ""
+        _selectedCategory.value = "스터디"
         _isAlarmRepeated.value = false
     }
 }

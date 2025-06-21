@@ -33,13 +33,16 @@ class AlarmRepositoryImpl @Inject constructor(
             .map { it?.toDomain() }
     }
 
+    override suspend fun getAlarmMessage(): String {
+        return alarmRemoteDataSource.getAlarmMessage()
+    }
+
     override suspend fun removeAlarm(alarmId: Int) {
         alarmLocalDataSource.removeAlarm(alarmId.toLong())
         alarmRemoteDataSource.deleteAlarm(alarmId.toLong())
     }
 
     override suspend fun updateAlarm(alarm: Alarm) {
-        alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
-        alarmRemoteDataSource.updateAlarm(alarm.id.toLong(), alarm.toRemoteEntity())
+        return alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
     }
 }

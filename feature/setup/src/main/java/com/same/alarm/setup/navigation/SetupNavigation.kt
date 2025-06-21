@@ -1,4 +1,4 @@
-package com.same.alarm.setup.navigation
+ package com.same.alarm.setup.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

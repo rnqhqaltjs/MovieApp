@@ -95,26 +95,8 @@ fun TimeWheelPicker(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(44.dp)
+        verticalArrangement = Arrangement.spacedBy(75.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(19.dp)
-        ) {
-            listOf("오전", "오후").forEachIndexed { index, label ->
-                Text(
-                    text = label,
-                    fontSize = 16.sp,
-                    fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
-                    color = if (index == amPm) Color.White else Color(0xFFFACCBC),
-                    fontFamily = FontFamily(Font(R.font.inter)),
-                    modifier = Modifier
-                        .noRippleClickable {
-                            amPm = index
-                        }
-                )
-            }
-        }
-
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -198,6 +180,24 @@ fun TimeWheelPicker(
                             .padding(vertical = if (isNearFocusedMinute) 0.dp else 11.dp)
                     )
                 }
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(19.dp)
+        ) {
+            listOf("오전", "오후").forEachIndexed { index, label ->
+                Text(
+                    text = label,
+                    fontSize = 16.sp,
+                    fontWeight = if(index == amPm) FontWeight.ExtraBold else FontWeight.SemiBold,
+                    color = if (index == amPm) Color.White else Color(0xFFFACCBC),
+                    fontFamily = FontFamily(Font(R.font.inter)),
+                    modifier = Modifier
+                        .noRippleClickable {
+                            amPm = index
+                        }
+                )
             }
         }
     }

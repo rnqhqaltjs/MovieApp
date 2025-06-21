@@ -33,4 +33,8 @@ class AlarmRemoteDataSourceImpl @Inject constructor(
     override suspend fun getAlarmById(alarmId: Long): AlarmRemoteEntity {
         return alarmService.getAlarmById(alarmId).getBodyOrThrow().toEntity()
     }
+
+    override suspend fun getAlarmMessage(): String {
+        return alarmService.getAlarmMessage().getBodyOrThrow()
+    }
 }

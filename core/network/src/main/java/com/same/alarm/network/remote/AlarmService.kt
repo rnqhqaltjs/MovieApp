@@ -24,4 +24,7 @@ interface AlarmService {
 
     @GET("/alarm/{alarmId}")
     suspend fun getAlarmById(@Path("alarmId") alarmId: Long): ApiResponse<AlarmDto>
+
+    @GET("/alarm/message")
+    suspend fun getAlarmMessage(): ApiResponse<String>
 }

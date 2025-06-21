@@ -48,12 +48,9 @@ fun ListRoute(
         categories = listViewModel.categories,
         selectedCategory = selectedCategory,
         onCategorySelected = listViewModel::selectCategory,
-        revealedState = revealedState,
-        onRemoveAlarm = listViewModel::removeAlarm,
+        onRemoveClicked = listViewModel::removeAlarm,
         onToggleAlarm = listViewModel::toggleAlarm,
-        onEditAlarm = onEditClicked,
-        onSwipeRevealed = listViewModel::swipeRevealed,
-        resetRevealedState = listViewModel::resetRevealedState,
+        onEditClicked = onEditClicked,
         onTogglePin = listViewModel::togglePin
     )
 }
@@ -64,12 +61,9 @@ fun ListScreen(
     categories: List<String>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
-    revealedState: Map<Int, Boolean>,
-    onRemoveAlarm: (Alarm) -> Unit,
+    onRemoveClicked: (Alarm) -> Unit,
     onToggleAlarm: (Alarm) -> Unit,
-    onEditAlarm: (Alarm) -> Unit,
-    onSwipeRevealed: (Int, Boolean) -> Unit,
-    resetRevealedState: () -> Unit,
+    onEditClicked: (Alarm) -> Unit,
     onTogglePin: (Alarm) -> Unit
 ) {
     Column(
@@ -85,7 +79,6 @@ fun ListScreen(
             )
             .statusBarsPadding()
             .navigationBarsPadding()
-            .noRippleClickable { resetRevealedState() }
     ) {
         TodayDateHeader()
 
@@ -112,15 +105,11 @@ fun ListScreen(
                 items = pinned,
                 key = { it.id }
             ) { alarm ->
-                AlarmRow(
+                AlarmItem(
                     alarm = alarm,
-                    revealedState = revealedState,
-                    onRemoveAlarm = onRemoveAlarm,
+                    onTogglePin = onTogglePin,
                     onToggleAlarm = onToggleAlarm,
-                    onEditAlarm = onEditAlarm,
-                    onSwipeRevealed = onSwipeRevealed,
-                    resetRevealedState = resetRevealedState,
-                    onTogglePin = onTogglePin
+                    onEditClicked = onEditClicked
                 )
             }
 
@@ -128,70 +117,14 @@ fun ListScreen(
                 items = normal,
                 key = { it.id }
             ) { alarm ->
-                AlarmRow(
+                AlarmItem(
                     alarm = alarm,
-                    revealedState = revealedState,
-                    onRemoveAlarm = onRemoveAlarm,
+                    onTogglePin = onTogglePin,
                     onToggleAlarm = onToggleAlarm,
-                    onEditAlarm = onEditAlarm,
-                    onSwipeRevealed = onSwipeRevealed,
-                    resetRevealedState = resetRevealedState,
-                    onTogglePin = onTogglePin
+                    onEditClicked = onEditClicked
                 )
             }
         }
-    }
-}
-
-@Composable
-fun AlarmRow(
-    alarm: Alarm,
-    revealedState: Map<Int, Boolean>,
-    onRemoveAlarm: (Alarm) -> Unit,
-    onToggleAlarm: (Alarm) -> Unit,
-    onEditAlarm: (Alarm) -> Unit,
-    onSwipeRevealed: (Int, Boolean) -> Unit,
-    resetRevealedState: () -> Unit,
-    onTogglePin: (Alarm) -> Unit
-) {
-    SwipeableItemWithActions(
-        isRevealed = revealedState[alarm.id] == true,
-        onLeftExpanded = {
-            onSwipeRevealed(alarm.id, true)
-        },
-        onRightExpanded = {
-            onSwipeRevealed(alarm.id, true)
-        },
-        onCollapsed = {
-            onSwipeRevealed(alarm.id, false)
-        },
-        leftActions = {
-        },
-        rightActions = {
-            ActionIcon(
-                onClick = {
-                    onEditAlarm(alarm)
-                    resetRevealedState()
-                },
-                backgroundColor = Color.Green,
-                icon = Icons.Default.Edit,
-                modifier = Modifier.fillMaxHeight()
-            )
-            ActionIcon(
-                onClick = {
-                    onRemoveAlarm(alarm)
-                },
-                backgroundColor = Color.Red,
-                icon = Icons.Default.Delete,
-                modifier = Modifier.fillMaxHeight()
-            )
-        }
-    ) {
-        AlarmItem(
-            alarm = alarm,
-            onTogglePin = onTogglePin,
-            onToggleAlarm = onToggleAlarm
-        )
     }
 }
 
@@ -215,12 +148,9 @@ fun ListScreenPreview() {
         categories = listOf("스터디", "기상"),
         selectedCategory = "기상",
         onCategorySelected = {},
-        revealedState = mapOf(),
-        onRemoveAlarm = {},
+        onRemoveClicked = {},
         onToggleAlarm = {},
-        onEditAlarm = {},
-        onSwipeRevealed = { _, _ -> },
-        resetRevealedState = {},
+        onEditClicked = {},
         onTogglePin = {}
     )
 }
