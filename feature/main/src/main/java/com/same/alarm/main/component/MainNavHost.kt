@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.same.alarm.edit.navigation.editNavGraph
 import com.same.alarm.feed.navigation.feedNavGraph
 import com.same.alarm.list.navigation.listNavGraph
 import com.same.alarm.main.MainNavigator
@@ -25,9 +26,11 @@ internal fun MainNavHost(
             onShowSnackBar = onShowSnackBar
         )
         listNavGraph(
-            onEditClicked = { navigator.navigateToEdit(it.id) },
-            onAlarmUpdated = navigator::popBackStack
+            onEditClicked = { navigator.navigateToEdit(it) }
         )
         feedNavGraph()
+        editNavGraph(
+            onShowSnackBar = onShowSnackBar
+        )
     }
 }

@@ -41,7 +41,7 @@ fun AlarmItem(
     alarm: Alarm,
     onTogglePin: (Alarm) -> Unit,
     onToggleAlarm: (Alarm) -> Unit,
-    onEditClicked: (Alarm) -> Unit
+    onEditClicked: (Int) -> Unit
 ) {
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
     val categoryEnum = Category.fromDisplayName(alarm.category) ?: Category.ETC
@@ -52,7 +52,7 @@ fun AlarmItem(
             .clip(RoundedCornerShape(30.dp))
             .background(Color.White.copy(alpha = 0.3f))
             .padding(vertical = 12.dp)
-            .noRippleClickable { onEditClicked(alarm) },
+            .noRippleClickable { onEditClicked(alarm.id) },
         horizontalAlignment = Alignment.End,
     ) {
         Row(

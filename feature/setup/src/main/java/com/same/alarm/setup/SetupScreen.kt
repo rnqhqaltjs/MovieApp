@@ -88,7 +88,7 @@ fun SetupScreen(
             ) {
                 if (title.isEmpty()) {
                     Text(
-                        text = "기업디 회의",
+                        text = "제목",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -120,7 +120,7 @@ fun SetupScreen(
             ) {
                 if (statusMessage.isEmpty()) {
                     Text(
-                        text = "발표문 프린트 챙기기",
+                        text = "설명",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,

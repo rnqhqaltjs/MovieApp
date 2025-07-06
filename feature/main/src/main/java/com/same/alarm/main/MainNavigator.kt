@@ -47,7 +47,7 @@ internal class MainNavigator(
     }
 
     fun navigateToEdit(alarmId: Int) {
-        navController.navigateToEdit(alarmId)
+        navController.navigateToEdit(Route.Edit(alarmId))
     }
 
     fun popBackStack() {

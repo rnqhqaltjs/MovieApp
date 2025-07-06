@@ -1,0 +1,88 @@
+package com.same.alarm.edit.component
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.same.alarm.designsystem.R
+import com.same.alarm.designsystem.noRippleClickable
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
+
+@Composable
+fun TodayDateHeader(
+    onRefreshClick: () -> Unit,
+    onConfirmClick: () -> Unit
+) {
+    val today = LocalDate.now()
+    val dayOfWeek = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
+    val month = today.monthValue
+    val day = today.dayOfMonth
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(65.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = com.same.alarm.edit.R.drawable.ic_refresh),
+            contentDescription = "refresh",
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .graphicsLayer(
+                    scaleX = 0.8f,
+                    scaleY = 0.8f
+                )
+                .padding(start = 15.dp)
+                .noRippleClickable { onRefreshClick() },
+            tint = Color.White
+        )
+
+        Text(
+            text = "${month}월 ${day}일 $dayOfWeek",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(R.font.inter)),
+            modifier = Modifier.align(Alignment.Center),
+            color = Color.White
+        )
+
+        Icon(
+            painter = painterResource(id = com.same.alarm.edit.R.drawable.ic_confirm),
+            contentDescription = "confirm",
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .graphicsLayer(
+                    scaleX = 0.8f,
+                    scaleY = 0.8f
+                )
+                .padding(end = 11.dp)
+                .noRippleClickable { onConfirmClick() },
+            tint = Color.White
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TodayDateTextPreview() {
+    TodayDateHeader(
+        onRefreshClick = {},
+        onConfirmClick = {}
+    )
+}

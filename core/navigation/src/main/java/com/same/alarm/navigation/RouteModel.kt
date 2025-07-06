@@ -26,6 +26,14 @@ sealed interface SetupRoute {
     data object SetupDetail : Route
 }
 
+sealed interface EditRoute {
+    @Serializable
+    data object Edit : Route
+
+    @Serializable
+    data object EditDetail : Route
+}
+
 
 sealed interface AuthRoute {
     @Serializable

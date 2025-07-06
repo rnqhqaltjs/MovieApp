@@ -15,9 +15,14 @@ class AlarmRepositoryImpl @Inject constructor(
     private val alarmLocalDataSource: AlarmLocalDataSource,
     private val alarmRemoteDataSource: AlarmRemoteDataSource
 ) : AlarmRepository {
+//    override suspend fun addAlarm(alarm: Alarm): Int {
+//        val remoteId = alarmRemoteDataSource.saveAlarm(alarm.toRemoteEntity())
+//        val localId = alarmLocalDataSource.addAlarm(alarm.copy(id = remoteId.toInt()).toLocalEntity())
+//        return localId.toInt()
+//    }
+
     override suspend fun addAlarm(alarm: Alarm): Int {
-        val remoteId = alarmRemoteDataSource.saveAlarm(alarm.toRemoteEntity())
-        val localId = alarmLocalDataSource.addAlarm(alarm.copy(id = remoteId.toInt()).toLocalEntity())
+        val localId = alarmLocalDataSource.addAlarm(alarm.toLocalEntity())
         return localId.toInt()
     }
 

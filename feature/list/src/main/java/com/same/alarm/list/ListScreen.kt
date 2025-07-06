@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -13,9 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,19 +21,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.same.alarm.designsystem.noRippleClickable
-import com.same.alarm.list.component.ActionIcon
+import com.same.alarm.designsystem.component.CategoryTabs
 import com.same.alarm.list.component.AlarmItem
-import com.same.alarm.list.component.SwipeableItemWithActions
 import com.same.alarm.list.component.TodayDateHeader
 import com.same.alarm.model.alarm.Alarm
-import com.same.alarm.designsystem.component.CategoryTabs
 import java.time.LocalTime
 
 @Composable
 fun ListRoute(
     listViewModel: ListViewModel = hiltViewModel(),
-    onEditClicked: (Alarm) -> Unit
+    onEditClicked: (Int) -> Unit
 ) {
     val alarmListState by listViewModel.alarmListState.collectAsStateWithLifecycle()
     val selectedCategory by listViewModel.selectedCategory.collectAsStateWithLifecycle()
@@ -63,7 +56,7 @@ fun ListScreen(
     onCategorySelected: (String) -> Unit,
     onRemoveClicked: (Alarm) -> Unit,
     onToggleAlarm: (Alarm) -> Unit,
-    onEditClicked: (Alarm) -> Unit,
+    onEditClicked: (Int) -> Unit,
     onTogglePin: (Alarm) -> Unit
 ) {
     Column(
