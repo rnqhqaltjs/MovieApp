@@ -1,6 +1,5 @@
 package com.same.alarm.setup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.alarm.AddAlarmUseCase
@@ -33,7 +32,7 @@ class SetupViewModel @Inject constructor(
     private val _selectedDays = MutableStateFlow<List<Int>>(emptyList())
     val selectedDays: StateFlow<List<Int>> = _selectedDays.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow("스터디")
+    private val _selectedCategory = MutableStateFlow("일")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
     private val _isAlarmRepeated = MutableStateFlow(false)
@@ -66,7 +65,7 @@ class SetupViewModel @Inject constructor(
 
     fun toggleCategory(category: String) {
         _selectedCategory.update { currentCategory ->
-            if (currentCategory == category) "" else category
+            if (currentCategory == category) currentCategory else category
         }
     }
 
@@ -103,7 +102,7 @@ class SetupViewModel @Inject constructor(
         _title.value = ""
         _statusMessage.value = ""
         _selectedDays.value = emptyList()
-        _selectedCategory.value = "스터디"
+        _selectedCategory.value = "일"
         _isAlarmRepeated.value = false
     }
 }

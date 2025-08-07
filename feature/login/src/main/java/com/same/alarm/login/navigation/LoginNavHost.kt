@@ -1,4 +1,4 @@
-package com.same.alarm.login.component
+package com.same.alarm.login.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,9 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.same.alarm.login.navigation.loginNavGraph
-import com.same.alarm.login.navigation.navigateToUserInfoInput
-import com.same.alarm.login.navigation.userInfoInputNavGraph
 import com.same.alarm.navigation.AuthRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

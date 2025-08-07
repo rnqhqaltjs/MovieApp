@@ -28,7 +28,7 @@ sealed interface SetupRoute {
 
 sealed interface EditRoute {
     @Serializable
-    data object Edit : Route
+    data class Edit(val alarmId: Int) : Route
 
     @Serializable
     data object EditDetail : Route

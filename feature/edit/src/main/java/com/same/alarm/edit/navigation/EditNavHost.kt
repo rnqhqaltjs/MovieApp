@@ -33,7 +33,8 @@ import com.same.alarm.navigation.Route
 @Composable
 fun EditNavHost(
     alarmId: Int,
-    onShowSnackBar: (String) -> Unit
+    onShowSnackBar: (String) -> Unit,
+    onNavigateToList: () -> Unit
 ) {
     val navController = rememberNavController()
     var onConfirmClick: () -> Unit = {}
@@ -75,7 +76,7 @@ fun EditNavHost(
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = EditRoute.Edit,
+                startDestination = EditRoute.Edit(alarmId = alarmId),
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable<EditRoute.Edit>(
@@ -85,10 +86,10 @@ fun EditNavHost(
                     val editViewModel: EditViewModel = hiltViewModel(backStackEntry)
 
                     EditRoute(
-                        alarmId = alarmId,
                         editViewModel = editViewModel,
                         onDetailClick = navController::navigateToEditDetail,
-                        onShowSnackBar = onShowSnackBar
+                        onShowSnackBar = onShowSnackBar,
+                        onNavigateToList = onNavigateToList
                     )
 
                     onConfirmClick = editViewModel::updateAlarm
@@ -105,9 +106,9 @@ fun EditNavHost(
                         } ?: hiltViewModel()
 
                     EditDetailRoute(
-                        alarmId = alarmId,
                         editViewModel = editViewModel,
-                        onShowSnackBar = onShowSnackBar
+                        onShowSnackBar = onShowSnackBar,
+                        onNavigateToList = onNavigateToList
                     )
 
                     onConfirmClick = editViewModel::updateAlarm

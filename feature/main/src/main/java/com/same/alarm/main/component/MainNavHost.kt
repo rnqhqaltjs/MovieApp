@@ -30,7 +30,8 @@ internal fun MainNavHost(
         )
         feedNavGraph()
         editNavGraph(
-            onShowSnackBar = onShowSnackBar
+            onShowSnackBar = onShowSnackBar,
+            onNavigateToList = navigator::navigateToList
         )
     }
 }

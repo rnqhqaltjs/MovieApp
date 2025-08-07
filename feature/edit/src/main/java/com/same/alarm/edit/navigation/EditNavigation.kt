@@ -17,13 +17,15 @@ fun NavController.navigateToEditDetail(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.editNavGraph(
-    onShowSnackBar: (String) -> Unit
+    onShowSnackBar: (String) -> Unit,
+    onNavigateToList: () -> Unit,
 ) {
     composable<Route.Edit> {
         val alarmId = it.toRoute<Route.Edit>().alarmId
         EditNavHost (
             alarmId = alarmId,
-            onShowSnackBar = onShowSnackBar
+            onShowSnackBar = onShowSnackBar,
+            onNavigateToList = onNavigateToList
         )
     }
 }

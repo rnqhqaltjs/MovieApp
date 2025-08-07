@@ -7,8 +7,13 @@ import androidx.navigation.compose.composable
 import com.same.alarm.list.ListRoute
 import com.same.alarm.navigation.MainTabRoute
 
-fun NavController.navigateToList(navOptions: NavOptions? = null) {
-    navigate(MainTabRoute.List, navOptions = navOptions)
+fun NavController.navigateToList() {
+    navigate(MainTabRoute.List) {
+        popUpTo(graph.startDestinationId) {
+            inclusive = false
+        }
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.listNavGraph(

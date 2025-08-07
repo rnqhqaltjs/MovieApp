@@ -15,14 +15,9 @@ class AlarmRepositoryImpl @Inject constructor(
     private val alarmLocalDataSource: AlarmLocalDataSource,
     private val alarmRemoteDataSource: AlarmRemoteDataSource
 ) : AlarmRepository {
-//    override suspend fun addAlarm(alarm: Alarm): Int {
-//        val remoteId = alarmRemoteDataSource.saveAlarm(alarm.toRemoteEntity())
-//        val localId = alarmLocalDataSource.addAlarm(alarm.copy(id = remoteId.toInt()).toLocalEntity())
-//        return localId.toInt()
-//    }
-
     override suspend fun addAlarm(alarm: Alarm): Int {
-        val localId = alarmLocalDataSource.addAlarm(alarm.toLocalEntity())
+        val remoteId = alarmRemoteDataSource.saveAlarm(alarm.toRemoteEntity())
+        val localId = alarmLocalDataSource.addAlarm(alarm.copy(id = remoteId.toInt()).toLocalEntity())
         return localId.toInt()
     }
 
@@ -38,8 +33,8 @@ class AlarmRepositoryImpl @Inject constructor(
             .map { it?.toDomain() }
     }
 
-    override suspend fun getAlarmMessage(): String {
-        return alarmRemoteDataSource.getAlarmMessage()
+    override suspend fun getAlarmMessage(time: String): List<String> {
+        return alarmRemoteDataSource.getAlarmMessage(time)
     }
 
     override suspend fun removeAlarm(alarmId: Int) {
@@ -48,6 +43,7 @@ class AlarmRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateAlarm(alarm: Alarm) {
-        return alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
+        alarmRemoteDataSource.updateAlarm(alarm.id.toLong(), alarm.toRemoteEntity())
+        alarmLocalDataSource.updateAlarm(alarm.toLocalEntity())
     }
 }

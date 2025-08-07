@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.model.alarm.Alarm
 import kotlinx.coroutines.delay
 
 @Composable
@@ -48,12 +49,14 @@ fun RingRoute(
     stopRingCurrent: () -> Unit
 ) {
     val alarmMessage by ringViewModel.alarmMessage.collectAsStateWithLifecycle()
+    val alarm by ringViewModel.alarm.collectAsStateWithLifecycle()
 
     RingScreen(
         startRing = ringViewModel::startPlayer,
         stopRingCurrent = stopRingCurrent,
         stopRingAll = stopRingAll,
-        alarmMessage = alarmMessage
+        alarmMessage = alarmMessage,
+        alarm = alarm
     )
 }
 
@@ -62,7 +65,8 @@ fun RingScreen(
     startRing: () -> Unit,
     stopRingAll: () -> Unit,
     stopRingCurrent: () -> Unit,
-    alarmMessage: String
+    alarmMessage: List<String>,
+    alarm: Alarm?
 ) {
     val animationStates = remember { List(9) { mutableStateOf(false) } }
 
@@ -147,20 +151,24 @@ fun RingScreen(
                         .height(93.dp)
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 37.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = alarmMessage,
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 29.sp,
-                                letterSpacing = (-0.51).sp,
-                                color = Color.White,
-                                fontWeight = FontWeight.Medium,
-                                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                        if(alarmMessage.isNotEmpty()) {
+                            Text(
+                                text = alarmMessage[index],
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 29.sp,
+                                    letterSpacing = (-0.51).sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Medium,
+                                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -201,29 +209,31 @@ fun RingScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "18:30",
-                        style = TextStyle(
-                            fontSize = 26.sp,
-                            lineHeight = 29.sp,
-                            letterSpacing = (-0.51).sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                    if(alarm != null) {
+                        Text(
+                            text = alarm.time.toString(),
+                            style = TextStyle(
+                                fontSize = 26.sp,
+                                lineHeight = 29.sp,
+                                letterSpacing = (-0.51).sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                            )
                         )
-                    )
 
-                    Text(
-                        text = "국문과 세미나 참석",
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 29.sp,
-                            letterSpacing = (-0.51).sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium,
-                            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                        Text(
+                            text = alarm.title,
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 29.sp,
+                                letterSpacing = (-0.51).sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium,
+                                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
@@ -298,6 +308,7 @@ fun RingScreenPreview() {
         startRing = {},
         stopRingCurrent = {},
         stopRingAll = {},
-        alarmMessage = "수원 사는 대학생 홍길동 님은\n피그마 강의 2개 수강을 실천 중입니다."
+        alarmMessage = listOf(),
+        alarm = null
     )
 }

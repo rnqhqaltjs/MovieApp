@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -94,28 +96,32 @@ fun ListScreen(
         ) {
             val (pinned, normal) = alarmList.partition { it.isPinned }
 
-            items(
-                items = pinned,
-                key = { it.id }
-            ) { alarm ->
-                AlarmItem(
-                    alarm = alarm,
-                    onTogglePin = onTogglePin,
-                    onToggleAlarm = onToggleAlarm,
-                    onEditClicked = onEditClicked
-                )
-            }
+            (pinned + normal).forEach { alarm ->
+                item(key = alarm.id) {
+                    val swipeState = rememberSwipeToDismissBoxState(
+                        positionalThreshold = { totalDistance -> totalDistance * 0.3f },
+                        confirmValueChange = {
+                            if (it == SwipeToDismissBoxValue.EndToStart) {
+                                onRemoveClicked(alarm)
+                                true
+                            } else false
+                        }
+                    )
 
-            items(
-                items = normal,
-                key = { it.id }
-            ) { alarm ->
-                AlarmItem(
-                    alarm = alarm,
-                    onTogglePin = onTogglePin,
-                    onToggleAlarm = onToggleAlarm,
-                    onEditClicked = onEditClicked
-                )
+                    SwipeToDismissBox(
+                        state = swipeState,
+                        enableDismissFromStartToEnd = false,
+                        content = {
+                            AlarmItem(
+                                alarm = alarm,
+                                onTogglePin = onTogglePin,
+                                onToggleAlarm = onToggleAlarm,
+                                onEditClicked = onEditClicked
+                            )
+                        },
+                        backgroundContent = {},
+                    )
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface AlarmService {
     @POST("/alarm")
@@ -20,11 +21,11 @@ interface AlarmService {
     suspend fun updateAlarm(
         @Path("alarmId") alarmId: Long,
         @Body alarmDto: AlarmDto
-    ): ApiResponse<AlarmDto>
+    )
 
     @GET("/alarm/{alarmId}")
     suspend fun getAlarmById(@Path("alarmId") alarmId: Long): ApiResponse<AlarmDto>
 
     @GET("/alarm/message")
-    suspend fun getAlarmMessage(): ApiResponse<String>
+    suspend fun getAlarmMessage(@Query("time") time: String): ApiResponse<List<String>>
 }

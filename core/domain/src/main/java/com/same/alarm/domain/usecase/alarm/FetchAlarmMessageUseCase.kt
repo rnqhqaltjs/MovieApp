@@ -6,5 +6,5 @@ import javax.inject.Inject
 class FetchAlarmMessageUseCase @Inject constructor(
     private val alarmRepository: AlarmRepository,
 ) {
-    suspend operator fun invoke() : String = alarmRepository.getAlarmMessage()
+    suspend operator fun invoke(time: String) : List<String> = alarmRepository.getAlarmMessage(time)
 }

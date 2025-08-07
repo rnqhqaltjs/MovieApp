@@ -58,17 +58,28 @@ fun TimeWheelPicker(
 
     var prevHour by remember { mutableIntStateOf(hour) }
 
+    LaunchedEffect(time) {
+        val newHour = (time.hour % 12).let { if (it == 0) 11 else it - 1 }
+        val newMinute = time.minute
+
+        val hourIndex = infiniteScrollOffset - (infiniteScrollOffset % hourSize) + newHour
+        val minuteIndex = infiniteScrollOffset - (infiniteScrollOffset % minuteSize) + newMinute
+
+        hourListState.scrollToItem(hourIndex)
+        minuteListState.scrollToItem(minuteIndex)
+        amPm = if (time.hour < 12) 0 else 1
+        prevHour = newHour
+    }
+
     val selectedTime by remember {
         derivedStateOf {
-            val currentHour = when {
-                amPm == 0 -> {
+            val currentHour = when (amPm) {
+                0 -> {
                     if (hour == 11) 0 else hour + 1
                 }
-
-                amPm == 1 -> {
+                1 -> {
                     if (hour == 11) 12 else hour + 13
                 }
-
                 else -> hour
             }
 

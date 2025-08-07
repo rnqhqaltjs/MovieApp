@@ -30,33 +30,35 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.same.alarm.designsystem.component.TimeWheelPicker
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.edit.model.EditState
-import com.same.alarm.model.alarm.Alarm
 import java.time.LocalTime
 
 @Composable
 fun EditRoute(
-    alarmId: Int,
     onDetailClick: () -> Unit,
     onShowSnackBar: (String) -> Unit,
     editViewModel: EditViewModel,
+    onNavigateToList: () -> Unit
 ) {
-    val alarmState by editViewModel.alarmState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(alarmId) {
-        editViewModel.loadAlarm(alarmId)
-    }
+    val title by editViewModel.title.collectAsStateWithLifecycle()
+    val statusMessage by editViewModel.statusMessage.collectAsStateWithLifecycle()
+    val time by editViewModel.time.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         editViewModel.updateEvent.collect {
             when (it) {
-                is EditState.Success -> onShowSnackBar("추가 성공")
+                is EditState.Success -> {
+                    onShowSnackBar("수정 성공")
+                    onNavigateToList()
+                }
                 is EditState.Failure -> onShowSnackBar(it.error)
             }
         }
     }
 
     EditScreen(
-        alarmState = alarmState,
+        title = title,
+        statusMessage = statusMessage,
+        time = time,
         onDetailClick = onDetailClick,
         onTitleChange = editViewModel::updateTitle,
         onStatusMessageChange = editViewModel::updateStatusMessage,
@@ -66,15 +68,16 @@ fun EditRoute(
 
 @Composable
 fun EditScreen(
-    alarmState: Alarm?,
+    title: String,
+    statusMessage: String,
+    time: LocalTime,
     onDetailClick: () -> Unit,
     onTitleChange: (String) -> Unit,
     onStatusMessageChange: (String) -> Unit,
     onTimeChange: (LocalTime) -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,9 +89,9 @@ fun EditScreen(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.height(40.dp)
             ) {
-                if (alarmState?.title.isNullOrEmpty()) {
+                if (title.isEmpty()) {
                     Text(
-                        text = "기업디 회의",
+                        text = "제목",
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -99,7 +102,7 @@ fun EditScreen(
                 }
 
                 BasicTextField(
-                    value = alarmState?.title ?: "",
+                    value = title,
                     onValueChange = onTitleChange,
                     textStyle = TextStyle(
                         fontSize = 26.sp,
@@ -118,9 +121,9 @@ fun EditScreen(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.height(30.dp)
             ) {
-                if (alarmState?.statusMessage.isNullOrEmpty()) {
+                if (statusMessage.isEmpty()) {
                     Text(
-                        text = "발표문 프린트 챙기기",
+                        text = "설명",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White,
@@ -131,7 +134,7 @@ fun EditScreen(
                 }
 
                 BasicTextField(
-                    value = alarmState?.statusMessage ?: "",
+                    value = statusMessage,
                     onValueChange = onStatusMessageChange,
                     textStyle = TextStyle(
                         fontSize = 16.sp,
@@ -147,7 +150,7 @@ fun EditScreen(
             Spacer(modifier = Modifier.height(102.dp))
 
             TimeWheelPicker(
-                time = alarmState?.time ?: LocalTime.of(9, 0),
+                time = time,
                 onTimeSelected = onTimeChange
             )
         }
@@ -157,7 +160,7 @@ fun EditScreen(
             contentDescription = "arrow_down",
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 94.dp)
+                .padding(bottom = 40.dp)
                 .graphicsLayer(
                     scaleX = 0.8f,
                     scaleY = 0.8f
@@ -172,7 +175,9 @@ fun EditScreen(
 @Composable
 fun EditScreenPreview() {
     EditScreen(
-        alarmState = null,
+        title = "Sample Title",
+        statusMessage = "Sample Status Message",
+        time = LocalTime.now(),
         onTitleChange = {},
         onStatusMessageChange = {},
         onTimeChange = {},

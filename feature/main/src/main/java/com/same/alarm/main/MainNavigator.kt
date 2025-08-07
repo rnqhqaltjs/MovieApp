@@ -41,13 +41,17 @@ internal class MainNavigator(
 
         when (tab) {
             MainTab.SETUP -> navController.navigateToSetup(MainTabRoute.Setup, navOptions)
-            MainTab.LIST -> navController.navigateToList(navOptions)
+            MainTab.LIST -> navController.navigateToList()
             MainTab.CALENDAR -> navController.navigateToFeed(navOptions)
         }
     }
 
     fun navigateToEdit(alarmId: Int) {
         navController.navigateToEdit(Route.Edit(alarmId))
+    }
+
+    fun navigateToList() {
+        navController.navigateToList()
     }
 
     fun popBackStack() {

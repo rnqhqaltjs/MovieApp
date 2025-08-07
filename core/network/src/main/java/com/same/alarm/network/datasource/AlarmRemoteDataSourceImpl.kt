@@ -22,19 +22,15 @@ class AlarmRemoteDataSourceImpl @Inject constructor(
     override suspend fun updateAlarm(
         alarmId: Long,
         alarmRemoteEntity: AlarmRemoteEntity
-    ): AlarmRemoteEntity {
-        val response = alarmService
-            .updateAlarm(alarmId, alarmRemoteEntity.toDto())
-            .getBodyOrThrow()
-
-        return response.toEntity()
+    ) {
+        return alarmService.updateAlarm(alarmId, alarmRemoteEntity.toDto())
     }
 
     override suspend fun getAlarmById(alarmId: Long): AlarmRemoteEntity {
         return alarmService.getAlarmById(alarmId).getBodyOrThrow().toEntity()
     }
 
-    override suspend fun getAlarmMessage(): String {
-        return alarmService.getAlarmMessage().getBodyOrThrow()
+    override suspend fun getAlarmMessage(time: String): List<String> {
+        return alarmService.getAlarmMessage(time).getBodyOrThrow()
     }
 }

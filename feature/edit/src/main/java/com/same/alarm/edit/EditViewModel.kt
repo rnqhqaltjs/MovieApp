@@ -1,5 +1,6 @@
 package com.same.alarm.edit
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.same.alarm.domain.usecase.alarm.LoadAlarmUseCase
@@ -12,8 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -22,13 +22,19 @@ import javax.inject.Inject
 @HiltViewModel
 class EditViewModel @Inject constructor(
     private val loadAlarmUseCase: LoadAlarmUseCase,
-    private val updateAlarmUseCase: UpdateAlarmUseCase
+    private val updateAlarmUseCase: UpdateAlarmUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    val alarmId: Int = savedStateHandle.get<Int>("alarmId") ?: -1
+
     private val _time = MutableStateFlow(LocalTime.of(9, 0))
+    val time: StateFlow<LocalTime> = _time.asStateFlow()
 
     private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
 
     private val _statusMessage = MutableStateFlow("")
+    val statusMessage: StateFlow<String> = _statusMessage.asStateFlow()
 
     private val _selectedDays = MutableStateFlow<List<Int>>(emptyList())
     val selectedDays: StateFlow<List<Int>> = _selectedDays.asStateFlow()
@@ -42,22 +48,24 @@ class EditViewModel @Inject constructor(
     private val _updateEvent = MutableSharedFlow<EditState>(replay = 0)
     val updateEvent: SharedFlow<EditState> = _updateEvent
 
-    private val _alarmState = MutableStateFlow<Alarm?>(null)
-    val alarmState: StateFlow<Alarm?> = _alarmState.asStateFlow()
+    init {
+        loadAlarm(alarmId)
+    }
 
     fun loadAlarm(alarmId: Int) {
-        loadAlarmUseCase(alarmId)
-            .onEach { alarm ->
-                alarm?.let { alarm ->
-                    _alarmState.value = alarm
-                    _time.update { LocalTime.of(alarm.time.hour, alarm.time.minute) }
-                    _title.update { alarm.title }
-                    _selectedCategory.update { alarm.category }
-                    _isAlarmRepeated.update { alarm.isRepeating }
-                    _selectedDays.update { alarm.daysOfWeek }
+        viewModelScope.launch {
+            loadAlarmUseCase(alarmId)
+                .collectLatest { alarm ->
+                    alarm?.let { alarm ->
+                        _time.update { LocalTime.of(alarm.time.hour, alarm.time.minute) }
+                        _title.update { alarm.title }
+                        _statusMessage.update { alarm.statusMessage }
+                        _selectedCategory.update { alarm.category }
+                        _isAlarmRepeated.update { alarm.isRepeating }
+                        _selectedDays.update { alarm.daysOfWeek }
+                    }
                 }
-            }
-            .launchIn(viewModelScope)
+        }
     }
 
     fun updateTitle(newTitle: String) {
@@ -84,7 +92,7 @@ class EditViewModel @Inject constructor(
 
     fun toggleCategory(category: String) {
         _selectedCategory.update { currentCategory ->
-            if (currentCategory == category) "" else category
+            if (currentCategory == category) currentCategory else category
         }
     }
 
@@ -95,6 +103,7 @@ class EditViewModel @Inject constructor(
     fun updateAlarm() {
         viewModelScope.launch {
             val alarm = Alarm(
+                id = alarmId,
                 time = _time.value,
                 title = _title.value,
                 statusMessage = _statusMessage.value,

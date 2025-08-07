@@ -38,22 +38,21 @@ import java.util.Locale
 
 @Composable
 fun EditDetailRoute(
-    alarmId: Int,
     onShowSnackBar: (String) -> Unit,
-    editViewModel: EditViewModel
+    editViewModel: EditViewModel,
+    onNavigateToList: () -> Unit
 ) {
     val selectedDays by editViewModel.selectedDays.collectAsStateWithLifecycle()
     val selectCategory by editViewModel.selectedCategory.collectAsStateWithLifecycle()
     val isAlarmRepeated by editViewModel.isAlarmRepeated.collectAsStateWithLifecycle()
 
-    LaunchedEffect(alarmId) {
-        editViewModel.loadAlarm(alarmId)
-    }
-
     LaunchedEffect(Unit) {
         editViewModel.updateEvent.collect {
             when (it) {
-                is EditState.Success -> onShowSnackBar("추가 성공")
+                is EditState.Success -> {
+                    onShowSnackBar("수정 성공")
+                    onNavigateToList()
+                }
                 is EditState.Failure -> onShowSnackBar(it.error)
             }
         }

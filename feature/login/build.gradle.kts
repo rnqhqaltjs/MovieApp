@@ -19,5 +19,6 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":core:navigation"))
 
+    implementation(libs.coil.compose)
     implementation(libs.v2.user)
 }
