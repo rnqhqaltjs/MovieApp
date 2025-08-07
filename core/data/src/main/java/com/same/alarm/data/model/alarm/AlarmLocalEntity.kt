@@ -1,8 +1,8 @@
-package com.same.alarm.data.model
+package com.same.alarm.data.model.alarm
 
 import java.time.LocalTime
 
-data class AlarmEntity (
+data class AlarmLocalEntity (
     val id: Long,
     val time: LocalTime,
     val title: String,

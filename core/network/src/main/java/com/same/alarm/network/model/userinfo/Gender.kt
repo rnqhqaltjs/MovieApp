@@ -9,5 +9,5 @@ enum class Gender {
     MALE,
 
     @Json(name = "F")
-    FEMALE
+    FEMALE,
 }

@@ -1,4 +1,4 @@
-package com.same.alarm.model
+package com.same.alarm.model.alarm
 
 import java.time.LocalDate
 import java.time.LocalDateTime

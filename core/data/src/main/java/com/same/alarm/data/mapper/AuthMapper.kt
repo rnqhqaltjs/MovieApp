@@ -10,7 +10,7 @@ object AuthMapper {
         authType = authType.toString().lowercase()
     )
 
-    fun LoginResponseEntity.toModel() = LoginResponse(
+    fun LoginResponseEntity.toDomain() = LoginResponse(
         accessToken = accessToken,
         refreshToken = refreshToken
     )

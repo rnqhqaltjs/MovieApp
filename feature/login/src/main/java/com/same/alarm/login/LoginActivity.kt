@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.same.alarm.designsystem.theme.AlarmAppTheme
-import com.same.alarm.login.component.LoginNavHost
+import com.same.alarm.login.navigation.LoginNavHost
 import com.same.alarm.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 

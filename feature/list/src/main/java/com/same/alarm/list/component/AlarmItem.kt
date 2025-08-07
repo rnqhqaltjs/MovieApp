@@ -2,21 +2,22 @@ package com.same.alarm.list.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
@@ -30,7 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.list.R
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
+import com.same.alarm.model.alarm.Category
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -38,30 +40,27 @@ import java.time.format.DateTimeFormatter
 fun AlarmItem(
     alarm: Alarm,
     onTogglePin: (Alarm) -> Unit,
-    onToggleAlarm: (Alarm) -> Unit
+    onToggleAlarm: (Alarm) -> Unit,
+    onEditClicked: (Int) -> Unit
 ) {
     val daysOfWeekMap = listOf("월", "화", "수", "목", "금", "토", "일")
+    val categoryEnum = Category.fromDisplayName(alarm.category) ?: Category.ETC
 
-    Row {
-        Box(
-            modifier = Modifier
-                .width(19.dp)
-                .fillMaxHeight()
-                .background(
-                    color = Color.Green,
-                    shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
-                )
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 11.dp),
-            horizontalAlignment = Alignment.End
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(30.dp))
+            .background(Color.White.copy(alpha = 0.3f))
+            .padding(vertical = 12.dp)
+            .noRippleClickable { onEditClicked(alarm.id) },
+        horizontalAlignment = Alignment.End,
+    ) {
+        Row(
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier.padding(start = 23.dp, end = 22.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier.padding(end = 13.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     painter = painterResource(
@@ -69,86 +68,89 @@ fun AlarmItem(
                     ),
                     contentDescription = "고정 핀",
                     modifier = Modifier
-                        .padding(top = 3.dp, start = 5.dp, end = 5.dp)
+                        .padding(top = 2.dp)
                         .noRippleClickable { onTogglePin(alarm) }
                 )
 
-                Column(
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Box(
                     modifier = Modifier
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Text(
-                        text = alarm.title,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    )
-
-                    Text(
-                        text = alarm.statusMessage,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    )
-                }
-
-                CustomSwitch(
-                    checked = alarm.isActive,
-                    onCheckedChange = { isActive ->
-                        onToggleAlarm(alarm.copy(isActive = isActive))
-                    },
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(categoryEnum.color)
                 )
             }
 
-            Spacer(modifier = Modifier.height(7.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            Text(
-                text = buildAnnotatedString {
-                    daysOfWeekMap.forEachIndexed { index, day ->
-                        if (alarm.daysOfWeek.contains(index)) {
-                            withStyle(
-                                style = SpanStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Black
-                                )
-                            ) {
-                                append("$day ")
-                            }
-                        } else {
-                            append("$day ")
-                        }
-                    }
-                },
-                color = Color.Gray,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                modifier = Modifier.padding(end = 16.dp),
-                letterSpacing = (-0.5).sp
-            )
-
-            Row(
-                modifier = Modifier.padding(top = 2.dp, end = 13.dp),
-                verticalAlignment = Alignment.Bottom
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = alarm.time.format(DateTimeFormatter.ofPattern("a")),
-                    fontSize = 15.sp,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    text = alarm.title,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 1.dp)
+                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    color = Color.White
                 )
-
-                Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = alarm.time.format(DateTimeFormatter.ofPattern("hh:mm")),
-                    fontSize = 26.sp,
+                    text = alarm.statusMessage,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    fontWeight = FontWeight.Medium
+                    color = Color.White
                 )
             }
+
+            CustomSwitch(
+                checked = alarm.isActive,
+                onCheckedChange = { isActive ->
+                    onToggleAlarm(alarm.copy(isActive = isActive))
+                },
+                modifier = Modifier.padding(top = 2.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(7.dp))
+
+        Text(
+            text = buildAnnotatedString {
+                daysOfWeekMap.forEachIndexed { index, day ->
+                    if (alarm.daysOfWeek.contains(index)) {
+                        withStyle(
+                            style = SpanStyle(
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        ) {
+                            append("$day ")
+                        }
+                    } else {
+                        append("$day ")
+                    }
+                }
+            },
+            color = Color.White.copy(alpha = 0.6f),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+            modifier = Modifier.padding(end = 24.dp),
+            letterSpacing = (-0.5).sp
+        )
+
+        Row(
+            modifier = Modifier.padding(top = 2.dp, end = 22.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = alarm.time.format(DateTimeFormatter.ofPattern("HH:mm")),
+                fontSize = 29.sp,
+                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                fontWeight = FontWeight.Medium,
+                color = Color.White
+            )
         }
     }
 }
@@ -169,6 +171,7 @@ fun AlarmItemPreview() {
             isRepeating = true
         ),
         onTogglePin = {},
-        onToggleAlarm = {}
+        onToggleAlarm = {},
+        onEditClicked = {}
     )
 }

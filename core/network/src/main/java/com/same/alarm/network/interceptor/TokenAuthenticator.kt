@@ -28,7 +28,7 @@ class TokenAuthenticator @Inject constructor(
 
         val reissueResult = runCatching {
             runBlocking {
-                authService.get().reissue(refreshToken)
+                authService.get().reissue(refreshToken).body
             }
         }
 

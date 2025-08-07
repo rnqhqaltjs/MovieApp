@@ -1,4 +1,4 @@
-package com.same.alarm.setup.navigation
+ package com.same.alarm.setup.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -8,7 +8,7 @@ import com.same.alarm.navigation.MainTabRoute
 import com.same.alarm.navigation.Route
 import com.same.alarm.navigation.SetupRoute
 
-fun NavController.navigateToSetup(route: Route, navOptions: NavOptions? = null) {
+ fun NavController.navigateToSetup(route: MainTabRoute.Setup, navOptions: NavOptions? = null) {
     navigate(route, navOptions = navOptions)
 }
 

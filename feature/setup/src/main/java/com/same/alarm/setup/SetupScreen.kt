@@ -1,12 +1,11 @@
 package com.same.alarm.setup
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.designsystem.component.TimeWheelPicker
 import com.same.alarm.designsystem.noRippleClickable
 import com.same.alarm.setup.model.SetupState
-import com.same.alarm.designsystem.component.TimeWheelPicker
 import java.time.LocalTime
 
 @Composable
@@ -73,98 +72,99 @@ fun SetupScreen(
     updateStatusMessage: (String) -> Unit,
     onDetailClick: () -> Unit
 ) {
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = Modifier
-            .background(Color.White)
             .fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(68.dp))
-
-        TimeWheelPicker(
-            time = time,
-            onTimeSelected = { selectedTime ->
-                updateTime(selectedTime)
-            }
-        )
-
-        Spacer(modifier = Modifier.height(90.dp))
-
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.wrapContentSize()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
         ) {
-            if (title.isEmpty()) {
-                Text(
-                    text = "기업디 회의",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    modifier = Modifier.alpha(0.5f)
+            Spacer(modifier = Modifier.height(38.dp))
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.height(40.dp)
+            ) {
+                if (title.isEmpty()) {
+                    Text(
+                        text = "제목",
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        modifier = Modifier.alpha(0.5f)
+                    )
+                }
+
+                BasicTextField(
+                    value = title,
+                    onValueChange = updateTitle,
+                    textStyle = TextStyle(
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        textAlign = TextAlign.Center
+                    ),
+                    singleLine = true
                 )
             }
 
-            BasicTextField(
-                value = title,
-                onValueChange = updateTitle,
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    textAlign = TextAlign.Center
-                ),
-                singleLine = true
-            )
-        }
+            Spacer(modifier = Modifier.height(4.dp))
 
-        Spacer(modifier = Modifier.height(25.dp))
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.height(30.dp)
+            ) {
+                if (statusMessage.isEmpty()) {
+                    Text(
+                        text = "설명",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        modifier = Modifier.alpha(0.5f)
+                    )
+                }
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.wrapContentSize()
-        ) {
-            if (statusMessage.isEmpty()) {
-                Text(
-                    text = "발표문 프린트 챙기기",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    modifier = Modifier.alpha(0.5f)
+                BasicTextField(
+                    value = statusMessage,
+                    onValueChange = updateStatusMessage,
+                    textStyle = TextStyle(
+                        fontSize = 16.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                        textAlign = TextAlign.Center
+                    ),
+                    singleLine = true
                 )
             }
 
-            BasicTextField(
-                value = statusMessage,
-                onValueChange = updateStatusMessage,
-                textStyle = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-                    textAlign = TextAlign.Center
-                ),
-                singleLine = true
+            Spacer(modifier = Modifier.height(102.dp))
+
+            TimeWheelPicker(
+                time = time,
+                onTimeSelected = updateTime
             )
         }
-
-        Spacer(modifier = Modifier.height(50.dp))
 
         Icon(
             painter = painterResource(id = R.drawable.ic_arrow_down),
             contentDescription = "arrow_down",
             modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 94.dp)
                 .graphicsLayer(
                     scaleX = 0.8f,
                     scaleY = 0.8f
                 )
-                .noRippleClickable { onDetailClick() }
+                .noRippleClickable { onDetailClick() },
+            tint = Color.White
         )
-
-        Spacer(modifier = Modifier.height(29.dp))
     }
 }
 

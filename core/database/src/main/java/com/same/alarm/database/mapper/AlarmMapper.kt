@@ -1,11 +1,11 @@
 package com.same.alarm.database.mapper
 
-import com.same.alarm.data.model.AlarmEntity
+import com.same.alarm.data.model.alarm.AlarmLocalEntity
 import com.same.alarm.database.model.AlarmLocal
 
 object AlarmMapper {
-    fun AlarmLocal.toEntity(): AlarmEntity {
-        return AlarmEntity(
+    fun AlarmLocal.toEntity(): AlarmLocalEntity {
+        return AlarmLocalEntity(
             id = this.id,
             time = this.time,
             title = this.title,
@@ -18,7 +18,7 @@ object AlarmMapper {
         )
     }
 
-    fun AlarmEntity.toLocal(): AlarmLocal {
+    fun AlarmLocalEntity.toLocal(): AlarmLocal {
         return AlarmLocal(
             id = this.id,
             time = this.time,

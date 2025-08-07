@@ -2,12 +2,12 @@ package com.same.alarm.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.same.alarm.common.AlarmConfig.CATEGORIES
 import com.same.alarm.domain.usecase.alarm.LoadAlarmListUseCase
 import com.same.alarm.domain.usecase.alarm.RemoveAlarmUseCase
 import com.same.alarm.domain.usecase.alarm.ToggleAlarmUseCase
 import com.same.alarm.domain.usecase.alarm.TogglePinUseCase
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
+import com.same.alarm.model.alarm.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +25,7 @@ class ListViewModel @Inject constructor(
     private val toggleAlarmUseCase: ToggleAlarmUseCase,
     private val togglePinUseCase: TogglePinUseCase
 ) : ViewModel() {
-    val categories = listOf("전체") + CATEGORIES
+    val categories = listOf("전체") + Category.entries.map { it.displayName }
 
     private val _selectedCategory = MutableStateFlow("전체")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
@@ -61,14 +60,6 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             toggleAlarmUseCase(alarm)
         }
-    }
-
-    fun swipeRevealed(alarmId: Int, isRevealed: Boolean) {
-        _revealedState.update { mapOf(alarmId to isRevealed) }
-    }
-
-    fun resetRevealedState() {
-        _revealedState.update { emptyMap() }
     }
 
     fun togglePin(alarm: Alarm) {

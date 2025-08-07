@@ -1,7 +1,7 @@
 package com.same.alarm.database.di
 
-import com.same.alarm.data.datasource.AlarmDataSource
-import com.same.alarm.database.datasource.AlarmDataSourceImpl
+import com.same.alarm.data.datasource.AlarmLocalDataSource
+import com.same.alarm.database.datasource.AlarmLocalDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ internal abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindAlarmDataSource(alarmDataSourceImpl: AlarmDataSourceImpl): AlarmDataSource
+    abstract fun bindAlarmDataSource(alarmDataSourceImpl: AlarmLocalDataSourceImpl): AlarmLocalDataSource
 
 }

@@ -14,11 +14,11 @@ interface AlarmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlarm(alarmLocal: AlarmLocal): Long
 
-    @Query("SELECT * FROM alarms")
+    @Query("SELECT * FROM alarms order by id DESC")
     fun getAllAlarms(): Flow<List<AlarmLocal>>
 
-    @Delete
-    suspend fun deleteAlarm(alarmLocal: AlarmLocal)
+    @Query("DELETE FROM alarms WHERE id = :alarmId")
+    suspend fun deleteAlarm(alarmId: Long)
 
     @Update
     suspend fun updateAlarm(alarmLocal: AlarmLocal)

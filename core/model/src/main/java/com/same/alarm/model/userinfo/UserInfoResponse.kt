@@ -9,6 +9,6 @@ data class UserInfoResponse(
     val address: String
 ) {
     fun isNewUser(): Boolean {
-        return age == 0
+        return age == -1
     }
 }

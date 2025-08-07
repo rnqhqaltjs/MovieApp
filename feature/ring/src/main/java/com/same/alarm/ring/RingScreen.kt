@@ -1,28 +1,45 @@
 package com.same.alarm.ring
 
-import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.same.alarm.model.alarm.Alarm
 import kotlinx.coroutines.delay
 
 @Composable
@@ -31,84 +48,255 @@ fun RingRoute(
     stopRingAll: () -> Unit,
     stopRingCurrent: () -> Unit
 ) {
+    val alarmMessage by ringViewModel.alarmMessage.collectAsStateWithLifecycle()
+    val alarm by ringViewModel.alarm.collectAsStateWithLifecycle()
+
     RingScreen(
         startRing = ringViewModel::startPlayer,
         stopRingCurrent = stopRingCurrent,
-        stopRingAll = stopRingAll
+        stopRingAll = stopRingAll,
+        alarmMessage = alarmMessage,
+        alarm = alarm
     )
 }
 
-@SuppressLint("InvalidColorHexValue")
 @Composable
 fun RingScreen(
     startRing: () -> Unit,
     stopRingAll: () -> Unit,
-    stopRingCurrent: () -> Unit
+    stopRingCurrent: () -> Unit,
+    alarmMessage: List<String>,
+    alarm: Alarm?
 ) {
+    val animationStates = remember { List(9) { mutableStateOf(false) } }
+
     LaunchedEffect(Unit) {
         startRing()
+        animationStates.take(4).forEachIndexed { index, state ->
+            delay(150L * index)
+            state.value = true
+        }
+        animationStates.subList(4, 7).forEachIndexed { index, state ->
+            delay(50L * index)
+            state.value = true
+        }
+        animationStates.drop(7).forEachIndexed { index, state ->
+            delay(150L * index)
+            state.value = true
+        }
+
         delay(60_000)
         stopRingCurrent()
     }
 
+    LaunchedEffect("animate") {
+        animationStates.forEachIndexed { index, state ->
+            delay(150L * index)
+            state.value = true
+        }
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(255, 106, 51, 204),
+                        Color(255, 211, 115, 204)
+                    )
+                )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "이 시간 다른 사람들은..?",
-            style = TextStyle(fontSize = 37.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+        Spacer(modifier = Modifier.height(54.dp))
 
-        DrawDot(center = Offset(0f, 0f), size = 16f)
-
-        DrawDot(center = Offset(0f, 0f), size = 12f)
-
-        DrawDot(center = Offset(0f, 0f), size = 10f)
-
-        DrawDot(center = Offset(0f, 0f), size = 8f)
-        
-
-        Button(
-            onClick = stopRingAll,
-            modifier = Modifier
-                .width(241.dp)
-                .height(40.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFF0CF963))
+        AnimatedVisibility(
+            visible = animationStates[0].value,
+            enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
         ) {
-            Text(
-                text = "당장 하러가기",
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                fontSize = 20.sp
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "지금 이 시간 다른 사람들은..?",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = Color.White,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                    )
+                )
+                Spacer(modifier = Modifier.weight(2f))
+            }
         }
 
-        Button(
-            onClick = stopRingCurrent,
-            modifier = Modifier
-                .width(197.dp)
-                .height(40.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFFF7060A))
+        Spacer(modifier = Modifier.height(32.dp))
+
+        repeat(3) { index ->
+            AnimatedVisibility(
+                visible = animationStates[index + 1].value,
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+            ) {
+                Card(
+                    shape = RoundedCornerShape(30.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.3f)
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 22.dp, vertical = 6.dp)
+                        .height(93.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 37.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if(alarmMessage.isNotEmpty()) {
+                            Text(
+                                text = alarmMessage[index],
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 29.sp,
+                                    letterSpacing = (-0.51).sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Medium,
+                                    fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(31.dp))
+
+        Column {
+            repeat(3) { index ->
+                AnimatedVisibility(
+                    visible = animationStates[4 + index].value,
+                    enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+                ) {
+                    DrawDot(size = 11f)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(37.dp))
+
+        AnimatedVisibility(
+            visible = animationStates[7].value,
+            enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
         ) {
-            Text(
-                text = "인생 뒤쳐지기",
-                color = Color.Black,
-                fontSize = 20.sp
-            )
+            Card(
+                shape = RoundedCornerShape(30.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.White.copy(alpha = 0.3f)
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp)
+                    .padding(bottom = 12.dp)
+                    .height(93.dp)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if(alarm != null) {
+                        Text(
+                            text = alarm.time.toString(),
+                            style = TextStyle(
+                                fontSize = 26.sp,
+                                lineHeight = 29.sp,
+                                letterSpacing = (-0.51).sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                            )
+                        )
+
+                        Text(
+                            text = alarm.title,
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 29.sp,
+                                letterSpacing = (-0.51).sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium,
+                                fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter))
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(35.dp))
+
+        AnimatedVisibility(
+            visible = animationStates[8].value,
+            enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp),
+                horizontalArrangement = Arrangement.spacedBy(32.dp)
+            ) {
+                Button(
+                    onClick = stopRingAll,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(45.dp),
+                    colors = ButtonDefaults.buttonColors(Color(0xFFFF7542))
+                ) {
+                    Text(
+                        text = "시작하기",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    )
+                }
+
+                Button(
+                    onClick = stopRingAll,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(45.dp),
+                    colors = ButtonDefaults.buttonColors(Color.White)
+                ) {
+                    Text(
+                        text = "미루기",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFFFF7542),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-fun DrawDot(center: Offset, size: Float, color: Color = Color.Black) {
-    Canvas(modifier = Modifier) {
+fun DrawDot(
+    size: Float,
+    color: Color = Color.White
+) {
+    Canvas(
+        modifier = Modifier.size((size * 2).dp)
+    ) {
         drawCircle(
             color = color,
-            radius = size,
-            center = center
+            radius = size
         )
     }
 }
@@ -119,6 +307,8 @@ fun RingScreenPreview() {
     RingScreen(
         startRing = {},
         stopRingCurrent = {},
-        stopRingAll = {}
+        stopRingAll = {},
+        alarmMessage = listOf(),
+        alarm = null
     )
 }

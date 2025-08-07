@@ -1,5 +1,6 @@
 package com.same.alarm.network.di
 
+import com.same.alarm.network.remote.AlarmService
 import com.same.alarm.network.remote.AuthService
 import com.same.alarm.network.remote.UserService
 import dagger.Module
@@ -19,4 +20,8 @@ internal object ServiceModule {
     @Provides
     @Singleton
     fun provideUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAlarmService(retrofit: Retrofit): AlarmService = retrofit.create(AlarmService::class.java)
 }

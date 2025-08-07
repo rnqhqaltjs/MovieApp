@@ -29,10 +29,11 @@ fun CustomSwitch(
     width: Dp = 49.dp,
     height: Dp = 24.dp,
     thumbSize: Dp = 20.dp,
-    activeTrackColor: Color = Color(0xFF8C9BEA),
+    activeTrackColor: Color = Color(0xFFFF956E),
     inactiveTrackColor: Color = Color(0xFFC8C8C8),
     thumbColor: Color = Color.White,
-    animationDuration: Int = 200
+    animationDuration: Int = 200,
+    modifier: Modifier = Modifier
 ) {
     val trackColor by animateColorAsState(
         targetValue = if (checked) activeTrackColor else inactiveTrackColor,
@@ -45,7 +46,7 @@ fun CustomSwitch(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(width)
             .height(height)
             .clip(RoundedCornerShape(height / 2))

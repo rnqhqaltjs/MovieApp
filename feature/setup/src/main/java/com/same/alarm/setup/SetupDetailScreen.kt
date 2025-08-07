@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,11 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.same.alarm.common.AlarmConfig.CATEGORIES
 import com.same.alarm.common.AlarmConfig.DAYS_OF_WEEK
-import com.same.alarm.setup.component.RepeatSwitchLabel
-import com.same.alarm.setup.model.SetupState
 import com.same.alarm.designsystem.component.CategoryTabs
+import com.same.alarm.model.alarm.Category
+import com.same.alarm.setup.model.SetupState
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -75,15 +75,17 @@ fun SetupDetailScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize()
     ) {
+        Spacer(modifier = Modifier.height(33.dp))
+
         Text(
             text = "반복",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -100,38 +102,51 @@ fun SetupDetailScreen(
                 Text(
                     text = day.getDisplayName(TextStyle.SHORT, Locale.KOREA),
                     fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    fontWeight = FontWeight.Medium,
+                    color = if (isSelected) Color.White else Color(0xFF484848),
+                    fontWeight = if(isSelected) FontWeight.SemiBold else FontWeight.Medium,
                     fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
                     modifier = Modifier
                         .size(35.dp)
                         .clip(CircleShape)
-                        .background(if (isSelected) Color.Blue else Color.LightGray)
+                        .background(if (isSelected) Color(0xFFFF7542) else Color.White)
                         .clickable { onDaySelected(index) }
                         .wrapContentSize(Alignment.Center)
                 )
             }
         }
 
+        Spacer(modifier = Modifier.height(32.dp))
+
         Text(
             text = "카테고리",
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
-            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp)
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         CategoryTabs(
-            categories = CATEGORIES,
+            categories = Category.entries.map { it.displayName },
             selectedCategory = selectedCategory,
             onCategorySelected = onCategorySelected
         )
 
-        RepeatSwitchLabel(
-            label = "다시 알림",
-            isChecked = isAlarmRepeated,
+        Spacer(modifier = Modifier.height(39.dp))
+
+        Text(
+            text = "다시 알림",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily(Font(com.same.alarm.designsystem.R.font.inter)),
+            modifier = Modifier.align(Alignment.Start).padding(start = 39.dp),
+            color = Color.White,
+        )
+
+        Switch(
+            checked = isAlarmRepeated,
             onCheckedChange = onRepeatChange
         )
 

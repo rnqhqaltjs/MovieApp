@@ -42,7 +42,7 @@ fun CategoryTabs(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .clip(RoundedCornerShape(50))
-                    .background(if (isSelected) Color.Blue else Color.LightGray)
+                    .background(if (isSelected) Color(0xFFFF6A33) else Color.White)
                     .clickable { onCategorySelected(category) }
                     .height(33.dp)
                     .padding(horizontal = 3.dp)
@@ -50,8 +50,8 @@ fun CategoryTabs(
                 Text(
                     text = category,
                     fontSize = 16.sp,
-                    color = if (isSelected) Color.White else Color.Black,
-                    fontWeight = FontWeight.Medium,
+                    color = if (isSelected) Color.White else Color(0xFF484848),
+                    fontWeight = if(isSelected) FontWeight.SemiBold else FontWeight.Medium,
                     fontFamily = FontFamily(Font(R.font.inter)),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )

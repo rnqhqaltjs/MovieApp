@@ -1,6 +1,6 @@
 package com.same.alarm.data
 
-import com.same.alarm.model.Alarm
+import com.same.alarm.model.alarm.Alarm
 import org.junit.Test
 import java.time.Instant
 import java.time.LocalTime

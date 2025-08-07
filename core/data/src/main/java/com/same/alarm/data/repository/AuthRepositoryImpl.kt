@@ -3,7 +3,7 @@ package com.same.alarm.data.repository
 import com.same.alarm.data.datasource.AuthDataSource
 import com.same.alarm.data.datasource.TokenStorage
 import com.same.alarm.data.mapper.AuthMapper.toEntity
-import com.same.alarm.data.mapper.AuthMapper.toModel
+import com.same.alarm.data.mapper.AuthMapper.toDomain
 import com.same.alarm.domain.repository.AuthRepository
 import com.same.alarm.model.login.LoginRequest
 import com.same.alarm.model.login.LoginResponse
@@ -36,7 +36,7 @@ class AuthRepositoryImpl @Inject constructor(
             loginRequestEntity = loginRequestEntity
         )
 
-        return response.toModel()
+        return response.toDomain()
     }
 
     override suspend fun logout() {
